@@ -91,7 +91,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="taking/blog">
+                                    <a class="dropdown-item" href="/home">
                                         ดูข้อมูลทั้งหมด
                                     </a>
 

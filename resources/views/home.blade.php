@@ -7,7 +7,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header" class="text text-center">GTN</div>
+                    <div class="card-header" class="text text-center">TANKING</div>
 
                     <div class="card-body">
                         @if (session('status'))
@@ -41,16 +41,10 @@
                             </div>
                         @endif
 
-                        <a href="/blog" class="btn btn-primary">ค้นหา Refcode</a>
-
-                        @if (Auth::check())
-
-                            @if (Auth::user()->status == 4)
-                                <a href="{{ route('register') }}" class="btn btn-primary">Add Member</a>
-                            @else
-                            @endif
-                        @else
-                        @endif
+                        <a href="refcode/home" class="btn btn-primary">ค้นหา Refcode</a>
+                        <a href="#" class="btn btn-danger">IT Clinic</a>
+                        <a href="#" class="btn btn-danger">Inventory</a>
+                                 
                  
                     </div>
                 </div>
