@@ -6,6 +6,7 @@ use App\Http\Controllers\Admincontroller;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Refcodecontroller;
+use App\Http\Middleware\CheckStatus;
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,7 +14,7 @@ Route::get('/', function () {
 
 // Taking
 
-Route::get('/blog', [Admincontroller::class, 'index'])->name('blog'); 
+Route::get('/blog', [Admincontroller::class, 'index'])->name('blog')->middleware(CheckStatus::class); 
 Route::get('edit/{id}', [Admincontroller::class, 'edit'])->name('edit'); 
 Route::post('update/{id}', [Admincontroller::class,'update'])->name('update');
 

@@ -56,7 +56,7 @@ class RegisterController extends Controller
         // Redirect if the user's status is not 1   NEW
         $this->middleware(function ($request, $next) {
 
-        // Check if the user is authenticated
+        // ต้องเช็ค status เท่ากับ 4 
         if (Auth::check() && Auth::user()->status != 4) {
             return redirect('/home');  
         }
@@ -78,7 +78,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'status' => ['required', 'integer', 'min:1', 'max:4'], // ตรวจสอบฟิลด์ Status เป็นตัวเลข
+           // 'status' => ['required', 'integer', 'min:1', 'max:4'], // ตรวจสอบฟิลด์ Status เป็นตัวเลข
         ]);
 
     }
