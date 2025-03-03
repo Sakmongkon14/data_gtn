@@ -1,80 +1,163 @@
-@extends('layouts.app')
+@extends('layouts.Tailwind')
 @section('title', 'ค้นหา Refcode')
 @section('content')
 
 
-    <h2 class="text text-center mt-2">Search Refcode</h2>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
 
-    <div class="container mt-4">
-        <form action="importrefcode" method="POST" enctype="multipart/form-data" id="csvForm"
-            class="d-flex align-items-center gap-2" style="flex-wrap: nowrap; justify-content: center;">
-            @csrf
-            <input type="file" class="form-control" name="csv_file_add" accept=".csv" required
-                style="width: 300px; height: 29px; font-size: 10px;">
-            <input type="submit" class="btn btn-primary" name="preview_add" value="แสดงข้อมูล Refcode ที่ต้องการเพิ่ม"
-                data-bs-toggle="modal" data-bs-target="#exampleModal"style="font-size: 10px;">
-        </form>
-    </div>
+    <script>
+        // ให้แน่ใจว่า script ทำงานหลังจาก HTML โหลดเสร็จ
+        document.addEventListener("DOMContentLoaded", function() {
+            // ฟังก์ชันส่งออก Excel
+            document.getElementById('exportButton').addEventListener('click', function() {
+                var wb = XLSX.utils.book_new();
+
+                // สร้างตารางที่ต้องการ export (แค่หัวตาราง)
+                var table = document.createElement('table');
+                var thead = table.createTHead();
+                var row = thead.insertRow();
+
+                // สร้างหัวตาราง (columns)
+                var th1 = row.insertCell();
+                th1.innerText = "Refcode";
+                var th2 = row.insertCell();
+                th2.innerText = "Job ( Sitecode )";
+                var th3 = row.insertCell();
+                th3.innerText = "Office";
+                var th4 = row.insertCell();
+                th4.innerText = "Project";
+
+                // แปลงตารางเป็น sheet และส่งออก
+                var ws = XLSX.utils.table_to_sheet(table);
+                XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+                XLSX.writeFile(wb, 'Template Refcode.xlsx');
+            });
+        });
+    </script>
+
+    <h2 class="text-center mt-2 text-lg font-semibold">Search Refcode</h2>
+
+    @if (Auth::check())
+
+        @if (in_array(Auth::user()->status, [4]))
+            <div class="d-flex justify-content-end me-3">
+
+                <!-- ปุ่มสำหรับเปิด Modal -->
+                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#refcodeModal">
+                    Import Refcode && Template
+                </button>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="refcodeModal" tabindex="-1" aria-labelledby="refcodeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content p-4">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="refcodeModalLabel">Template Refcode & Import</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- ปุ่ม Export & ฟอร์มอยู่ภายใน Modal -->
+                            <div class="flex justify-between items-center w-full px-4 mt-4">
+                                <!-- ปุ่มสำหรับ Export Template -->
+                                <button type="submit" class="btn btn-outline-success" id="exportButton">
+                                    Template Refcode
+                                </button>
+
+                                <!-- ฟอร์มสำหรับแนบไฟล์ CSV -->
+                                <div id="formContainer" class="container">
+                                    <form action="importrefcode" method="POST" enctype="multipart/form-data" id="csvForm"
+                                        class="flex flex-col sm:flex-row items-center gap-4 justify-center">
+                                        @csrf
+                                        <input type="file"
+                                            class="w-full sm:w-[300px] h-[29px] text-xs border border-gray-500 rounded-md p-1"
+                                            name="csv_file_add" accept=".csv" required>
+                                        <input type="submit"
+                                            class="bg-green-500 text-white text-xs px-4 py-2 rounded-md hover:bg-green-700 cursor-pointer"
+                                            name="preview_add" value="แสดงข้อมูล Refcode ที่ต้องการเพิ่ม">
+                                    </form>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <script>
+                // เมื่อกดปุ่ม ให้แสดงหรือซ่อนฟอร์ม
+                document.getElementById('showFormButton').addEventListener('click', function() {
+                    var formContainer = document.getElementById('formContainer');
+                    // เช็คว่า form ซ่อนอยู่หรือไม่ ถ้าอยู่ให้แสดง ถ้าแสดงให้ซ่อน
+                    if (formContainer.style.display === 'none' || formContainer.style.display === '') {
+                        formContainer.style.display = 'block'; // แสดงฟอร์ม
+                    } else {
+                        formContainer.style.display = 'none'; // ซ่อนฟอร์ม
+                    }
+                });
+            </script>
+        @endif
+    @endif
 
     <!-- แสดงข้อความสำเร็จ -->
     @if (session('success'))
-        <div class="alert alert-success style=margin: 20px; mt-2">
-            {{ session('success') }}
+        <div
+            class="alert alert-success bg-green-100 border border-green-500 text-green-800 px-2 py-2 rounded-md mt-2 w-full sm:w-auto sm:max-w-md mx-auto">
+            <strong>สำเร็จ!</strong> {{ session('success') }}
         </div>
     @endif
 
+    <!-- แสดงข้อความข้อผิดพลาด -->
     @if ($errors->has('error'))
-        <div class="alert alert-danger style=margin: 20px; mt-2">
-            {{ $errors->first('error') }}
+        <div
+            class="alert alert-danger bg-red-100 border border-red-500 text-red-800 px-2 py-2 rounded-md mt-2 w-full sm:w-auto sm:max-w-md mx-auto">
+            <strong>ข้อผิดพลาด!</strong> {{ $errors->first('error') }}
         </div>
     @endif
 
-
-
-    <!-- import -->
 
     @if (!empty($dataToSave) && (is_array($dataToSave) || is_object($dataToSave)))
         <div class="modal fade show d-block" id="refcodeModal" tabindex="-1" role="dialog"
             aria-labelledby="refcodeModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0.5);">
-            <div class="modal-dialog modal-xl" role="document">
-                <div class="modal-content" style="max-height: 650px; overflow-y: auto;">
-                    <div class="modal-header">
-                        <h2 class="modal-title" id="refcodeModalLabel" style="font-size: 25px;">ตรวจสอบข้อมูล Refcode</h2>
-                        <a href="home" class="btn-close" aria-label="Close"></a>
+            <div class="modal-dialog modal-xl relative w-full sm:w-11/12 md:w-9/12 lg:w-8/12 xl:w-7/12" role="document">
+                <div class="modal-content bg-white rounded-lg shadow-lg max-h-[650px]">
+                    <div class="modal-header flex justify-between items-center p-4 border-b border-gray-200">
+                        <h2 class="text-xl font-semibold" id="refcodeModalLabel">ตรวจสอบข้อมูล Refcode</h2>
+                        <a href="home" class="btn-close text-gray-600 hover:text-gray-900" aria-label="Close">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                class="w-6 h-6">
+                            </svg>
+                        </a>
                     </div>
-                    <div class="modal-body">
-                        <div class="table-container" style="max-height: 450px; overflow-y: auto;">
-                            <table class="table table-bordered" id="modalTable" style="width: 100%; table-layout: fixed;">
-                                <thead style="position: sticky; top: 0; background-color: #fff; z-index: 1;">
-                                    <tr>
-                                        <th scope="col" style="width: 150px">Refcode</th>
-                                        <th scope="col" style="width: 300px">Description</th>
-                                        <th scope="col" style="width: 100px">Office</th>
-                                        <th scope="col" style="width: 300px">Project</th>
-                                        <th scope="col" style="width: 200px">Check Refcode</th>
+                    <div class="modal-body p-4">
+                        <div class="overflow-y-auto" style="max-height: 450px;">
+                            <table class="table-auto w-full table-fixed border-collapse">
+                                <thead class="sticky top-0 bg-white z-10">
+                                    <tr class="text-xs text-center">
+                                        <th class="px-2 py-3 bg-blue-50 text-gray-700">Refcode</th>
+                                        <th class="px-2 py-3 bg-blue-50 text-gray-700">Description</th>
+                                        <th class="px-2 py-3 bg-blue-50 text-gray-700">Office</th>
+                                        <th class="px-2 py-3 bg-blue-50 text-gray-700">Project</th>
+                                        <th class="px-2 py-3 bg-blue-50 text-gray-700">Check Refcode</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="text-xs text-center bg-white">
                                     @foreach ($dataToSave as $row)
-                                        <tr>
+                                        <tr class="border-t border-gray-100 hover:bg-red-200">
                                             @foreach ($row as $key => $cell)
-                                                <td>{{ $cell }}</td>
+                                                <td class="px-2 py-2">{{ $cell }}</td>
                                             @endforeach
-                                            <td>
+                                            <td class="px-2 py-2">
                                                 @php
-                                                    $check = false;
-                                                    foreach ($refcode as $item) {
-                                                        if ($item->refcode === $row['refcode']) {
-                                                            $check = true;
-                                                            break;
-                                                        }
-                                                    }
+                                                    $check = collect($refcode)->contains('refcode', $row['refcode']);
                                                 @endphp
                                                 @if ($check)
-                                                    <span style="color: red;">refcode ซ้ำกัน</span>
+                                                    <span class="text-red-500">refcode ซ้ำกัน</span>
                                                 @else
-                                                    <span style="color: green;">สามารถ Upload refcode ได้</span>
+                                                    <span class="text-green-500">สามารถ Upload refcode ได้</span>
                                                 @endif
                                             </td>
                                         </tr>
@@ -83,68 +166,146 @@
                             </table>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <form action="saverefcode" method="POST">
+                    <div class="modal-footer flex  items-center p-4 bg-gray-50">
+                        <form action="saverefcode" method="POST" class="flex items-center gap-4">
                             @csrf
                             <input type="hidden" name="data_add" value="{{ json_encode($dataToSave) }}">
-                            <button type="submit" class="btn btn-success">เพิ่มข้อมูล</button>
+                            <button type="submit"
+                                class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">เพิ่มข้อมูล</button>
                         </form>
-                        <a href="home" class="btn btn-danger">ย้อนกลับ</a>
+                        <a href="home" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">ย้อนกลับ</a>
                     </div>
                 </div>
             </div>
         </div>
-
     @endif
 
-    <div class="table-container mt-2" style="height: 510px; overflow-y: auto;">
-        <table class="table mt-2" style="width: 100%;">
-            <thead style="position: sticky; top: 0; background-color: white;">
-                <tr style="font-size: 14px; text-align:center;">
-                    <th scope="col" style="background-color: #e6f7ff;">Refcode</th>
-                    <th scope="col" style="background-color: #e6f7ff;">SiteCode
-                        <input class="input-style" type="text" id="searchMaterial_name" name="searchmaterial_name"
-                            style="width: 250px; height: 25px; padding: 5px; font-size: 11px;">
-                    </th>
-                    <th scope="col" style="background-color: #e6f7ff;">Office</th>
-                    <th scope="col" style="background-color: #e6f7ff;">Project</th>
-                </tr>
 
+    <!-- ตาราง -->
+    <div class="mt-2 overflow-y-auto" style="height: 550px;">
+        <table class="table-auto w-full mt-2 border-collapse">
+            <thead class="sticky top-0 bg-white shadow-md">
+                <tr class="text-xs text-center">
+                    <th class="bg-blue-950 text-neutral-50 px-2 py-1">
+                        <div class="flex flex-col items-center">
+                            <span>Refcode</span>
+                            <input
+                                class="filter-input mt-1 w-[200px] h-[20px] p-2 text-xs border border-gray-300 rounded-md text-gray-950"
+                                type="text" id="search-refcode" placeholder="">
+                        </div>
+                    </th>
+                    <th class="bg-blue-950 text-neutral-50 px-2 py-1">
+                        <div class="flex flex-col items-center">
+                            <span>SiteCode</span>
+                            <input
+                                class="filter-input mt-1 w-[200px] h-[20px] p-2 text-xs border border-gray-300 rounded-md text-gray-950"
+                                type="text" id="search-sitecode" placeholder="">
+
+                        </div>
+                    </th>
+                    <th class="bg-blue-950 text-neutral-50 px-2 py-1">
+                        <div class="flex flex-col items-center">
+                            <span>Office</span>
+                            <input
+                                class="filter-input mt-1 w-[200px] h-[20px] p-2 text-xs border border-gray-300 rounded-md text-gray-950"
+                                type="text" id="search-office" placeholder="">
+
+                        </div>
+                    </th>
+                    <th class="bg-blue-950 text-neutral-50 px-2 py-1">
+                        <div class="flex flex-col items-center">
+                            <span>Project</span>
+                            <input
+                                class="filter-input mt-1 w-[200px] h-[20px] p-2 text-xs border border-gray-300 rounded-md text-gray-950"
+                                type="text" id="search-project" placeholder="">
+
+                        </div>
+                    </th>
+
+                </tr>
             </thead>
 
-            <tbody style="font-size: 10px; text-align:center; background-color: white;">
+            <tbody class="text-xs text-center bg-white">
                 @foreach ($refcode as $item)
-                    <tr>
+                    <tr class="hover:bg-red-100 hover:text-red-600">
                         <td>{{ $item->refcode }}</td>
-                        <td class="sitecode">{{ $item->sitecode }}</td>
+                        <td>{{ $item->sitecode }}</td>
                         <td>{{ $item->office }}</td>
                         <td>{{ $item->project }}</td>
                     </tr>
                 @endforeach
             </tbody>
-
         </table>
     </div>
 
-
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
         $(document).ready(function() {
-            $('#searchMaterial_name').on('keyup', function() {
-                var searchTerm = $(this).val().toLowerCase();
-                $('tbody tr').each(function() {
-                    var sitecode = $(this).find('.sitecode').text().toLowerCase();
-                    if (sitecode.indexOf(searchTerm) > -1) {
-                        $(this).show(); // แสดงแถวที่ตรงกับคำค้นหา
-                    } else {
-                        $(this).hide(); // ซ่อนแถวที่ไม่ตรงกับคำค้นหา
+            $(".filter-input").on("keypress", function(e) {
+                if (e.which === 13) { // ตรวจจับปุ่ม Enter
+                    var refcode = $("#search-refcode").val().trim();
+                    var sitecode = $("#search-sitecode").val().trim();
+                    var office = $("#search-office").val().trim();
+                    var project = $("#search-project").val().trim();
+    
+                    // เช็คว่าทุกช่องว่างหรือไม่
+                    if (refcode === "" && sitecode === "" && office === "" && project === "") {
+                        loadInitialData(); // โหลดข้อมูลทั้งหมดกลับมา
+                        return;
+                    }
+    
+                    var searchData = { refcode, sitecode, office, project };
+    
+                    $.ajax({
+                        url: '{{ route('searchRefcode') }}',
+                        method: 'GET',
+                        data: searchData,
+                        success: function(response) {
+                            $("tbody").empty(); // ล้างตารางเก่า
+                            $.each(response, function(index, item) {
+                                $("tbody").append(`
+                                    <tr class="hover:bg-red-100 hover:text-red-600">
+                                        <td>${item.refcode}</td>
+                                        <td>${item.sitecode}</td>
+                                        <td>${item.office}</td>
+                                        <td>${item.project}</td>
+                                    </tr>
+                                `);
+                            });
+                        }
+                    });
+                }
+            });
+    
+            // ฟังก์ชันโหลดข้อมูลทั้งหมด
+            function loadInitialData() {
+                $.ajax({
+                    url: '{{ route('searchRefcode') }}',
+                    method: 'GET',
+                    success: function(response) {
+                        $("tbody").empty();
+                        $.each(response, function(index, item) {
+                            $("tbody").append(`
+                                <tr class="hover:bg-red-100 hover:text-red-600">
+                                    <td>${item.refcode}</td>
+                                    <td>${item.sitecode}</td>
+                                    <td>${item.office}</td>
+                                    <td>${item.project}</td>
+                                </tr>
+                            `);
+                        });
                     }
                 });
-            });
+            }
+    
+            // โหลดข้อมูลทั้งหมดเมื่อหน้าเว็บโหลดเสร็จ
+            loadInitialData();
         });
     </script>
-
-
-
-
+    
 @endsection

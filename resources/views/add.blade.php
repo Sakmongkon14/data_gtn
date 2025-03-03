@@ -7,6 +7,7 @@
             border-color: #3399FF;
         }
 
+
         .form-control {
             font-size: 12px;
         }
@@ -55,21 +56,9 @@
 
     <div class="container input-group mb-3 input-group-sm py-3">
 
-        <form class="row g-3" method="POST" action="/insert">
+        <form class="row g-3" autocomplete="off" method="POST" action="/insert">
             @csrf
 
-
-        <!--
-            <div class="col-md-12 d-flex align-items-center ">
-                <label for="GTNJobNo" class="me-4" style="width: 100px;">GTNJobNo</label>
-                <div class="d-flex flex-column">
-                    <input type="text" name="GTNJobNo" class="form-control" > 
-                    @error('GTNJobNo')
-                        <span class="text text-danger ">{{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
-        -->
 
             <div class="col-md-12 d-flex align-items-center ">
                 <label for="RefCode" class="me-4" style="width: 100px;">RefCode</label>
@@ -138,14 +127,6 @@
                 </div>
             </div>
 
-        <!--
-            <div class="col-md-12 d-flex align-items-center ">
-                <label for="CancelSite" class="me-4" style="width: 100px;">CancelSite</label>
-                <div class="d-flex flex-column ">
-                    <input type="text" name="CancelSite" class="form-control">
-                </div>
-            </div>
-        -->
 
             <div class="col-md-12 d-flex align-items-center ">
                 <label for="TowerNewSite" class="me-4" style="width: 100px;">TowerNewSite</label>
@@ -176,36 +157,13 @@
                 </div>
             </div>
 
-        <!--
-
-            <div class="col-md-12 d-flex align-items-center ">
-                <label for="DeadLine" class="me-4" style="width: 100px;">DeadLine</label>
-                <div class="d-flex flex-column ">
-                    <input type="text" name="DeadLine" class="form-control">
-                </div>
-            </div>
-
-            <div class="col-md-12 d-flex align-items-center ">
-                <label for="DeadLine_Y" class="me-4" style="width: 100px;">DeadLine_Y</label>
-                <div class="d-flex flex-column ">
-                    <input type="text" name="DeadLine_Y" class="form-control">
-                </div>
-            </div>
-
-            <div class="col-md-12 d-flex align-items-center ">
-                <label for="Status" class="me-4" style="width: 100px;">Status</label>
-                <div class="d-flex flex-column ">
-                    <input type="text" name="Status" class="form-control">
-                </div>
-            </div>
-
-        -->
+            
 
             
 
             <div class="container text-center mb-3 my-3">
-                <input type="submit" value="เพิ่ม" class="btn btn-primary my-3" onclick="return confirmUpdate()">
-                <a href="/blog" class="btn btn-success">หน้าแรก</a>
+                <input type="submit" value="เพิ่ม" class="btn btn-success my-3" onclick="return confirmUpdate()">
+                <a href="/blog" class="btn btn-danger">หน้าแรก</a>
             </div>
 
             <script>

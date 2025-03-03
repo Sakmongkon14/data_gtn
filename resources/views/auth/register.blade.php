@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.Tailwind')
 @section('title', 'Add_Member')
 
 @section('content')
@@ -74,11 +74,22 @@
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Status') }}</label>
 
                        		<div class="col-md-6">
-                         <input id="status" type="number" class="form-control" name="status" required autocomplete="status" min="1" max="4">
-								<p style="margin-top: 10px; color:red "  >
-                                 - Status 1 สามารถ UPDATE งานได้ทั้งหมด <br>
-                                 - Status 2 สามารถ UPDATE งาน CR และ SAQ <br>
-                                 - Status 3 สามารถ UPDATE งาน TSSR และ CIVILWORK</p>
+
+                                <select id="status" name="status" class="form-control" required autocomplete="status">
+                                    <option value="" disabled selected>เลือกสถานะของคุณ</option>
+                                    <option value="1">1. UPDATE ทั้งหมด</option>
+                                    <option value="2">2. UPDATE CR และ SAQ</option>
+                                    <option value="3">3. UPDATE TSSR และ CIVILWORK</option>
+                                    <option value="4">4. SUPERUSER</option>
+                                    <option value="5">5. INVENTORY USER</option> <!-- ตัวเลือกนี้จะแสดงเป็นช่องว่าง -->
+                                    <option value="6">6. INVENTORY ADMIN</option> <!-- ตัวเลือกนี้จะแสดงเป็นช่องว่าง -->
+                                    <option value="">7. อื่น</option>
+                                </select>
+                                    <p style="margin-top: 10px; color:red "  >
+                                 - TRACKING STATUS 1 - 4 <br>
+                                 - SUPERUSER 4 <br>
+                                 - ERP 5-6
+                                 </p>
                             </div>
                         </div>
 
@@ -104,7 +115,7 @@
                                 <button type="button" class="btn btn-success" onclick="confirmSubmission()">
                                     Add Member
                                 </button>
-                                <a href="/home" class="btn btn-primary">Home</a>
+                                <a href="/home" class="btn btn-danger">Home</a>
                             </div>
                         </div>
                     </form>

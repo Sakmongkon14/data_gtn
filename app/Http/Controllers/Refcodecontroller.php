@@ -11,16 +11,52 @@ use Illuminate\Support\Facades\Auth;
 class Refcodecontroller extends Controller
 {
     //
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
-        $refcode = DB::table('r_import_refcode')->get();
 
-        //$count = DB::table('r_import_refcode')->count('refcode');
+        // ดึงข้อมูล 50 รายการแรกจากฐานข้อมูล
+        $refcode = DB::table('r_import_refcode')->limit(50)->get();
+
+        // เช็คจำนวน Refcode
+        $count = DB::table('r_import_refcode')->count('refcode');
 
         //show Refcode
-        return view('refcode.home',compact('refcode'));
-
+        return view('refcode.home', compact('refcode', 'count'));
     }
+
+    // SEARCH REFCODE
+
+    public function searchRefcode(Request $request)
+    {
+        $refcodeQuery = DB::table('r_import_refcode');
+
+        // ตรวจสอบว่ามีค่าค้นหาในแต่ละช่องหรือไม่
+        if ($request->filled('refcode')) {
+            $refcodeQuery->where('refcode', 'like', '%' . $request->input('refcode') . '%');
+        }
+        if ($request->filled('sitecode')) {
+            $refcodeQuery->where('sitecode', 'like', '%' . $request->input('sitecode') . '%');
+        }
+        if ($request->filled('office')) {
+            $refcodeQuery->where('office', 'like', '%' . $request->input('office') . '%');
+        }
+        if ($request->filled('project')) {
+            $refcodeQuery->where('project', 'like', '%' . $request->input('project') . '%');
+        }
+        // ถ้าทุกช่องว่าง ให้ดึง 50 รายการแรก
+        if (!$request->hasAny(['refcode', 'sitecode', 'office', 'project'])) {
+            $refcodeQuery->limit(50);
+        }
+    
+        $refcode = $refcodeQuery->get();
+
+        return response()->json($refcode);
+    }
+
 
     public function importrefcode(Request $request)
     {
@@ -51,10 +87,10 @@ class Refcodecontroller extends Controller
                     // Read only the first two columns (index 0 and 1)
                     if (!$isFirstRow) {
                         $dataToSave[] = [
-                            'refcode' => $data[0], // First column
-                            'sitecode' => $data[1], // Second column
-                            'office' => $data[2], // First column
-                            'project' => $data[3], // Second column
+                            'refcode' => isset($data[0]) ? trim($data[0]) : '',
+                            'sitecode' => isset($data[1]) ? trim($data[1]) : '',
+                            'office' => isset($data[2]) ? trim($data[2]) : '',
+                            'project' => isset($data[3]) ? trim($data[3]) : '',
                         ];
                     }
                     $isFirstRow = false;
@@ -70,10 +106,8 @@ class Refcodecontroller extends Controller
 
         //dd($refcode, $dataToSave);
 
-
-        return view('refcode.home', compact('refcode', 'dataToSave'));
-
-        }
+        return view('refcode.import', compact('refcode', 'dataToSave'));
+    }
 
     //SAVE IMPORT Refcode 
     public function saveAdd(Request $request)
@@ -109,8 +143,8 @@ class Refcodecontroller extends Controller
                 $newData[] = [
                     'refCode' => $row['refcode'],
                     'sitecode' => $row['sitecode'],
-                    'office' => $row['office'], 
-                    'project' => $row['project']        
+                    'office' => $row['office'],
+                    'project' => $row['project']
                     // เพิ่มคอลัมน์อื่นๆ ตามที่ต้องการ
                 ];
             }
@@ -131,5 +165,4 @@ class Refcodecontroller extends Controller
             return redirect('refcode/home')->withErrors(['error' => 'ข้อมูล Refcode ซ้ำกัน']);
         }
     }
-
 }

@@ -1,61 +1,84 @@
-@extends('layouts.app')
+@extends('layouts.Tailwind')
 @section('title', 'Home')
 
 @section('content')
 
-    <div class="container my-4">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <!-- Card 1: TANKING -->
-                <div class="card">
-                    <div class="card-header text-center">TANKING</div>
+    <div class="container mx-auto px-3 py-5">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
 
-                    <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
-                        @if (Auth::check())
-                            @if (in_array(Auth::user()->status, [1, 2, 3, 4]))
-                                <a href="/blog" class="btn btn-primary">New Site</a>
-
-                                @if (Auth::user()->status == 4)
-                                    <a href="{{ route('register') }}" class="btn btn-primary">Add Member</a>
-                                @endif
-                            @else
-                                <a href="/blog" class="btn btn-primary disabled">New Site</a>
-                            @endif
-
-                        @endif
-                    </div>
+            <!-- Tracking Section -->
+            <div class="bg-white shadow-lg rounded-lg p-6 grid justify-items-center items-center">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4 text-center flex items-center justify-center">
+                    <img src="{{ asset('/task.png') }}" alt="GTN Logo" class="h-10">
+                    Tracking
+                </h2>
+                <div class="grid grid-cols-1 md:grid gap-4">
+                    <a href="/blog"
+                        class="btn-primary bg-blue-500 text-white hover:bg-blue-600 focus:outline-none rounded-lg p-2 px-4 transition duration-300 ease-in-out transform hover:scale-105 
+                        grid justify-items-center items-center ">
+                        <img src="{{ asset('/site-map.png') }}" alt="GTN Logo" class="h-10">
+                        New Site 
+                    </a>
                 </div>
+            </div>
 
-                <!-- Card 2: ERP -->
-                <div class="card mt-4">
-                    <div class="card-header text-center">ERP</div>
+            <!-- ERP Section -->
+            <div class="bg-white shadow-lg rounded-lg p-6 grid justify-items-center items-center">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4 text-center flex items-center justify-center">
+                    <img src="{{ asset('/erp.png') }}" alt="GTN Logo" class="h-10">
+                    ERP
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @if (Auth::check())
+                        <a href="refcode/home"
+                            class="btn-primary bg-blue-500 text-white hover:bg-blue-600 focus:outline-none rounded-lg p-2 transition duration-300 ease-in-out transform hover:scale-105 
+                    grid justify-items-center items-center">
+                            <img src="{{ asset('/binary-code.png') }}" alt="GTN Logo" class="h-10">
+                            ค้นหา Refcode
+                        </a>
+                        <a href="/import"
+                            class="btn-danger bg-yellow-400 text-white hover:bg-yellow-500 focus:outline-none rounded-lg p-2 transition duration-300 ease-in-out transform hover:scale-105
+                grid justify-items-center items-center">
+                            <img src="{{ asset('/stock.png') }}" alt="GTN Logo" class="h-10 ">
+                            Inventory
+                        </a>
+                    @endif
+                </div>
+            </div>
 
-                    <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
+            <!-- IT Support Section -->
+            <div class="bg-white shadow-lg rounded-lg p-6 grid justify-items-center items-center">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4 text-center flex items-center justify-center">
+                    <img src="{{ asset('/customer-service.png') }}" alt="GTN Logo" class="h-10">
+                    IT Support
+                </h2>
+                <div class="grid grid-cols-1 md:grid gap-4">
+                    <a href="https://sites.google.com/team-gtn.com/it-clinic/home"
+                        class="btn-danger bg-red-500 text-white hover:bg-red-600 focus:outline-none rounded-lg p-2 px-4 transition duration-300 ease-in-out transform hover:scale-105 grid justify-items-center items-center"
+                        target="_blank">
+                        <img src="{{ asset('/support.png') }}" alt="GTN Logo" class="h-10">
+                        IT Clinic
+                    </a>
+                </div>
+            </div>
 
-                        @if (Auth::check())
-                            <a href="refcode/home" class="btn btn-primary">ค้นหา Refcode</a>
-                        @else
-                            <a href="#" class="btn btn-secondary disabled">ค้นหา Refcode</a>
-                        @endif
-                        <a href="#" class="btn btn-danger disabled">IT Clinic</a>
-                        <a href="#" class="btn btn-danger disabled">Inventory</a>
-
-                    </div>
+            <!-- Admin Section -->
+            <div class="bg-white shadow-lg rounded-lg p-6 grid justify-items-center items-center">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4 text-center flex items-center justify-center">
+                    <img src="{{ asset('/customer-service.png') }}" alt="GTN Logo" class="h-10">
+                    Admin
+                </h2>
+                <div class="grid grid-cols-1 md:grid gap-4">
+                    <a href="{{ route('register') }}"
+                        class="btn-primary bg-green-500 text-white hover:bg-green-600 focus:outline-none rounded-lg p-2 transition duration-300 ease-in-out transform hover:scale-105
+                                grid justify-items-center items-center">
+                        <img src="{{ asset('/add.png') }}" alt="GTN Logo" class="h-10">
+                        Add Member
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
 
+    </div>
 
 @endsection

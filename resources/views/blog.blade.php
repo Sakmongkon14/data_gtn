@@ -6,10 +6,67 @@
 
     <h2 class="text text-center my-3">New Site</h2>
 
+    @if (session('success'))
+        <div class="alert alert-success" id="success-alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
+
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            {{ session('error') }}
+        </div>
+    @endif
+
+
+
+    <script>
+        // ให้ alert หายไปหลังจาก 1.5 วินาที
+        setTimeout(function() {
+            let successAlert = document.getElementById('success-alert');
+            let errorAlert = document.getElementById('error-alert');
+
+            if (successAlert) {
+                successAlert.style.display = 'none';
+            }
+
+            if (errorAlert) {
+                errorAlert.style.display = 'none';
+            }
+        }, 1500); // 5000 มิลลิวินาที = 5 วินาที
+    </script>
+
+
     <div class="container-fluid  custom-container"> <!-- Add custom-container class -->
         <div class="row align-items-center h-100"> <!-- Add h-100 to make row take full height -->
             <div class="col-12 d-flex justify-content-between "> <!-- Add h-100 to the column -->
-                <a class="btn btn-primary" href="add" role="button" aria-label="Add new item">ADD</a>
+
+                <div class="dropdown">
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Menu
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="add">Add Site Code</a></li>
+                        <li><a class="dropdown-item" href="#" id="importFile">Import Site Code</a></li>
+                    </ul>
+                </div>
+
+                <!-- ฟอร์มจะถูกซ่อนตอนแรก -->
+                <div id="formContainer" class="container" style="display: none;">
+                    <form action="/import" method="POST" enctype="multipart/form-data" id="csvForm"
+                        class="d-flex flex-column flex-sm-row align-items-center gap-3 justify-content-start">
+                        @csrf
+                        <input type="file" class="form-control" name="csv_file_add" accept=".csv" required
+                            style="width: 400px;">
+                        <input type="submit" class="btn btn-success" name="preview_add"
+                            value="แสดงข้อมูล SiteCode ที่ต้องการเพิ่ม" style="width: 250px; height: 37px;">
+                    </form>
+                </div>
+
+
                 <div class="d-flex align-items-center"> <!-- Keep the search and export buttons together -->
                     <form class="d-flex ms-2"> <!-- Add margin-start to create space -->
                         <input type="text" class="form-control fixed-width-input" name="search" id="search"
@@ -47,6 +104,20 @@
     </style>
 
     <script>
+        document.getElementById('importFile').addEventListener('click', function(event) {
+            event.preventDefault(); // ป้องกันลิงก์โหลดหน้าใหม่
+            let formContainer = document.getElementById('formContainer');
+
+            // แสดงฟอร์มถ้ายังไม่แสดง หรือซ่อนถ้ากดอีกครั้ง
+            if (formContainer.style.display === 'none' || formContainer.style.display === '') {
+                formContainer.style.display = 'block';
+            } else {
+                formContainer.style.display = 'none';
+            }
+        });
+    </script>
+
+    <script>
         //ฟังก์ชั่น search
         $(document).ready(function() {
             $('#search').on('keyup', function() {
@@ -79,7 +150,7 @@
 
         .table-container {
             width: 98%;
-            max-height: 500px;
+            max-height: 530px;
             overflow-x: auto;
             overflow-y: auto;
         }
@@ -203,7 +274,6 @@
 
                 <th scope="col"></th>
 
-                <th scope="col">GTN Job No</th>
                 <th scope="col">RefCode</th>
                 <th scope="col">Owner Old Ste</th>
                 <th scope="col">Site Code</th>
@@ -212,14 +282,11 @@
                 <th scope="col">Region</th>
                 <th scope="col">Province</th>
                 <th scope="col">Site Type</th>
-                <th scope="col">Cancel Site</th>
                 <th scope="col">Tower New Site</th>
                 <th scope="col">Tower height</th>
                 <th scope="col">Tower</th>
                 <th scope="col">Zone</th>
-                <th scope="col">Dead Line</th>
-                <th scope="col">Dead Line (Y)</th>
-                <th scope="col">Status</th>
+
 
                 <!-- INVOICE -->
                 <th scope="col" style="background-color: #eaff01">Quotation_IN</th>
@@ -381,6 +448,9 @@
                 <th scope="col" style="background-color: #00DFA2">Mail</th>
                 <th scope="col" style="background-color: #00DFA2">ERP</th>
 
+                <!-- ADDITIONAL -->
+                <th scope="col" style="background-color: #ddd">Additional</th>
+
 
                 <!--    </tr>  -->
 
@@ -391,7 +461,7 @@
 
                         <td><a href=" {{ route('edit', $item->id) }}"><i class="bi bi-pencil-fill "></i></a></td>
 
-                        <td>{{ $item->GTNJobNo }}</td>
+
                         <td>{{ $item->RefCode }}</td>
 
                         <td>{{ $item->OwnerOldSte }}</td>
@@ -409,14 +479,11 @@
 
                         <td>{{ $item->Province }}</td>
                         <td>{{ $item->SiteType }}</td>
-                        <td>{{ $item->CancelSite }}</td>
                         <td>{{ $item->TowerNewSite }}</td>
                         <td>{{ $item->Towerheight }}</td>
                         <td>{{ $item->Tower }}</td>
                         <td>{{ $item->Zone }}</td>
-                        <td>{{ $item->DeadLine }}</td>
-                        <td>{{ $item->DeadLine_Y }}</td>
-                        <td>{{ $item->Status }}</td>
+
 
                         <!-- INVOICE -->
                         <td>{{ $item->Quotation_IN }}</td>
@@ -742,6 +809,9 @@
                         </td>
                         <td>{{ $item->Mail_4th_CivilWork }}</td>
                         <td>{{ $item->ERP_4th_CivilWork }}</td>
+
+                        <!-- ADDITIONAL -->
+                        <td>{{ $item->id_add }}</td>
 
                     </tr>
                 @endforeach
