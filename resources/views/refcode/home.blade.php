@@ -35,14 +35,18 @@
         });
     </script>
 
-    <h2 class="text-center mt-2 text-lg font-semibold">Search Refcode</h2>
+<h2 class="text-center mt-2 text-lg ">Search Refcode</h2>
+<h4 class="text-center">No. of Refcode : {{ $count }}</h4>
 
     @if (Auth::check())
 
         @if (in_array(Auth::user()->status, [4]))
-            <div class="d-flex justify-content-end me-3">
+            <div class="d-flex justify-content-between me-3 ms-3">
 
-                <!-- ปุ่มสำหรับเปิด Modal -->
+                <a href="{{ url('/refcode?export=true') }}" class="btn btn-outline-success">
+                    Export Refcode
+                </a>
+
                 <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#refcodeModal">
                     Import Refcode && Template
                 </button>
@@ -72,19 +76,34 @@
                                         <input type="file"
                                             class="w-full sm:w-[300px] h-[29px] text-xs border border-gray-500 rounded-md p-1"
                                             name="csv_file_add" accept=".csv" required>
+
                                         <input type="submit"
                                             class="bg-green-500 text-white text-xs px-4 py-2 rounded-md hover:bg-green-700 cursor-pointer"
-                                            name="preview_add" value="แสดงข้อมูล Refcode ที่ต้องการเพิ่ม">
+                                            name="preview_add" value="แสดงข้อมูล Refcode ที่ต้องการเพิ่ม" id="uploadButton">
                                     </form>
+
                                 </div>
-                                
                             </div>
                         </div>
+                        <!-- Loader -->
+                        <div id="loadingSpinner" class="hidden mt-3 text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">กำลังประมวลผล...</span>
+                            </div>
+                            <p class="text-sm text-gray-600">กำลังประมวลผลไฟล์ CSV โปรดรอสักครู่...</p>
+                        </div>
+
                     </div>
                 </div>
             </div>
 
-
+            <script>
+                // Loader Import
+                document.getElementById("csvForm").addEventListener("submit", function() {
+                    document.getElementById("uploadButton").disabled = true; // ปิดปุ่ม
+                    document.getElementById("loadingSpinner").classList.remove("hidden"); // แสดง Loader
+                });
+            </script>
 
 
             <script>
@@ -104,19 +123,29 @@
 
     <!-- แสดงข้อความสำเร็จ -->
     @if (session('success'))
-        <div
-            class="alert alert-success bg-green-100 border border-green-500 text-green-800 px-2 py-2 rounded-md mt-2 w-full sm:w-auto sm:max-w-md mx-auto">
+        <div id="successAlert"
+            class="alert alert-success bg-green-100 border border-green-500 text-green-800 px-2 py-2 rounded-md mt-2 w-full sm:w-auto sm:max-w-md mx-auto relative">
             <strong>สำเร็จ!</strong> {{ session('success') }}
+            <button type="button" onclick="document.getElementById('successAlert').style.display='none'"
+                class="absolute top-0 right-0 mt-1 mr-2 text-green-700 hover:text-green-900">
+                &times;
+            </button>
         </div>
     @endif
 
+
     <!-- แสดงข้อความข้อผิดพลาด -->
     @if ($errors->has('error'))
-        <div
-            class="alert alert-danger bg-red-100 border border-red-500 text-red-800 px-2 py-2 rounded-md mt-2 w-full sm:w-auto sm:max-w-md mx-auto">
+        <div id="errorAlert"
+            class="alert alert-danger bg-red-100 border border-red-500 text-red-800 px-2 py-2 rounded-md mt-2 w-full sm:w-auto sm:max-w-md mx-auto relative">
             <strong>ข้อผิดพลาด!</strong> {{ $errors->first('error') }}
+            <button type="button" onclick="document.getElementById('errorAlert').style.display='none'"
+                class="absolute top-0 right-0 mt-1 mr-2 text-red-700 hover:text-red-900">
+                &times;
+            </button>
         </div>
     @endif
+
 
 
     @if (!empty($dataToSave) && (is_array($dataToSave) || is_object($dataToSave)))
@@ -126,6 +155,7 @@
                 <div class="modal-content bg-white rounded-lg shadow-lg max-h-[650px]">
                     <div class="modal-header flex justify-between items-center p-4 border-b border-gray-200">
                         <h2 class="text-xl font-semibold" id="refcodeModalLabel">ตรวจสอบข้อมูล Refcode</h2>
+                        <p>จำนวนรายการที่อ่านจากไฟล์ CSV: {{ $countDataToSave }}</p>
                         <a href="home" class="btn-close text-gray-600 hover:text-gray-900" aria-label="Close">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                 class="w-6 h-6">
@@ -167,7 +197,7 @@
                         </div>
                     </div>
                     <div class="modal-footer flex  items-center p-4 bg-gray-50">
-                        <form action="saverefcode" method="POST" class="flex items-center gap-4">
+                        <form action="saverefcode" method="POST" class="flex items-center gap-4" id="saveForm">
                             @csrf
                             <input type="hidden" name="data_add" value="{{ json_encode($dataToSave) }}">
                             <button type="submit"
@@ -252,15 +282,20 @@
                     var sitecode = $("#search-sitecode").val().trim();
                     var office = $("#search-office").val().trim();
                     var project = $("#search-project").val().trim();
-    
+
                     // เช็คว่าทุกช่องว่างหรือไม่
                     if (refcode === "" && sitecode === "" && office === "" && project === "") {
                         loadInitialData(); // โหลดข้อมูลทั้งหมดกลับมา
                         return;
                     }
-    
-                    var searchData = { refcode, sitecode, office, project };
-    
+
+                    var searchData = {
+                        refcode,
+                        sitecode,
+                        office,
+                        project
+                    };
+
                     $.ajax({
                         url: '{{ route('searchRefcode') }}',
                         method: 'GET',
@@ -281,7 +316,7 @@
                     });
                 }
             });
-    
+
             // ฟังก์ชันโหลดข้อมูลทั้งหมด
             function loadInitialData() {
                 $.ajax({
@@ -302,10 +337,10 @@
                     }
                 });
             }
-    
+
             // โหลดข้อมูลทั้งหมดเมื่อหน้าเว็บโหลดเสร็จ
             loadInitialData();
         });
     </script>
-    
+
 @endsection

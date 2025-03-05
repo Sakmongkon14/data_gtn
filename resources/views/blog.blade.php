@@ -7,7 +7,8 @@
     <h2 class="text text-center my-3">New Site</h2>
 
     @if (session('success'))
-        <div class="alert alert-success" id="success-alert">
+        <div class="alert alert-success alert-dismissible fade show">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             {{ session('success') }}
         </div>
     @endif
@@ -21,7 +22,7 @@
     @endif
 
 
-
+<!--
     <script>
         // ให้ alert หายไปหลังจาก 1.5 วินาที
         setTimeout(function() {
@@ -37,6 +38,60 @@
             }
         }, 1500); // 5000 มิลลิวินาที = 5 วินาที
     </script>
+-->
+
+    <script>
+        // ให้แน่ใจว่า script ทำงานหลังจาก HTML โหลดเสร็จ
+        document.addEventListener("DOMContentLoaded", function() {
+            // ฟังก์ชันส่งออก Excel
+            document.getElementById('exportButtonImport').addEventListener('click', function() {
+                var wb = XLSX.utils.book_new();
+
+                // สร้างตารางที่ต้องการ export (แค่หัวตาราง)
+                var table = document.createElement('table');
+                var thead = table.createTHead();
+                var row = thead.insertRow();
+
+                // สร้างหัวตาราง (columns)
+                var th1 = row.insertCell();
+                th1.innerText = "Refcode";
+                var th2 = row.insertCell();
+                th2.innerText = "Owner Old Ste";
+                var th3 = row.insertCell();
+                th3.innerText = "Site Code";
+                var th4 = row.insertCell();
+                th4.innerText = "Site NAME_T";
+                var th5 = row.insertCell();
+                th5.innerText = "PlanType";
+                var th6 = row.insertCell();
+                th6.innerText = "Region";
+                var th7 = row.insertCell();
+                th7.innerText = "Province";
+                var th8 = row.insertCell();
+                th8.innerText = "Site Type";
+                var th9 = row.insertCell();
+                th9.innerText = "Tower NewSite";
+                var th10 = row.insertCell();
+                th10.innerText = "Tower height";
+                var th11 = row.insertCell();
+                th11.innerText = "Tower";
+                var th12 = row.insertCell();
+                th12.innerText = "Zone";
+
+                // แปลงตารางเป็น sheet และส่งออก
+                var ws = XLSX.utils.table_to_sheet(table);
+                XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+                XLSX.writeFile(wb, 'Template Import Refcode.csv');
+            });
+        });
+    </script>
+
+<style>
+    .dropdown-menu li {
+        width: 200px; /* กำหนดความกว้างของแต่ละ li */
+        margin: 5px auto; /* จัดให้ตรงกลาง */
+    }
+</style>
 
 
     <div class="container-fluid  custom-container"> <!-- Add custom-container class -->
@@ -48,11 +103,17 @@
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Menu
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="add">Add Site Code</a></li>
-                        <li><a class="dropdown-item" href="#" id="importFile">Import Site Code</a></li>
+                    <ul class="dropdown-menu p-2 text-center" aria-labelledby="dropdownMenuButton">
+                        <li class="w-200 mx-auto"><a class="dropdown-item py-2" href="add">Add RefCode</a></li>
+                        <li class="w-200 mx-auto"><a class="dropdown-item py-2" href="#" id="importFile">Import RefCode</a></li>
+                        <li class="w-200 mx-auto">
+                            <button type="submit" class="btn btn-outline-success w-100" id="exportButtonImport">
+                                Template Import Refcode
+                            </button>
+                        </li>
                     </ul>
                 </div>
+                
 
                 <!-- ฟอร์มจะถูกซ่อนตอนแรก -->
                 <div id="formContainer" class="container" style="display: none;">
@@ -134,7 +195,7 @@
         document.getElementById('exportButton').addEventListener('click', function() {
             var wb = XLSX.utils.book_new();
             var ws = XLSX.utils.table_to_sheet(document.getElementById('table'));
-            XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+            XLSX.utils.book_append_sheet(wb, ws, 'x');
             XLSX.writeFile(wb, 'New_Site.xlsx');
         });
     </script>
@@ -150,7 +211,7 @@
 
         .table-container {
             width: 98%;
-            max-height: 530px;
+            max-height: 500px;
             overflow-x: auto;
             overflow-y: auto;
         }
@@ -261,12 +322,6 @@
             background-color: rgb(255, 0, 0);
         }
     </style>
-
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
 
     <div class="table-container">
         <table class="table" id="table">

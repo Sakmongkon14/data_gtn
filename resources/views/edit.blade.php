@@ -134,8 +134,17 @@
     </style>
 
     @if (session('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success alert-dismissible fade show">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             {{ session('success') }}
+        </div>
+    @endif
+
+
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            {{ session('error') }}
         </div>
     @endif
 
@@ -2145,8 +2154,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
                         @else
                         @endif
                     @else
@@ -4171,15 +4178,14 @@
                                                 </div>
                                             </div>
 
-                                            
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         @else
                         @endif
-                    
+
                     @endif
 
 
@@ -4188,8 +4194,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingsix">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapsesix" aria-expanded="false"
-                                aria-controls="collapsesix">
+                                data-bs-target="#collapsesix" aria-expanded="false" aria-controls="collapsesix">
                                 ADDITIONAL
                             </button>
                         </h2>
@@ -4212,8 +4217,7 @@
                                             <div class="flex-grow-1 position-relative">
                                                 <input type="text" id="AssignSubCivilfoundation"
                                                     style="width: 180px;" name="AssignSubCivilfoundation"
-                                                    class="form-control datepicker pe-5"
-                                                    placeholder="วันที่-เดือน-ปี"
+                                                    class="form-control datepicker pe-5" placeholder="วันที่-เดือน-ปี"
                                                     value="{{ old('AssignSubCivilfoundation', $blog->AssignSubCivilfoundation) }}">
                                                 <i
                                                     class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
@@ -4227,8 +4231,7 @@
                                             <div class="flex-grow-1 position-relative">
                                                 <input type="text" id="PlanCivilWorkFoundation"
                                                     style="width: 180px;" name="PlanCivilWorkFoundation"
-                                                    class="form-control datepicker pe-5"
-                                                    placeholder="วันที่-เดือน-ปี"
+                                                    class="form-control datepicker pe-5" placeholder="วันที่-เดือน-ปี"
                                                     value="{{ old('PlanCivilWorkFoundation', $blog->PlanCivilWorkFoundation) }}">
                                                 <i
                                                     class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
@@ -4245,9 +4248,8 @@
                                             <label for="ActualCivilWorkTower" class="me-4"
                                                 style="width: 100px;">PlanCivilWorkTower</label>
                                             <div class="flex-grow-1 position-relative">
-                                                <input type="text" id="ActualCivilWorkTower"
-                                                    style="width: 180px;" name="ActualCivilWorkTower"
-                                                    class="form-control datepicker pe-5"
+                                                <input type="text" id="ActualCivilWorkTower" style="width: 180px;"
+                                                    name="ActualCivilWorkTower" class="form-control datepicker pe-5"
                                                     placeholder="วันที่-เดือน-ปี"
                                                     value="{{ old('ActualCivilWorkTower', $blog->ActualCivilWorkTower) }}">
                                                 <i
@@ -4260,9 +4262,8 @@
                                             <label for="AssignCivilWorkTower" class="me-4"
                                                 style="width: 150px;">ActualCivilWorkTower</label>
                                             <div class="flex-grow-1 position-relative">
-                                                <input type="text" id="AssignCivilWorkTower"
-                                                    style="width: 180px;" name="AssignCivilWorkTower"
-                                                    class="form-control datepicker pe-5"
+                                                <input type="text" id="AssignCivilWorkTower" style="width: 180px;"
+                                                    name="AssignCivilWorkTower" class="form-control datepicker pe-5"
                                                     placeholder="วันที่-เดือน-ปี"
                                                     value="{{ old('AssignCivilWorkTower', $blog->AssignCivilWorkTower) }}">
                                                 <i
@@ -4283,8 +4284,7 @@
                                             <div class="flex-grow-1 position-relative">
                                                 <input type="text" id="PlanInstallationRectifier"
                                                     style="width: 150px;" name="PlanInstallationRectifier"
-                                                    class="form-control datepicker pe-5"
-                                                    placeholder="วันที่-เดือน-ปี"
+                                                    class="form-control datepicker pe-5" placeholder="วันที่-เดือน-ปี"
                                                     value="{{ old('PlanInstallationRectifier', $blog->PlanInstallationRectifier) }}">
                                                 <i
                                                     class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
@@ -4297,8 +4297,7 @@
                                             <div class="flex-grow-1 position-relative">
                                                 <input type="text" id="ActualInstallationRectifier"
                                                     style="width: 180px;" name="ActualInstallationRectifier"
-                                                    class="form-control datepicker pe-5"
-                                                    placeholder="วันที่-เดือน-ปี"
+                                                    class="form-control datepicker pe-5" placeholder="วันที่-เดือน-ปี"
                                                     value="{{ old('ActualInstallationRectifier', $blog->ActualInstallationRectifier) }}">
                                                 <i
                                                     class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
@@ -4373,8 +4372,7 @@
                                     <!-- บรรทัด 6 -->
                                     <div class="col-md-3 d-flex align-items-center flex-wrap mt-0">
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="PAT" class="me-1"
-                                                style="width: 50px;">PAT</label>
+                                            <label for="PAT" class="me-1" style="width: 50px;">PAT</label>
                                             <div class="d-flex flex-column ">
                                                 <input type="text" name="PAT" class="form-control"
                                                     value="{{ $blog->PAT }}">
@@ -4382,8 +4380,7 @@
                                         </div>
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="DefPAT" class="me-1"
-                                                style="width: 50px;">DefPAT</label>
+                                            <label for="DefPAT" class="me-1" style="width: 50px;">DefPAT</label>
                                             <div class="d-flex flex-column ">
                                                 <input type="text" name="DefPAT" class="form-control"
                                                     value="{{ $blog->DefPAT }}">
@@ -4391,8 +4388,7 @@
                                         </div>
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="FAT" class="me-1"
-                                                style="width: 50px;">FAT</label>
+                                            <label for="FAT" class="me-1" style="width: 50px;">FAT</label>
                                             <div class="d-flex flex-column ">
                                                 <input type="text" name="FAT" class="form-control"
                                                     value="{{ $blog->FAT }}">
@@ -4405,9 +4401,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
 
 
                 </div>

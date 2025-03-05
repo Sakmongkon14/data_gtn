@@ -16,6 +16,7 @@ Route::get('/', function () {
 
 // Taking
 
+
 //import
 Route::post('/import', [Admincontroller::class, 'importrefcode']); //import sitecode
 Route::get('/import', [Admincontroller::class, 'importrefcode']);  //import sitecode
@@ -45,6 +46,10 @@ Route::get('/test/are', [Dropdowncontroller::class, 'total'])->name('are');
 Route::get('/test/user', [Dropdowncontroller::class, 'user'])->name('user');
 
 // Search Refcode
+
+    //export
+Route::get('/refcode', [RefcodeController::class, 'index'])->name('refcode.index');
+
 Route::get('refcode/home', [Refcodecontroller::class, 'index']);
 Route::get('/search-refcode', [RefcodeController::class, 'searchRefcode'])->name('searchRefcode');
 

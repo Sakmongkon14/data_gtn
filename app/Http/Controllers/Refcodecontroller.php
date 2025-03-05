@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Refcodecontroller extends Controller
 {
@@ -15,18 +17,45 @@ class Refcodecontroller extends Controller
     {
         $this->middleware('auth');
     }
-    public function index()
-    {
 
-        // ดึงข้อมูล 50 รายการแรกจากฐานข้อมูล
-        $refcode = DB::table('r_import_refcode')->limit(50)->get();
+    
+    public function index(Request $request)
+{
+    if ($request->has('export')) {
+        $rows = DB::table('r_import_refcode')->get();
+        $filePath = storage_path('app/refcode.csv');
+        $file = fopen($filePath, 'w');
 
-        // เช็คจำนวน Refcode
-        $count = DB::table('r_import_refcode')->count('refcode');
+        // 🔥 ใส่ BOM เพื่อป้องกันภาษาไทยเพี้ยน
+        fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
 
-        //show Refcode
-        return view('refcode.home', compact('refcode', 'count'));
+        // เขียนหัวตาราง
+        fputcsv($file, ["Refcode", "Sitecode", "Office", "Project"]);
+
+        // เขียนข้อมูลลงไฟล์
+        foreach ($rows as $row) {
+            fputcsv($file, [
+                $row->refcode,
+                $row->sitecode,
+                $row->office,
+                $row->project
+            ]);
+        }
+
+        fclose($file);
+        return response()->download($filePath);
     }
+
+    // ดึงข้อมูล 50 รายการแรกจากฐานข้อมูล
+    $refcode = DB::table('r_import_refcode')->limit(50)->get();
+
+    // เช็คจำนวน Refcode
+    $count = DB::table('r_import_refcode')->count('refcode');
+
+    return view('refcode.home', compact('refcode', 'count'));
+}
+
+
 
     // SEARCH REFCODE
 
@@ -51,7 +80,7 @@ class Refcodecontroller extends Controller
         if (!$request->hasAny(['refcode', 'sitecode', 'office', 'project'])) {
             $refcodeQuery->limit(50);
         }
-    
+
         $refcode = $refcodeQuery->get();
 
         return response()->json($refcode);
@@ -63,6 +92,8 @@ class Refcodecontroller extends Controller
         $refcode = DB::table('r_import_refcode')->get();
 
         $dataToSave = [];
+
+        ini_set('max_execution_time', 300); // เพิ่มเป็น 5 นาที (300 วินาที)
 
         //dd($dataToSave);
 
@@ -106,7 +137,12 @@ class Refcodecontroller extends Controller
 
         //dd($refcode, $dataToSave);
 
-        return view('refcode.import', compact('refcode', 'dataToSave'));
+        $countDataToSave = count($dataToSave);
+
+        // dd($countDataToSave);
+
+
+        return view('refcode.import', compact('refcode', 'dataToSave', 'countDataToSave'));
     }
 
     //SAVE IMPORT Refcode 

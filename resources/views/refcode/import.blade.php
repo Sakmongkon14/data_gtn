@@ -11,7 +11,7 @@
             <div class="modal-dialog modal-xl relative w-full sm:w-11/12 md:w-9/12 lg:w-8/12 xl:w-7/12" role="document">
                 <div class="modal-content bg-white rounded-lg shadow-lg max-h-[650px]">
                     <div class="modal-header flex justify-between items-center p-4 border-b border-gray-200">
-                        <h2 class="text-xl font-semibold" id="refcodeModalLabel">ตรวจสอบข้อมูล Refcode</h2>
+                        <h2 class="text-xl font-semibold" id="refcodeModalLabel">ตรวจสอบข้อมูล Refcode จำนวน: {{ $countDataToSave }} รายการ</h2><br>
                         <a href="home" class="btn-close text-gray-600 hover:text-gray-900" aria-label="Close">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                 class="w-6 h-6">
@@ -75,36 +75,21 @@
                     <th class="bg-blue-950 text-neutral-50 px-2 py-1">
                         <div class="flex flex-col items-center">
                             <span>Refcode</span>
-                            <input
-                                class="filter-input mt-1 w-[200px] h-[20px] p-2 text-xs border border-gray-300 rounded-md text-gray-950"
-                                type="text" id="search-refcode" placeholder="">
                         </div>
                     </th>
                     <th class="bg-blue-950 text-neutral-50 px-2 py-1">
                         <div class="flex flex-col items-center">
                             <span>SiteCode</span>
-                            <input
-                                class="filter-input mt-1 w-[200px] h-[20px] p-2 text-xs border border-gray-300 rounded-md text-gray-950"
-                                type="text" id="search-sitecode" placeholder="">
-
                         </div>
                     </th>
                     <th class="bg-blue-950 text-neutral-50 px-2 py-1">
                         <div class="flex flex-col items-center">
                             <span>Office</span>
-                            <input
-                                class="filter-input mt-1 w-[200px] h-[20px] p-2 text-xs border border-gray-300 rounded-md text-gray-950"
-                                type="text" id="search-office" placeholder="">
-
                         </div>
                     </th>
                     <th class="bg-blue-950 text-neutral-50 px-2 py-1">
                         <div class="flex flex-col items-center">
                             <span>Project</span>
-                            <input
-                                class="filter-input mt-1 w-[200px] h-[20px] p-2 text-xs border border-gray-300 rounded-md text-gray-950"
-                                type="text" id="search-project" placeholder="">
-
                         </div>
                     </th>
 
