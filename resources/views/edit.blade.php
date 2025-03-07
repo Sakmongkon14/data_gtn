@@ -2154,9 +2154,8 @@
                                     </div>
                                 </div>
                             </div>
-                        @else
                         @endif
-                    @else
+                        
                     @endif
 
 
@@ -3069,8 +3068,6 @@
                         @endif
 
                     @endif
-
-
 
 
                     <!-- STATUS 3 -->
@@ -4183,7 +4180,6 @@
                                     </div>
                                 </div>
                             </div>
-                        @else
                         @endif
 
                     @endif
@@ -4191,13 +4187,14 @@
 
                     <!-- Additional -->
 
-                    <div class="accordion-item">
+                    <div class="accordion-item" >
                         <h2 class="accordion-header" id="headingsix">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapsesix" aria-expanded="false" aria-controls="collapsesix">
                                 ADDITIONAL
                             </button>
                         </h2>
+                        
                         <div id="collapsesix" class="accordion-collapse collapse" aria-labelledby="headingsix"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
@@ -4208,190 +4205,179 @@
 
                                     <!-- บรรทัด 1 -->
 
-                                    <div class="col-md-6 d-flex align-items-center flex-wrap ">
-                                        <!-- เพิ่ม flex-wrap เพื่อให้แต่ละบรรทัดอยู่แยกกัน -->
+                                    <div class="col-md-3 d-flex align-items-center flex-wrap mt-2">
+
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <!-- เพิ่ม margin-bottom เพื่อสร้างระยะห่างระหว่างแถว -->
-                                            <label for="AssignSubCivilfoundation" class="me-4"
-                                                style="width: 100px;">PlanCivilFoundation</label>
+                                            <label for="pile_supplier" class="me-1
+                                                style="width: 100px;">Plie Supplier</label>
+                                            <div class="d-flex flex-column ">
+                                                <input type="text" name="pile_supplier" class="form-control"
+                                                    style="width: 160px;" value="{{ $blog->pile_supplier }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex align-items-center mb-3 ms-2">
+                                            <label for="price" class="ms-2"
+                                                style="width: 50px;">Price</label>
+                                            <div class="d-flex flex-column  ">
+                                                <input type="number" name="price" class="form-control"
+                                                    style="width: 120px;" placeholder="กรุณากรอกตัวเลข"
+                                                    value="{{ $blog->price }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex align-items-center mb-3 ms-2">
+                                            <label for="pile_supplier_accept_date" class="me-1 ms-2"
+                                                style="width: 150px;">Pile Supplier Accept Date</label>
                                             <div class="flex-grow-1 position-relative">
-                                                <input type="text" id="AssignSubCivilfoundation"
-                                                    style="width: 180px;" name="AssignSubCivilfoundation"
-                                                    class="form-control datepicker pe-5" placeholder="วันที่-เดือน-ปี"
-                                                    value="{{ old('AssignSubCivilfoundation', $blog->AssignSubCivilfoundation) }}">
+                                                <input type="text" id="pile_supplier_accept_date"
+                                                    name="pile_supplier_accept_date" style="width: 140px;"
+                                                    class="form-control datepicker pe-5"
+                                                    placeholder="วันที่-เดือน-ปี"
+                                                    value="{{ old('pile_supplier_accept_date', $blog->pile_supplier_accept_date) }}"> <!--DATE -->
                                                 <i
                                                     class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                             </div>
                                         </div>
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <!-- เพิ่ม margin-bottom เพื่อสร้างระยะห่างระหว่างแถว -->
-                                            <label for="PlanCivilWorkFoundation" class="me-4"
-                                                style="width: 150px;">ActualCivilWorkFoundation</label>
-                                            <div class="flex-grow-1 position-relative">
-                                                <input type="text" id="PlanCivilWorkFoundation"
-                                                    style="width: 180px;" name="PlanCivilWorkFoundation"
-                                                    class="form-control datepicker pe-5" placeholder="วันที่-เดือน-ปี"
-                                                    value="{{ old('PlanCivilWorkFoundation', $blog->PlanCivilWorkFoundation) }}">
-                                                <i
-                                                    class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
-                                            </div>
+                                            <label for="wo_no" class="me-2 ms-2"
+                                                style="width: 50px;">WO No.</label>
+                                                <div class="d-flex flex-column ">
+                                                    <input type="text" name="wo_no" class="form-control"
+                                                        style="width: 160px;" value="{{ $blog->wo_no }}">
+                                                </div>
                                         </div>
+
                                     </div>
+
+                                
 
                                     <!-- บรรทัด 2 -->
 
-                                    <div class="col-md-6 d-flex align-items-center flex-wrap mt-0">
+                                    <div class="col-md-3 d-flex align-items-center flex-wrap mt-2">
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <!-- ลด margin-bottom และใช้ margin-top ติดลบ -->
-                                            <label for="ActualCivilWorkTower" class="me-4"
-                                                style="width: 100px;">PlanCivilWorkTower</label>
+                                            <label for="accept_1" class="me-4"
+                                                style="width: 100px;">Accept 1</label>
+
                                             <div class="flex-grow-1 position-relative">
-                                                <input type="text" id="ActualCivilWorkTower" style="width: 180px;"
-                                                    name="ActualCivilWorkTower" class="form-control datepicker pe-5"
+                                                <input type="text" id="accept_1"
+                                                    name="accept_1" style="width: 160px;"
+                                                    class="form-control datepicker pe-5"
                                                     placeholder="วันที่-เดือน-ปี"
-                                                    value="{{ old('ActualCivilWorkTower', $blog->ActualCivilWorkTower) }}">
+                                                    value="{{ old('accept_1', $blog->accept_1) }}"> <!--DATE -->
                                                 <i
                                                     class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                             </div>
                                         </div>
 
+                                        <div class="d-flex align-items-center mb-3 ms-2">
+                                            <label for="accept_2" class="me-2 "
+                                                style="width: 100px;">Accept 2 </label>
+
+                                            <div class="flex-grow-1 position-relative">
+                                                <input type="text" id="accept_2"
+                                                    name="accept_2" style="width: 140px;"
+                                                    class="form-control datepicker pe-5"
+                                                    placeholder="วันที่-เดือน-ปี"
+                                                    value="{{ old('accept_2', $blog->accept_2) }}"> <!--DATE -->
+                                                <i
+                                                    class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
+                                            </div>
+                                        </div>
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="AssignCivilWorkTower" class="me-4"
-                                                style="width: 150px;">ActualCivilWorkTower</label>
+                                            <label for="accept_3" class="me-2 ms-4"
+                                                style="width: 100px;">Accept 3 </label>
                                             <div class="flex-grow-1 position-relative">
-                                                <input type="text" id="AssignCivilWorkTower" style="width: 180px;"
-                                                    name="AssignCivilWorkTower" class="form-control datepicker pe-5"
+                                                <input type="text" id="accept_3"
+                                                    name="accept_3" style="width: 160px;"
+                                                    class="form-control datepicker pe-5"
                                                     placeholder="วันที่-เดือน-ปี"
-                                                    value="{{ old('AssignCivilWorkTower', $blog->AssignCivilWorkTower) }}">
+                                                    value="{{ old('accept_3', $blog->accept_3) }}">
                                                 <i
                                                     class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                             </div>
                                         </div>
                                     </div>
+                                    
 
                                     <!-- บรรทัด 3 -->
 
-                                    <div class="col-md-6 d-flex align-items-center flex-wrap mt-0">
-                                        <!-- ใช้ mt-n3 เพื่อขยับขึ้น -->
-                                        <div class="d-flex align-items-center mb-3 ms-2">
-                                            <!-- ลด margin-bottom และใช้ margin-top ติดลบ -->
+                                    <div class="col-md-3 d-flex align-items-center flex-wrap mt-2">
 
-                                            <label for="PlanInstallationRectifier" class="me-4"
-                                                style="width: 130px;">PlanInstallationRectifier</label>
-                                            <div class="flex-grow-1 position-relative">
-                                                <input type="text" id="PlanInstallationRectifier"
-                                                    style="width: 150px;" name="PlanInstallationRectifier"
-                                                    class="form-control datepicker pe-5" placeholder="วันที่-เดือน-ปี"
-                                                    value="{{ old('PlanInstallationRectifier', $blog->PlanInstallationRectifier) }}">
-                                                <i
-                                                    class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
+                                        <div class="d-flex align-items-center mb-3 ms-2">
+                                            <label for="sub_extra_work" class="me-4"
+                                                style="width: 100px;">Sub Extra Work</label>
+                                            <div class="d-flex flex-column ">
+                                                <input type="text" name="sub_extra_work" class="form-control"
+                                                    style="width: 160px;" value="{{ $blog->sub_extra_work }}">
                                             </div>
                                         </div>
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="ActualInstallationRectifier" class="me-4"
-                                                style="width: 150px;">ActualInstallationRectifier</label>
-                                            <div class="flex-grow-1 position-relative">
-                                                <input type="text" id="ActualInstallationRectifier"
-                                                    style="width: 180px;" name="ActualInstallationRectifier"
-                                                    class="form-control datepicker pe-5" placeholder="วันที่-เดือน-ปี"
-                                                    value="{{ old('ActualInstallationRectifier', $blog->ActualInstallationRectifier) }}">
-                                                <i
-                                                    class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
+                                            <label for="sub_extra_work_price" class="me-2"
+                                                style="width: 150px;">Sub Extra Work Price </label>
+
+                                            <div class="d-flex flex-column  ">
+                                                <input type="number" name="sub_extra_work_price" class="form-control"
+                                                    style="width: 160px;" placeholder="กรุณากรอกตัวเลข"
+                                                    value="{{ $blog->sub_extra_work_price }}">
                                             </div>
                                         </div>
+
+                                        <div class="d-flex align-items-center mb-3 ms-2">
+                                            <label for="extra_work_accept_date" class="me-2"
+                                                style="width: 150px;">Sub Extra Work Date </label>
+
+
+                                                <div class="flex-grow-1 position-relative">
+                                                    <input type="text" id="extra_work_accept_date"
+                                                        name="extra_work_accept_date" style="width: 140px;"
+                                                        class="form-control datepicker pe-5"
+                                                        placeholder="วันที่-เดือน-ปี"
+                                                        value="{{ old('extra_work_accept_date', $blog->extra_work_accept_date) }}"> <!--DATE -->
+                                                    <i
+                                                        class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
+                                                </div>
+                                        </div>
+
                                     </div>
 
+                                    
                                     <!-- บรรทัด 4 -->
-
-                                    <div class="col-md-6 d-flex align-items-center flex-wrap mt-0">
-                                        <!-- ใช้ mt-n3 เพื่อขยับขึ้น -->
-                                        <div class="d-flex align-items-center mb-3 ms-2">
-                                            <!-- ลด margin-bottom และใช้ margin-top ติดลบ -->
-                                            <label for="PlanACPower" class="me-4"
-                                                style="width: 100px;">PlanACPower</label>
-                                            <div class="flex-grow-1 position-relative">
-                                                <input type="text" id="PlanACPower" name="PlanACPower"
-                                                    style="width: 180px;" class="form-control datepicker pe-5"
-                                                    placeholder="วันที่-เดือน-ปี"
-                                                    value="{{ old('PlanACPower', $blog->PlanACPower) }}">
-                                                <i
-                                                    class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
-                                            </div>
-                                        </div>
-
+                                    <div class="col-md-3 d-flex align-items-center flex-wrap mt-2">
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="ActualACPower" class="me-4"
-                                                style="width: 150px;">ActualACPower</label>
-                                            <div class="flex-grow-1 position-relative">
-                                                <input type="text" id="ActualACPower" name="ActualACPower"
-                                                    style="width: 180px;" class="form-control datepicker pe-5"
-                                                    placeholder="วันที่-เดือน-ปี"
-                                                    value="{{ old('ActualACPower', $blog->ActualACPower) }}">
-                                                <i
-                                                    class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- บรรทัด 5 -->
-
-                                    <div class="col-md-6 d-flex align-items-center flex-wrap mt-0">
-                                        <div class="d-flex align-items-center mb-3 ms-2">
-
-                                            <label for="PlanACMeter" class="me-4"
-                                                style="width: 100px;">PlanACMeter</label>
-                                            <div class="flex-grow-1 position-relative">
-                                                <input type="text" id="PlanACMeter" name="PlanACMeter"
-                                                    style="width: 180px;" class="form-control datepicker pe-5"
-                                                    placeholder="วันที่-เดือน-ปี"
-                                                    value="{{ old('PlanACMeter', $blog->PlanACMeter) }}">
-                                                <i
-                                                    class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
+                                            <label for="build_permit" class="me-1"
+                                                style="width: 120px;">Build Permit Price</label>
+                                            <div class="d-flex flex-column  ">
+                                                <input type="number" name="build_permit" class="form-control"
+                                                    style="width: 160px;" placeholder="กรุณากรอกตัวเลข"
+                                                    value="{{ $blog->build_permit }}">
                                             </div>
                                         </div>
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="ActualACMeter" class="me-4"
-                                                style="width: 150px;">ActualACMeter</label>
-                                            <div class="flex-grow-1 position-relative">
-                                                <input type="text" id="ActualACMeter" name="ActualACMeter"
-                                                    style="width: 180px;" class="form-control datepicker pe-5"
-                                                    placeholder="วันที่-เดือน-ปี"
-                                                    value="{{ old('ActualACMeter', $blog->ActualACMeter) }}">
-                                                <i
-                                                    class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- บรรทัด 6 -->
-                                    <div class="col-md-3 d-flex align-items-center flex-wrap mt-0">
-                                        <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="PAT" class="me-1" style="width: 50px;">PAT</label>
+                                            <label for="payment_to" class="me-1" style="width: 120px;">Payment to</label>
                                             <div class="d-flex flex-column ">
-                                                <input type="text" name="PAT" class="form-control"
-                                                    value="{{ $blog->PAT }}">
+                                                <input type="text" name="payment_to" class="form-control"
+                                                    value="{{ $blog->payment_to }}">
                                             </div>
                                         </div>
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="DefPAT" class="me-1" style="width: 50px;">DefPAT</label>
-                                            <div class="d-flex flex-column ">
-                                                <input type="text" name="DefPAT" class="form-control"
-                                                    value="{{ $blog->DefPAT }}">
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="FAT" class="me-1" style="width: 50px;">FAT</label>
-                                            <div class="d-flex flex-column ">
-                                                <input type="text" name="FAT" class="form-control"
-                                                    value="{{ $blog->FAT }}">
+                                            <label for="payment_date" class="me-2 ms-4" style="width: 140px;">Payment Date</label>
+                                
+                                            <div class="flex-grow-1 position-relative">
+                                                <input type="text" id="payment_date"
+                                                    name="payment_date" style="width: 150px;"
+                                                    class="form-control datepicker pe-5"
+                                                    placeholder="วันที่-เดือน-ปี"
+                                                    value="{{ old('payment_date', $blog->payment_date) }}">
+                                                <i
+                                                    class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                             </div>
                                         </div>
                                     </div>

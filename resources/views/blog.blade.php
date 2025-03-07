@@ -505,6 +505,19 @@
 
                 <!-- ADDITIONAL -->
                 <th scope="col" style="background-color: #ddd">Additional</th>
+                <th scope="col" style="background-color: #ddd">Pile Supplier</th>
+                <th scope="col" style="background-color: #ddd">Price</th>
+                <th scope="col" style="background-color: #ddd">Pile Supplier Accept Date</th>
+                <th scope="col" style="background-color: #ddd">WO No.</th>
+                <th scope="col" style="background-color: #ddd">Accept 1</th>
+                <th scope="col" style="background-color: #ddd">Accept 2</th>
+                <th scope="col" style="background-color: #ddd">Accept 3</th>
+                <th scope="col" style="background-color: #ddd">Sub Extra Work </th>
+                <th scope="col" style="background-color: #ddd">Sub Extra Work Price</th>
+                <th scope="col" style="background-color: #ddd">Extra work Accept Date</th>
+                <th scope="col" style="background-color: #ddd">Build Permit Price</th>
+                <th scope="col" style="background-color: #ddd">Payment To</th>
+                <th scope="col" style="background-color: #ddd">Payment Date</th>
 
 
                 <!--    </tr>  -->
@@ -867,6 +880,19 @@
 
                         <!-- ADDITIONAL -->
                         <td>{{ $item->id_add }}</td>
+                        <td>{{ $item->pile_supplier}}</td>
+                        <td>{{ $item->price}}</td>
+                        <td>{{ $item->pile_supplier_accept_date}}</td>
+                        <td>{{ $item->wo_no}}</td>
+                        <td>{{ $item->accept_1}}</td>
+                        <td>{{ $item->accept_2}}</td>
+                        <td>{{ $item->accept_3}}</td>
+                        <td>{{ $item->sub_extra_work}}</td>
+                        <td>{{ $item->sub_extra_work_price}}</td>
+                        <td>{{ $item->extra_work_accept_date}}</td>
+                        <td>{{ $item->build_permit}}</td>
+                        <td>{{ $item->payment_to}}</td>
+                        <td>{{ $item->payment_date}}</td>
 
                     </tr>
                 @endforeach

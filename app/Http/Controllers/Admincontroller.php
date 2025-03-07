@@ -8,6 +8,8 @@ use App\Http\Controllers\Dropdowncontroller;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\SiteUpdateNotification;
+use Illuminate\Support\Facades\Mail;
 
 class Admincontroller extends Controller
 {
@@ -26,7 +28,7 @@ class Admincontroller extends Controller
             ->leftJoin('cr_csv as c', 'm.id', '=', 'c.id_cr')
             ->leftJoin('tssr_csv as t', 'm.id', '=', 't.id_tssr')
             ->leftJoin('civilwork_csv as cw', 'm.id', '=', 'cw.id_cw')
-            ->leftJoin('additional_csv as add','m.id','=','add.id_add')
+            ->leftJoin('additional_csv as add', 'm.id', '=', 'add.id_add')
             ->get();
 
         return view('blog', compact('areas', 'data'));
@@ -37,14 +39,14 @@ class Admincontroller extends Controller
     public function edit($id)
     {
         //dd($id);
-        
+
         $areas = DB::table('area')->get();
         $blog = DB::table("main_csv as m")
             ->leftJoin('saq_csv as s', 'm.id', '=', 's.id_saq')
             ->leftJoin('cr_csv as c', 'm.id', '=', 'c.id_cr')
             ->leftJoin('tssr_csv as t', 'm.id', '=', 't.id_tssr')
             ->leftJoin('civilwork_csv as cw', 'm.id', '=', 'cw.id_cw')
-            ->leftJoin('additional_csv as add','m.id','=','add.id_add')
+            ->leftJoin('additional_csv as add', 'm.id', '=', 'add.id_add')
             ->leftJoin('area as b', 'm.Region_id', '=', 'b.Region_id') // เปลี่ยนจาก join เป็น leftJoin
             ->where('m.id', $id)
             ->first();
@@ -90,7 +92,7 @@ class Admincontroller extends Controller
             ->leftJoin('cr_csv as c', 'm.id', '=', 'c.id_cr')
             ->leftJoin('tssr_csv as t', 'm.id', '=', 't.id_tssr')
             ->leftJoin('civilwork_csv as cw', 'm.id', '=', 'cw.id_cw')
-            ->leftJoin('additional_csv as add','m.id','=','add.id_add')
+            ->leftJoin('additional_csv as add', 'm.id', '=', 'add.id_add')
             ->leftJoin('area as b', 'm.Region_id', '=', 'b.Region_id')
             ->where('m.id', $id)
             ->first();
@@ -129,7 +131,7 @@ class Admincontroller extends Controller
 
 
         $data_MAIN = [ //input form
-        //  'GTNJobNo' => $request->GTNJobNo,
+            //  'GTNJobNo' => $request->GTNJobNo,
             'RefCode' => $request->RefCode,
             'OwnerOldSte' => $request->OwnerOldSte,
             'SiteCode' => $request->SiteCode,
@@ -138,16 +140,16 @@ class Admincontroller extends Controller
             'PlanType' => $request->PlanType,
             'Region_id' => $request->Region_id,
             'Province' => $request->Province,
-            
+
             'SiteType' => $request->SiteType,
-        //  'CancelSite' => $request->CancelSite,
+            //  'CancelSite' => $request->CancelSite,
             'TowerNewSite' => $request->TowerNewSite,
             'Towerheight' => $request->Towerheight,
             'Tower' => $request->Tower,
             'Zone' => $request->Zone,
-        //   'DeadLine' => $request->DeadLine,
-        //   'DeadLine_Y' => $request->DeadLine_Y,
-        //   'Status' => $request->Status,
+            //   'DeadLine' => $request->DeadLine,
+            //   'DeadLine_Y' => $request->DeadLine_Y,
+            //   'Status' => $request->Status,
 
             // INVOICE
             'Quotation_IN' => $request->Quotation_IN,
@@ -350,8 +352,6 @@ class Admincontroller extends Controller
 
 
         $data_CW = [
-
-
             'AssignSubCivilfoundation' => $request->AssignSubCivilfoundation,
             'PlanCivilWorkFoundation' => $request->PlanCivilWorkFoundation,
             'ActualCivilWorkTower' => $request->ActualCivilWorkTower,
@@ -396,6 +396,24 @@ class Admincontroller extends Controller
 
         ];
 
+        $additional = [
+            'pile_supplier' => $request->pile_supplier,
+            'price' => $request->price,         // number
+            'pile_supplier_accept_date' => $request->pile_supplier_accept_date,  // date
+            'wo_no' => $request->wo_no,
+            'accept_1' => $request->accept_1,  // date
+            'accept_2' => $request->accept_2,  // date  
+            'accept_3' => $request->accept_3,  // date
+            'sub_extra_work' => $request->sub_extra_work,
+            'sub_extra_work_price' => $request->sub_extra_work_price,     // number
+            'extra_work_accept_date' => $request->extra_work_accept_date, // date
+            'build_permit' => $request->build_permit, // number
+            'payment_to' => $request->payment_to,
+            'payment_date' => $request->payment_date // date
+        ];
+
+        //dd($data_MAIN);
+
 
         try {
 
@@ -404,12 +422,14 @@ class Admincontroller extends Controller
 
             // รับข้อมูลเก่าจากฐานข้อมูลเพื่อตรวจสอบการเปลี่ยนแปลง
 
+
+
             $main = DB::table("main_csv")->where("id", $id)->first();
             $saq = DB::table("saq_csv")->where("id_saq", $id)->first();
             $cr = DB::table("cr_csv")->where("id_cr", $id)->first();
             $tssr = DB::table("tssr_csv")->where("id_tssr", $id)->first();
             $cw = DB::table("civilwork_csv")->where("id_cw", $id)->first();
-
+            $add = DB::table("additional_csv")->where("id_add", $id)->first();
             // dd($data_MAIN, $data_SAQ, $data_CR, $data_TSSR, $data_CW);
 
             // อัปเดตข้อมูลในตาราง main_csv โดยใช้ $id ที่มีอยู่แล้ว
@@ -422,93 +442,109 @@ class Admincontroller extends Controller
             DB::table("tssr_csv")->where("id_tssr", $id)->update($data_TSSR);
             // อัปเดตข้อมูลในตาราง civilwork_csv โดยใช้ id_cw
             DB::table("civilwork_csv")->where("id_cw", $id)->update($data_CW);
+            // อัปเดตข้อมูลในตาราง civilwork_csv โดยใช้ id_Add
+            DB::table("additional_csv")->where("id_add", $id)->update($additional);
             // Commit transaction หลังจากอัปเดตสำเร็จ
             DB::commit();
 
 
+            // ดึงอีเมลจากฐานข้อมูล
+            // ดึงอีเมลจากฐานข้อมูลที่มี status = 4
+            
+            /*
+            $emails = DB::table('users')
+                ->where('status', 4) // เงื่อนไข status = 4
+                ->pluck('email')     // ดึงแค่คอลัมน์ email
+                ->toArray();         // เปลี่ยนผลลัพธ์เป็น array
+
+             dd($emails);
+            */
 
             // สร้างข้อความที่ต้องการส่งไปยัง LINE Notify
             $name = Auth::user()->name; // ดึงชื่อของผู้ใช้ที่เข้าสู่ระบบ
 
-            $message = $name . " อัปเดตข้อมูล " . "\n" .
-                "SiteCode : " . $request->input('SiteCode') . "\n";
-
+            $message = $name . " Update " .  "<br><br>" .
+                "SiteCode : " . $request->input('SiteCode') . "<br>" .
+                "RefCode : " . $request->input('RefCode') . "<br>";
 
 
             // ตรวจสอบว่ามีค่าหรือไม่ก่อนจะเพิ่มเข้าไปในข้อความ  INVOICE
 
+            // ตรวจสอบว่ามีค่าหรือไม่ก่อนจะเพิ่มเข้าไปในข้อความ INVOICE
             if ($request->filled('PO_No_IN') && $request->input('PO_No_IN') != $main->PO_No_IN) {
-                $message .= "PO No: " . $request->input('PO_No_IN') . "\n";
+                $message .= "PO No: " . $request->input('PO_No_IN') . "<br>";
             }
 
             if ($request->filled('Invoice1_IN') && $request->input('Invoice1_IN') != $main->Invoice1_IN) {
-                $message .= "Invoice 1: " . $request->input('Invoice1_IN') . "\n";
+                $message .= "Invoice 1: " . $request->input('Invoice1_IN') . "<br>";
             }
 
             if ($request->filled('Amount1_IN') && $request->input('Amount1_IN') != $main->Amount1_IN) {
-                $message .= "Amount 1: " . $request->input('Amount1_IN') . "\n";
+                $message .= "Amount 1: " . $request->input('Amount1_IN') . "<br>";
             }
 
             if ($request->filled('Invoice2_IN') && $request->input('Invoice2_IN') != $main->Invoice2_IN) {
-                $message .= "Invoice 2: " . $request->input('Invoice2_IN') . "\n";
+                $message .= "Invoice 2: " . $request->input('Invoice2_IN') . "<br>";
             }
 
             if ($request->filled('Amount2_IN') && $request->input('Amount2_IN') != $main->Amount2_IN) {
-                $message .= "Amount 2: " . $request->input('Amount2_IN') . "\n\n";
+                $message .= "Amount 2: " . $request->input('Amount2_IN') . "<br><br>";
             }
+
 
 
             // ตรวจสอบว่ามีค่าหรือไม่ก่อนจะเพิ่มเข้าไปในข้อความ  SAQ
+
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 1
             if ($request->filled('Accept_1st_SAQ') && $request->input('Accept_1st_SAQ') != $saq->Accept_1st_SAQ) {
-                $message .= "Accept 1st SAQ: " . $request->input('Accept_1st_SAQ') . "\n";
+                $message .= "Accept 1st SAQ: " . $request->input('Accept_1st_SAQ') . "<br>";
             }
 
             if ($request->filled('Mail_1st_SAQ') && $request->input('Mail_1st_SAQ') != $saq->Mail_1st_SAQ) {
-                $message .= "Mail 1st SAQ: " . $request->input('Mail_1st_SAQ') . "\n";
+                $message .= "Mail 1st SAQ: " . $request->input('Mail_1st_SAQ') . "<br>";
             }
 
             if ($request->filled('ERP_1st_SAQ') && $request->input('ERP_1st_SAQ') != $saq->ERP_1st_SAQ) {
-                $message .= "ERP 1st SAQ: " . $request->input('ERP_1st_SAQ') . "\n";
+                $message .= "ERP 1st SAQ: " . $request->input('ERP_1st_SAQ') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 2
             if ($request->filled('Accept_2nd_SAQ') && $request->input('Accept_2nd_SAQ') != $saq->Accept_2nd_SAQ) {
-                $message .= "Accept 2nd SAQ: " . $request->input('Accept_2nd_SAQ') . "\n";
+                $message .= "Accept 2nd SAQ: " . $request->input('Accept_2nd_SAQ') . "<br>";
             }
 
             if ($request->filled('Mail_2nd_SAQ') && $request->input('Mail_2nd_SAQ') != $saq->Mail_2nd_SAQ) {
-                $message .= "Mail 2nd SAQ: " . $request->input('Mail_2nd_SAQ') . "\n";
+                $message .= "Mail 2nd SAQ: " . $request->input('Mail_2nd_SAQ') . "<br>";
             }
 
             if ($request->filled('ERP_2nd_SAQ') && $request->input('ERP_2nd_SAQ') != $saq->ERP_2nd_SAQ) {
-                $message .= "ERP 2nd SAQ: " . $request->input('ERP_2nd_SAQ') . "\n";
+                $message .= "ERP 2nd SAQ: " . $request->input('ERP_2nd_SAQ') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 3
             if ($request->filled('Accept_3rd_SAQ') && $request->input('Accept_3rd_SAQ') != $saq->Accept_3rd_SAQ) {
-                $message .= "Accept 3rd SAQ: " . $request->input('Accept_3rd_SAQ') . "\n";
+                $message .= "Accept 3rd SAQ: " . $request->input('Accept_3rd_SAQ') . "<br>";
             }
 
             if ($request->filled('Mail_3rd_SAQ') && $request->input('Mail_3rd_SAQ') != $saq->Mail_3rd_SAQ) {
-                $message .= "Mail 3rd SAQ: " . $request->input('Mail_3rd_SAQ') . "\n";
+                $message .= "Mail 3rd SAQ: " . $request->input('Mail_3rd_SAQ') . "<br>";
             }
 
             if ($request->filled('ERP_3rd_SAQ') && $request->input('ERP_3rd_SAQ') != $saq->ERP_3rd_SAQ) {
-                $message .= "ERP 3rd SAQ: " . $request->input('ERP_3rd_SAQ') . "\n";
+                $message .= "ERP 3rd SAQ: " . $request->input('ERP_3rd_SAQ') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 4
             if ($request->filled('Accept_4th_SAQ') && $request->input('Accept_4th_SAQ') != $saq->Accept_4th_SAQ) {
-                $message .= "Accept 4th SAQ: " . $request->input('Accept_4th_SAQ') . "\n";
+                $message .= "Accept 4th SAQ: " . $request->input('Accept_4th_SAQ') . "<br>";
             }
 
             if ($request->filled('Mail_4th_SAQ') && $request->input('Mail_4th_SAQ') != $saq->Mail_4th_SAQ) {
-                $message .= "Mail 4th SAQ: " . $request->input('Mail_4th_SAQ') . "\n";
+                $message .= "Mail 4th SAQ: " . $request->input('Mail_4th_SAQ') . "<br>";
             }
 
             if ($request->filled('ERP_4th_SAQ') && $request->input('ERP_4th_SAQ') != $saq->ERP_4th_SAQ) {
-                $message .= "ERP 4th SAQ: " . $request->input('ERP_4th_SAQ') . "\n\n";
+                $message .= "ERP 4th SAQ: " . $request->input('ERP_4th_SAQ') . "<br><br>";
             }
 
 
@@ -516,110 +552,107 @@ class Admincontroller extends Controller
             // ตรวจสอบว่ามีค่าหรือไม่ก่อนจะเพิ่มเข้าไปในข้อความ  CR
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 1
             if ($request->filled('Accept_1st_CR') && $request->input('Accept_1st_CR') != $cr->Accept_1st_CR) {
-                $message .= "Accept 1st CR: " . $request->input('Accept_1st_CR') . "\n";
+                $message .= "Accept 1st CR: " . $request->input('Accept_1st_CR') . "<br>";
             }
 
             if ($request->filled('Mail_1st_CR') && $request->input('Mail_1st_CR') != $cr->Mail_1st_CR) {
-                $message .= "Mail 1st CR: " . $request->input('Mail_1st_CR') . "\n";
+                $message .= "Mail 1st CR: " . $request->input('Mail_1st_CR') . "<br>";
             }
 
             if ($request->filled('ERP_1st_CR') && $request->input('ERP_1st_CR') != $cr->ERP_1st_CR) {
-                $message .= "ERP 1st CR: " . $request->input('ERP_1st_CR') . "\n";
+                $message .= "ERP 1st CR: " . $request->input('ERP_1st_CR') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 2
             if ($request->filled('Accept_2nd_CR') && $request->input('Accept_2nd_CR') != $cr->Accept_2nd_CR) {
-                $message .= "Accept 2nd CR: " . $request->input('Accept_2nd_CR') . "\n";
+                $message .= "Accept 2nd CR: " . $request->input('Accept_2nd_CR') . "<br>";
             }
 
             if ($request->filled('Mail_2nd_CR') && $request->input('Mail_2nd_CR') != $cr->Mail_2nd_CR) {
-                $message .= "Mail 2nd CR: " . $request->input('Mail_2nd_CR') . "\n";
+                $message .= "Mail 2nd CR: " . $request->input('Mail_2nd_CR') . "<br>";
             }
 
             if ($request->filled('ERP_2nd_CR') && $request->input('ERP_2nd_CR') != $cr->ERP_2nd_CR) {
-                $message .= "ERP 2nd CR: " . $request->input('ERP_2nd_CR') . "\n";
+                $message .= "ERP 2nd CR: " . $request->input('ERP_2nd_CR') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 3
             if ($request->filled('Accept_3rd_CR') && $request->input('Accept_3rd_CR') != $cr->Accept_3rd_CR) {
-                $message .= "Accept 3rd CR: " . $request->input('Accept_3rd_CR') . "\n";
+                $message .= "Accept 3rd CR: " . $request->input('Accept_3rd_CR') . "<br>";
             }
 
             if ($request->filled('Mail_3rd_CR') && $request->input('Mail_3rd_CR') != $cr->Mail_3rd_CR) {
-                $message .= "Mail 2nd CR: " . $request->input('Mail_3rd_CR') . "\n";
+                $message .= "Mail 2nd CR: " . $request->input('Mail_3rd_CR') . "<br>";
             }
 
             if ($request->filled('ERP_3rd_CR') && $request->input('ERP_3rd_CR') != $cr->ERP_3rd_CR) {
-                $message .= "ERP 3rd CR: " . $request->input('ERP_3rd_CR') . "\n";
+                $message .= "ERP 3rd CR: " . $request->input('ERP_3rd_CR') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 4
             if ($request->filled('Accept_4th_CR') && $request->input('Accept_4th_CR') != $cr->Accept_4th_CR) {
-                $message .= "Accept 4th CR: " . $request->input('Accept_4th_CR') . "\n";
+                $message .= "Accept 4th CR: " . $request->input('Accept_4th_CR') . "<br>";
             }
 
             if ($request->filled('Mail_4th_CR') && $request->input('Mail_4th_CR') != $cr->Mail_4th_CR) {
-                $message .= "Mail 4th CR: " . $request->input('Mail_4th_CR') . "\n";
+                $message .= "Mail 4th CR: " . $request->input('Mail_4th_CR') . "<br>";
             }
 
             if ($request->filled('ERP_4th_CR') && $request->input('ERP_4th_CR') != $cr->ERP_4th_CR) {
-                $message .= "ERP 4th CR: " . $request->input('ERP_4th_CR') . "\n\n";
+                $message .= "ERP 4th CR: " . $request->input('ERP_4th_CR') . "<br><br>";
             }
-
-
-
 
             // ตรวจสอบว่ามีค่าหรือไม่ก่อนจะเพิ่มเข้าไปในข้อความ  TSRR
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 1
             if ($request->filled('Accept_1st_TSSR') && $request->input('Accept_1st_TSSR') != $tssr->Accept_1st_TSSR) {
-                $message .= "Accept 1st TSSR: " . $request->input('Accept_1st_TSSR') . "\n";
+                $message .= "Accept 1st TSSR: " . $request->input('Accept_1st_TSSR') . "<br>";
             }
 
             if ($request->filled('Mail_1st_TSSR') && $request->input('Mail_1st_TSSR') != $tssr->Mail_1st_TSSR) {
-                $message .= "Mail 1st TSSR: " . $request->input('Mail_1st_TSSR') . "\n";
+                $message .= "Mail 1st TSSR: " . $request->input('Mail_1st_TSSR') . "<br>";
             }
 
             if ($request->filled('ERP_1st_TSSR') && $request->input('ERP_1st_TSSR') != $tssr->ERP_1st_TSSR) {
-                $message .= "ERP 1st TSSR: " . $request->input('ERP_1st_TSSR') . "\n";
+                $message .= "ERP 1st TSSR: " . $request->input('ERP_1st_TSSR') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 2
             if ($request->filled('Accept_2nd_TSSR') && $request->input('Accept_2nd_TSSR') != $tssr->Accept_2nd_TSSR) {
-                $message .= "Accept 2nd TSSR: " . $request->input('Accept_2nd_TSSR') . "\n";
+                $message .= "Accept 2nd TSSR: " . $request->input('Accept_2nd_TSSR') . "<br>";
             }
 
             if ($request->filled('Mail_2nd_TSSR') && $request->input('Mail_2nd_TSSR') != $tssr->Mail_2nd_TSSR) {
-                $message .= "Mail 2nd TSSR: " . $request->input('Mail_2nd_TSSR') . "\n";
+                $message .= "Mail 2nd TSSR: " . $request->input('Mail_2nd_TSSR') . "<br>";
             }
 
             if ($request->filled('ERP_2nd_TSSR') && $request->input('ERP_2nd_TSSR') != $tssr->ERP_2nd_TSSR) {
-                $message .= "ERP 2nd TSSR: " . $request->input('ERP_2nd_TSSR') . "\n";
+                $message .= "ERP 2nd TSSR: " . $request->input('ERP_2nd_TSSR') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 3
             if ($request->filled('Accept_3rd_TSSR') && $request->input('Accept_3rd_TSSR') != $tssr->Accept_3rd_TSSR) {
-                $message .= "Accept 3rd TSSR: " . $request->input('Accept_3rd_TSSR') . "\n";
+                $message .= "Accept 3rd TSSR: " . $request->input('Accept_3rd_TSSR') . "<br>";
             }
 
             if ($request->filled('Mail_3rd_TSSR') && $request->input('Mail_3rd_TSSR') != $tssr->Mail_3rd_TSSR) {
-                $message .= "Mail 3rd TSSR: " . $request->input('Mail_3rd_TSSR') . "\n";
+                $message .= "Mail 3rd TSSR: " . $request->input('Mail_3rd_TSSR') . "<br>";
             }
 
             if ($request->filled('ERP_3rd_TSSR') && $request->input('ERP_3rd_TSSR') != $tssr->ERP_3rd_TSSR) {
-                $message .= "ERP 3rd TSSR: " . $request->input('ERP_3rd_TSSR') . "\n";
+                $message .= "ERP 3rd TSSR: " . $request->input('ERP_3rd_TSSR') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 4
             if ($request->filled('Accept_4th_TSSR') && $request->input('Accept_4th_TSSR') != $tssr->Accept_4th_TSSR) {
-                $message .= "Accept 4th TSSR: " . $request->input('Accept_4th_TSSR') . "\n";
+                $message .= "Accept 4th TSSR: " . $request->input('Accept_4th_TSSR') . "<br>";
             }
 
             if ($request->filled('Mail_4th_TSSR') && $request->input('Mail_4th_TSSR') != $tssr->Mail_4th_TSSR) {
-                $message .= "Mail 4th TSSR: " . $request->input('Mail_4th_TSSR') . "\n";
+                $message .= "Mail 4th TSSR: " . $request->input('Mail_4th_TSSR') . "<br>";
             }
 
             if ($request->filled('ERP_4th_TSSR') && $request->input('ERP_4th_TSSR') != $tssr->ERP_4th_TSSR) {
-                $message .= "ERP 4th TSSR: " . $request->input('ERP_4th_TSSR') . "\n\n";
+                $message .= "ERP 4th TSSR: " . $request->input('ERP_4th_TSSR') . "<br><br>";
             }
 
 
@@ -627,58 +660,70 @@ class Admincontroller extends Controller
             // ตรวจสอบว่ามีค่าหรือไม่ก่อนจะเพิ่มเข้าไปในข้อความ  CIVILWORK
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 1
             if ($request->filled('Accept_1st_CivilWork') && $request->input('Accept_1st_CivilWork') != $cw->Accept_1st_CivilWork) {
-                $message .= "Accept 1st Civil Work: " . $request->input('Accept_1st_CivilWork') . "\n";
+                $message .= "Accept 1st Civil Work: " . $request->input('Accept_1st_CivilWork') . "<br>";
             }
 
             if ($request->filled('Mail_1st_CivilWork') && $request->input('Mail_1st_CivilWork') != $cw->Mail_1st_CivilWork) {
-                $message .= "Mail 1st Civil Work: " . $request->input('Mail_1st_CivilWork') . "\n";
+                $message .= "Mail 1st Civil Work: " . $request->input('Mail_1st_CivilWork') . "<br>";
             }
 
             if ($request->filled('ERP_1st_CivilWork') && $request->input('ERP_1st_CivilWork') != $cw->ERP_1st_CivilWork) {
-                $message .= "ERP 1st Civil Work: " . $request->input('ERP_1st_CivilWork') . "\n";
+                $message .= "ERP 1st Civil Work: " . $request->input('ERP_1st_CivilWork') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 2 
             if ($request->filled('Accept_2nd_CivilWork') && $request->input('Accept_2nd_CivilWork') != $cw->Accept_2nd_CivilWork) {
-                $message .= "Accept 2nd CivilWork: " . $request->input('Accept_2nd_CivilWork') . "\n";
+                $message .= "Accept 2nd CivilWork: " . $request->input('Accept_2nd_CivilWork') . "<br>";
             }
 
             if ($request->filled('Mail_2nd_CivilWork') && $request->input('Mail_2nd_CivilWork') != $cw->Mail_2nd_CivilWork) {
-                $message .= "Mail 2nd Civil Work: " . $request->input('Mail_2nd_CivilWork') . "\n";
+                $message .= "Mail 2nd Civil Work: " . $request->input('Mail_2nd_CivilWork') . "<br>";
             }
 
             if ($request->filled('ERP_2nd_CivilWork') && $request->input('ERP_2nd_CivilWork') != $cw->ERP_2nd_CivilWork) {
-                $message .= "ERP 2nd Civil Work: " . $request->input('ERP_2nd_CivilWork') . "\n";
+                $message .= "ERP 2nd Civil Work: " . $request->input('ERP_2nd_CivilWork') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 3
             if ($request->filled('Accept_3rd_CivilWork') && $request->input('Accept_3rd_CivilWork') != $cw->Accept_3rd_CivilWork) {
-                $message .= "Accept 3rd CivilWork: " . $request->input('Accept_3rd_CivilWork') . "\n";
+                $message .= "Accept 3rd CivilWork: " . $request->input('Accept_3rd_CivilWork') . "<br>";
             }
 
             if ($request->filled('Mail_3rd_CivilWork') && $request->input('Mail_3rd_CivilWork') != $cw->Mail_3rd_CivilWork) {
-                $message .= "Mail 3rd Civil Work: " . $request->input('Mail_3rd_CivilWork') . "\n";
+                $message .= "Mail 3rd Civil Work: " . $request->input('Mail_3rd_CivilWork') . "<br>";
             }
 
             if ($request->filled('ERP_3rd_CivilWork') && $request->input('ERP_3rd_CivilWork') != $cw->ERP_3rd_CivilWork) {
-                $message .= "ERP 3rd Civil Work: " . $request->input('ERP_3rd_CivilWork') . "\n";
+                $message .= "ERP 3rd Civil Work: " . $request->input('ERP_3rd_CivilWork') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 4
             if ($request->filled('Accept_4th_CivilWork') && $request->input('Accept_4th_CivilWork') != $cw->Accept_4th_CivilWork) {
-                $message .= "Accept 4th CivilWork: " . $request->input('Accept_4th_CivilWork') . "\n";
+                $message .= "Accept 4th CivilWork: " . $request->input('Accept_4th_CivilWork') . "<br>";
             }
 
             if ($request->filled('Mail_4th_CivilWork') && $request->input('Mail_4th_CivilWork') != $cw->Mail_4th_CivilWork) {
-                $message .= "Mail 4th Civil Work: " . $request->input('Mail_4th_CivilWork') . "\n";
+                $message .= "Mail 4th Civil Work: " . $request->input('Mail_4th_CivilWork') . "<br>";
             }
 
             if ($request->filled('ERP_4th_CivilWork') && $request->input('ERP_4th_CivilWork') != $cw->ERP_4th_CivilWork) {
-                $message .= "ERP 4th Civil Work: " . $request->input('ERP_4th_CivilWork') . "\n";
+                $message .= "ERP 4th Civil Work: " . $request->input('ERP_4th_CivilWork') . "<br>";
             }
 
-            // ส่งข้อความไปยัง LINE Notify
-            $this->sendLineNotify($message);
+            $emails = ['sakmongkhon.OS@gtn.co.th', 'At.OS@gtn.co.th', 'natthawut@gtn.co.th'];
+
+            foreach ($emails as $email) {
+                Mail::to($email)
+                    ->send(new SiteUpdateNotification($message));
+            }
+
+            /*
+            // ส่งอีเมลไปยังทุกอีเมลที่ดึงมา
+            Mail::to($emails)
+                ->send(new SiteUpdateNotification($message)); // SiteUpdateNotification คือ Class ที่สร้างสำหรับการส่งอีเมล
+
+            */
+            //dd($emails);
 
             // ส่งข้อความ success กลับไปยังหน้าเดิม
             return back()->with('success', 'Updated successfully');
@@ -1004,7 +1049,7 @@ class Admincontroller extends Controller
                 $tssrId = DB::table('tssr_csv')->insertGetId(['id_tssr' => $mainId]);
                 $cwId = DB::table('civilwork_csv')->insertGetId(['id_cw' => $mainId]);
                 $addId = DB::table('additional_csv')->insertGetId(['id_add' => $mainId]);
-                
+
                 $insertedIds[count($insertedIds) - 1] += [
 
                     'id_saq' => $saqId,
