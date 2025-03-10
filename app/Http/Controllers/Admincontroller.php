@@ -447,19 +447,6 @@ class Admincontroller extends Controller
             // Commit transaction หลังจากอัปเดตสำเร็จ
             DB::commit();
 
-
-            // ดึงอีเมลจากฐานข้อมูล
-            // ดึงอีเมลจากฐานข้อมูลที่มี status = 4
-            
-            /*
-            $emails = DB::table('users')
-                ->where('status', 4) // เงื่อนไข status = 4
-                ->pluck('email')     // ดึงแค่คอลัมน์ email
-                ->toArray();         // เปลี่ยนผลลัพธ์เป็น array
-
-             dd($emails);
-            */
-
             // สร้างข้อความที่ต้องการส่งไปยัง LINE Notify
             $name = Auth::user()->name; // ดึงชื่อของผู้ใช้ที่เข้าสู่ระบบ
 
@@ -710,19 +697,31 @@ class Admincontroller extends Controller
                 $message .= "ERP 4th Civil Work: " . $request->input('ERP_4th_CivilWork') . "<br>";
             }
 
-            $emails = ['sakmongkhon.OS@gtn.co.th', 'At.OS@gtn.co.th', 'natthawut@gtn.co.th'];
+            /* 
+           $emails = ['sakmongkhon.OS@gtn.co.th', 'At.OS@gtn.co.th', 'natthawut@gtn.co.th'];
 
             foreach ($emails as $email) {
                 Mail::to($email)
                     ->send(new SiteUpdateNotification($message));
             }
-
-            /*
-            // ส่งอีเมลไปยังทุกอีเมลที่ดึงมา
-            Mail::to($emails)
-                ->send(new SiteUpdateNotification($message)); // SiteUpdateNotification คือ Class ที่สร้างสำหรับการส่งอีเมล
-
+            
             */
+
+            // ดึงอีเมลจากฐานข้อมูลที่มี status = 4
+
+
+            $emails = DB::table('users')
+                ->where('status', 4) // เงื่อนไข status = 4
+                ->pluck('email')     // ดึงแค่คอลัมน์ email
+                ->toArray();         // เปลี่ยนผลลัพธ์เป็น array
+
+            //dd($emails);
+
+
+            foreach ($emails as $email) {
+                Mail::to($email)->send(new SiteUpdateNotification($message));
+            }
+
             //dd($emails);
 
             // ส่งข้อความ success กลับไปยังหน้าเดิม
@@ -888,11 +887,24 @@ class Admincontroller extends Controller
             // Commit transaction
             DB::commit();
 
+            $emails = DB::table('users')
+                ->where('status', 4) // เงื่อนไข status = 4
+                ->pluck('email')     // ดึงแค่คอลัมน์ email
+                ->toArray();         // เปลี่ยนผลลัพธ์เป็น array
+
+            //dd($emails);
+
+            $name = Auth::user()->name; // ดึงชื่อของผู้ใช้ที่เข้าสู่ระบบ
+
             // สร้างข้อความที่ต้องการส่งไปยัง LINE Notify
-            $message = "มีการเพิ่ม SiteCode " . $request->input('SiteCode');
+            $message = $name .  " เพิ่ม SiteCode " . $request->input('SiteCode');
 
             // ส่งข้อความไปยัง LINE Notify
-            $this->sendLineNotify($message);
+            foreach ($emails as $email) {
+                Mail::to($email)->send(new SiteUpdateNotification($message));
+            }
+
+            //dd($emails);
         } catch (\Exception $e) {
             // Rollback transaction if there is an error
             DB::rollback();
@@ -1064,7 +1076,33 @@ class Admincontroller extends Controller
             //dd($insertedIds);
 
             DB::commit();
-            return redirect('blog')->with('success', 'บันทึกข้อมูลสำเร็จ');
+
+            $emails = DB::table('users')
+                ->where('status', 4) // เงื่อนไข status = 4
+                ->pluck('email')     // ดึงแค่คอลัมน์ email
+                ->toArray();         // เปลี่ยนผลลัพธ์เป็น array
+
+            //dd($emails);
+
+            // ตรวจสอบค่าของ insertedIds ก่อน
+            //dd($insertedIds);
+            // สร้างข้อความที่ต้องการส่งไปยัง LINE Notify
+            $name = Auth::user()->name; // ดึงชื่อของผู้ใช้ที่เข้าสู่ระบบ
+
+           
+
+            $message = $name . " Import SiteCode ดังนี้:\n";
+            foreach ($insertedIds as $row) {
+                $message .= "- " . $row['SiteCode'] . "\n";
+            }
+           //dd($message);
+
+            // ส่งอีเมลไปยังทุกอีเมลที่ดึงมา
+            foreach ($emails as $email) {
+                Mail::to($email)->send(new SiteUpdateNotification($message));
+            }
+
+                return redirect('blog')->with('success', 'บันทึกข้อมูลสำเร็จ');
         } else {
             // ถ้าไม่มีข้อมูลใหม่ให้บันทึก
             DB::rollBack(); // ยกเลิกการทำธุรกรรม

@@ -15,9 +15,9 @@
                 <div class="grid grid-cols-1 md:grid gap-4">
                     <a href="/blog"
                         class="btn-primary bg-blue-500 text-white hover:bg-blue-600 focus:outline-none rounded-lg p-2 px-4 transition duration-300 ease-in-out transform hover:scale-105 
-                        grid justify-items-center items-center ">
+                        grid justify-items-center items-center">
                         <img src="{{ asset('/site-map.png') }}" alt="GTN Logo" class="h-10">
-                        New Site 
+                        New Site
                     </a>
                 </div>
             </div>
@@ -62,6 +62,7 @@
                 </div>
             </div>
 
+
             <!-- Admin Section -->
             <div class="bg-white shadow-lg rounded-lg p-6 grid justify-items-center items-center">
                 <h2 class="text-lg font-semibold text-gray-700 mb-4 text-center flex items-center justify-center">
@@ -75,10 +76,11 @@
                         <img src="{{ asset('/add.png') }}" alt="GTN Logo" class="h-10">
                         Add Member
                     </a>
+
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
 
 @endsection
