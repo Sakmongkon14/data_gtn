@@ -4,41 +4,45 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
     <h2 class="text text-center my-3">New Site</h2>
 
+
+
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            {{ session('success') }}
+        <!-- Modal Popup -->
+        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content border-success">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title" id="successModalLabel">สำเร็จ!</h5>
+                     <!--   <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button> -->
+                    </div>
+                    <div class="modal-body text-success">
+                        <i class="bi bi-check-circle-fill"></i> {{ session('success') }}
+                    </div>
+                </div>
+            </div>
         </div>
     @endif
 
 
     @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            {{ session('error') }}
+        <!-- Modal Popup Error -->
+        <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content border-danger">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="errorModalLabel">เกิดข้อผิดพลาด!</h5>
+                       <!-- <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button> -->
+                    </div>
+                    <div class="modal-body text-danger">
+                        <i class="bi bi-exclamation-triangle-fill"></i> {{ session('error') }}
+                    </div>
+                </div>
+            </div>
         </div>
     @endif
-
-
-<!--
-    <script>
-        // ให้ alert หายไปหลังจาก 1.5 วินาที
-        setTimeout(function() {
-            let successAlert = document.getElementById('success-alert');
-            let errorAlert = document.getElementById('error-alert');
-
-            if (successAlert) {
-                successAlert.style.display = 'none';
-            }
-
-            if (errorAlert) {
-                errorAlert.style.display = 'none';
-            }
-        }, 1500); // 5000 มิลลิวินาที = 5 วินาที
-    </script>
--->
 
     <script>
         // ให้แน่ใจว่า script ทำงานหลังจาก HTML โหลดเสร็จ
@@ -86,12 +90,14 @@
         });
     </script>
 
-<style>
-    .dropdown-menu li {
-        width: 200px; /* กำหนดความกว้างของแต่ละ li */
-        margin: 5px auto; /* จัดให้ตรงกลาง */
-    }
-</style>
+    <style>
+        .dropdown-menu li {
+            width: 200px;
+            /* กำหนดความกว้างของแต่ละ li */
+            margin: 5px auto;
+            /* จัดให้ตรงกลาง */
+        }
+    </style>
 
 
     <div class="container-fluid  custom-container"> <!-- Add custom-container class -->
@@ -105,7 +111,8 @@
                     </button>
                     <ul class="dropdown-menu p-2 text-center" aria-labelledby="dropdownMenuButton">
                         <li class="w-200 mx-auto"><a class="dropdown-item py-2" href="add">Add RefCode</a></li>
-                        <li class="w-200 mx-auto"><a class="dropdown-item py-2" href="#" id="importFile">Import RefCode</a></li>
+                        <li class="w-200 mx-auto"><a class="dropdown-item py-2" href="#" id="importFile">Import
+                                RefCode</a></li>
                         <li class="w-200 mx-auto">
                             <button type="submit" class="btn btn-outline-success w-100" id="exportButtonImport">
                                 Template Import Refcode
@@ -113,7 +120,7 @@
                         </li>
                     </ul>
                 </div>
-                
+
 
                 <!-- ฟอร์มจะถูกซ่อนตอนแรก -->
                 <div id="formContainer" class="container" style="display: none;">
@@ -163,6 +170,36 @@
             width: 125px;
         }
     </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // ถ้ามี session('success') ให้เปิด Modal Success
+        @if (session('success'))
+            var successModal = new bootstrap.Modal(document.getElementById('successModal'), {
+                keyboard: false
+            });
+            successModal.show(); // แสดง Modal สำหรับ success
+
+            // ปิด Modal หลังจาก 3 วินาที (3000ms)
+            setTimeout(function() {
+                successModal.hide(); // ปิด Modal
+            }, 3000);
+        @endif
+
+        // ถ้ามี session('error') ให้เปิด Modal Error
+        @if (session('error'))
+            var errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {
+                keyboard: false
+            });
+            errorModal.show(); // แสดง Modal สำหรับ error
+
+            // ปิด Modal หลังจาก 3 วินาที (3000ms)
+            setTimeout(function() {
+                errorModal.hide(); // ปิด Modal
+            }, 3000);
+        @endif
+    });
+</script>
 
     <script>
         document.getElementById('importFile').addEventListener('click', function(event) {
@@ -880,19 +917,19 @@
 
                         <!-- ADDITIONAL -->
                         <td>{{ $item->id_add }}</td>
-                        <td>{{ $item->pile_supplier}}</td>
-                        <td>{{ $item->price}}</td>
-                        <td>{{ $item->pile_supplier_accept_date}}</td>
-                        <td>{{ $item->wo_no}}</td>
-                        <td>{{ $item->accept_1}}</td>
-                        <td>{{ $item->accept_2}}</td>
-                        <td>{{ $item->accept_3}}</td>
-                        <td>{{ $item->sub_extra_work}}</td>
-                        <td>{{ $item->sub_extra_work_price}}</td>
-                        <td>{{ $item->extra_work_accept_date}}</td>
-                        <td>{{ $item->build_permit}}</td>
-                        <td>{{ $item->payment_to}}</td>
-                        <td>{{ $item->payment_date}}</td>
+                        <td>{{ $item->pile_supplier }}</td>
+                        <td>{{ $item->price }}</td>
+                        <td>{{ $item->pile_supplier_accept_date }}</td>
+                        <td>{{ $item->wo_no }}</td>
+                        <td>{{ $item->accept_1 }}</td>
+                        <td>{{ $item->accept_2 }}</td>
+                        <td>{{ $item->accept_3 }}</td>
+                        <td>{{ $item->sub_extra_work }}</td>
+                        <td>{{ $item->sub_extra_work_price }}</td>
+                        <td>{{ $item->extra_work_accept_date }}</td>
+                        <td>{{ $item->build_permit }}</td>
+                        <td>{{ $item->payment_to }}</td>
+                        <td>{{ $item->payment_date }}</td>
 
                     </tr>
                 @endforeach

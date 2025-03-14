@@ -2,6 +2,8 @@
 @section('title', 'UPDATE')
 @section('content')
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
     <style>
         .form-control {
             border-color: #2f82c3;
@@ -131,12 +133,63 @@
             color: white;
             /* สีตัวอักษร */
         }
+
+        .hidden {
+            display: none;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(-10px);
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* เปลี่ยนสี Modal ให้ดูเด่น */
+        .modal-content {
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid #28a745;
+            /* สีเขียว */
+        }
+
+        .modal-header {
+            background-color: #28a745;
+            /* สีเขียว */
+            color: white;
+        }
+
+        .modal-footer button:hover {
+            background-color: #218838;
+            /* เปลี่ยนสีปุ่มเมื่อ hover */
+        }
+
+        .modal-body i {
+            font-size: 30px;
+            margin-right: 10px;
+        }
     </style>
 
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            {{ session('success') }}
+        <!-- Modal Popup -->
+        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content border-success">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title" id="successModalLabel">สำเร็จ!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-success">
+                        <i class="bi bi-check-circle-fill"></i> {{ session('success') }}
+                    </div>
+                </div>
+            </div>
         </div>
     @endif
 
@@ -154,7 +207,8 @@
     <div class="container input-group mb-3 input-group-sm  py-2 ">
 
         <!-- Main -->
-        <form class="row g-3 custom-form" autocomplete="off" method="POST" action="{{ route('update', $blog->id) }}">
+        <form id="updateForm" class="row g-3 custom-form" autocomplete="off" method="POST"
+            action="{{ route('update', $blog->id) }}">
             @csrf
 
 
@@ -1332,8 +1386,9 @@
                                                     <label for="WO_Price_TSSR" class="me-4"
                                                         style="width: 100px;">WO_Price_TSSR</label>
                                                     <div class="d-flex flex-column ">
-                                                        <input type="number" name="WO_Price_TSSR" class="form-control"
-                                                            style="width: 160px;" placeholder="กรุณากรอกตัวเลข"
+                                                        <input type="number" name="WO_Price_TSSR"
+                                                            class="form-control" style="width: 160px;"
+                                                            placeholder="กรุณากรอกตัวเลข"
                                                             value="{{ $blog->WO_Price_TSSR }}">
                                                     </div>
                                                 </div>
@@ -2155,7 +2210,7 @@
                                 </div>
                             </div>
                         @endif
-                        
+
                     @endif
 
 
@@ -4187,14 +4242,14 @@
 
                     <!-- Additional -->
 
-                    <div class="accordion-item" >
+                    <div class="accordion-item">
                         <h2 class="accordion-header" id="headingsix">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapsesix" aria-expanded="false" aria-controls="collapsesix">
                                 ADDITIONAL
                             </button>
                         </h2>
-                        
+
                         <div id="collapsesix" class="accordion-collapse collapse" aria-labelledby="headingsix"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
@@ -4208,8 +4263,10 @@
                                     <div class="col-md-3 d-flex align-items-center flex-wrap mt-2">
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="pile_supplier" class="me-1
-                                                style="width: 100px;">Plie Supplier</label>
+                                            <label for="pile_supplier"
+                                                class="me-1
+                                                style="width:
+                                                100px;">Plie Supplier</label>
                                             <div class="d-flex flex-column ">
                                                 <input type="text" name="pile_supplier" class="form-control"
                                                     style="width: 160px;" value="{{ $blog->pile_supplier }}">
@@ -4217,8 +4274,7 @@
                                         </div>
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="price" class="ms-2"
-                                                style="width: 50px;">Price</label>
+                                            <label for="price" class="ms-2" style="width: 50px;">Price</label>
                                             <div class="d-flex flex-column  ">
                                                 <input type="number" name="price" class="form-control"
                                                     style="width: 120px;" placeholder="กรุณากรอกตัวเลข"
@@ -4232,39 +4288,38 @@
                                             <div class="flex-grow-1 position-relative">
                                                 <input type="text" id="pile_supplier_accept_date"
                                                     name="pile_supplier_accept_date" style="width: 140px;"
-                                                    class="form-control datepicker pe-5"
-                                                    placeholder="วันที่-เดือน-ปี"
-                                                    value="{{ old('pile_supplier_accept_date', $blog->pile_supplier_accept_date) }}"> <!--DATE -->
+                                                    class="form-control datepicker pe-5" placeholder="วันที่-เดือน-ปี"
+                                                    value="{{ old('pile_supplier_accept_date', $blog->pile_supplier_accept_date) }}">
+                                                <!--DATE -->
                                                 <i
                                                     class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                             </div>
                                         </div>
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="wo_no" class="me-2 ms-2"
-                                                style="width: 50px;">WO No.</label>
-                                                <div class="d-flex flex-column ">
-                                                    <input type="text" name="wo_no" class="form-control"
-                                                        style="width: 160px;" value="{{ $blog->wo_no }}">
-                                                </div>
+                                            <label for="wo_no" class="me-2 ms-2" style="width: 50px;">WO
+                                                No.</label>
+                                            <div class="d-flex flex-column ">
+                                                <input type="text" name="wo_no" class="form-control"
+                                                    style="width: 160px;" value="{{ $blog->wo_no }}">
+                                            </div>
                                         </div>
 
                                     </div>
 
-                                
+
 
                                     <!-- บรรทัด 2 -->
 
                                     <div class="col-md-3 d-flex align-items-center flex-wrap mt-2">
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="accept_1" class="me-4"
-                                                style="width: 100px;">Accept 1</label>
+                                            <label for="accept_1" class="me-4" style="width: 100px;">Accept
+                                                1</label>
 
                                             <div class="flex-grow-1 position-relative">
-                                                <input type="text" id="accept_1"
-                                                    name="accept_1" style="width: 160px;"
-                                                    class="form-control datepicker pe-5"
+                                                <input type="text" id="accept_1" name="accept_1"
+                                                    style="width: 160px;" class="form-control datepicker pe-5"
                                                     placeholder="วันที่-เดือน-ปี"
                                                     value="{{ old('accept_1', $blog->accept_1) }}"> <!--DATE -->
                                                 <i
@@ -4273,13 +4328,12 @@
                                         </div>
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="accept_2" class="me-2 "
-                                                style="width: 100px;">Accept 2 </label>
+                                            <label for="accept_2" class="me-2 " style="width: 100px;">Accept 2
+                                            </label>
 
                                             <div class="flex-grow-1 position-relative">
-                                                <input type="text" id="accept_2"
-                                                    name="accept_2" style="width: 140px;"
-                                                    class="form-control datepicker pe-5"
+                                                <input type="text" id="accept_2" name="accept_2"
+                                                    style="width: 140px;" class="form-control datepicker pe-5"
                                                     placeholder="วันที่-เดือน-ปี"
                                                     value="{{ old('accept_2', $blog->accept_2) }}"> <!--DATE -->
                                                 <i
@@ -4288,12 +4342,11 @@
                                         </div>
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="accept_3" class="me-2 ms-4"
-                                                style="width: 100px;">Accept 3 </label>
+                                            <label for="accept_3" class="me-2 ms-4" style="width: 100px;">Accept 3
+                                            </label>
                                             <div class="flex-grow-1 position-relative">
-                                                <input type="text" id="accept_3"
-                                                    name="accept_3" style="width: 160px;"
-                                                    class="form-control datepicker pe-5"
+                                                <input type="text" id="accept_3" name="accept_3"
+                                                    style="width: 160px;" class="form-control datepicker pe-5"
                                                     placeholder="วันที่-เดือน-ปี"
                                                     value="{{ old('accept_3', $blog->accept_3) }}">
                                                 <i
@@ -4301,15 +4354,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
 
                                     <!-- บรรทัด 3 -->
 
                                     <div class="col-md-3 d-flex align-items-center flex-wrap mt-2">
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="sub_extra_work" class="me-4"
-                                                style="width: 100px;">Sub Extra Work</label>
+                                            <label for="sub_extra_work" class="me-4" style="width: 100px;">Sub Extra
+                                                Work</label>
                                             <div class="d-flex flex-column ">
                                                 <input type="text" name="sub_extra_work" class="form-control"
                                                     style="width: 160px;" value="{{ $blog->sub_extra_work }}">
@@ -4317,8 +4370,8 @@
                                         </div>
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="sub_extra_work_price" class="me-2"
-                                                style="width: 150px;">Sub Extra Work Price </label>
+                                            <label for="sub_extra_work_price" class="me-2" style="width: 150px;">Sub
+                                                Extra Work Price </label>
 
                                             <div class="d-flex flex-column  ">
                                                 <input type="number" name="sub_extra_work_price" class="form-control"
@@ -4332,26 +4385,26 @@
                                                 style="width: 150px;">Sub Extra Work Date </label>
 
 
-                                                <div class="flex-grow-1 position-relative">
-                                                    <input type="text" id="extra_work_accept_date"
-                                                        name="extra_work_accept_date" style="width: 140px;"
-                                                        class="form-control datepicker pe-5"
-                                                        placeholder="วันที่-เดือน-ปี"
-                                                        value="{{ old('extra_work_accept_date', $blog->extra_work_accept_date) }}"> <!--DATE -->
-                                                    <i
-                                                        class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
-                                                </div>
+                                            <div class="flex-grow-1 position-relative">
+                                                <input type="text" id="extra_work_accept_date"
+                                                    name="extra_work_accept_date" style="width: 140px;"
+                                                    class="form-control datepicker pe-5" placeholder="วันที่-เดือน-ปี"
+                                                    value="{{ old('extra_work_accept_date', $blog->extra_work_accept_date) }}">
+                                                <!--DATE -->
+                                                <i
+                                                    class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
+                                            </div>
                                         </div>
 
                                     </div>
 
-                                    
+
                                     <!-- บรรทัด 4 -->
                                     <div class="col-md-3 d-flex align-items-center flex-wrap mt-2">
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="build_permit" class="me-1"
-                                                style="width: 120px;">Build Permit Price</label>
+                                            <label for="build_permit" class="me-1" style="width: 120px;">Build
+                                                Permit Price</label>
                                             <div class="d-flex flex-column  ">
                                                 <input type="number" name="build_permit" class="form-control"
                                                     style="width: 160px;" placeholder="กรุณากรอกตัวเลข"
@@ -4360,7 +4413,8 @@
                                         </div>
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="payment_to" class="me-1" style="width: 120px;">Payment to</label>
+                                            <label for="payment_to" class="me-1" style="width: 120px;">Payment
+                                                to</label>
                                             <div class="d-flex flex-column ">
                                                 <input type="text" name="payment_to" class="form-control"
                                                     value="{{ $blog->payment_to }}">
@@ -4368,12 +4422,12 @@
                                         </div>
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="payment_date" class="me-2 ms-4" style="width: 140px;">Payment Date</label>
-                                
+                                            <label for="payment_date" class="me-2 ms-4" style="width: 140px;">Payment
+                                                Date</label>
+
                                             <div class="flex-grow-1 position-relative">
-                                                <input type="text" id="payment_date"
-                                                    name="payment_date" style="width: 150px;"
-                                                    class="form-control datepicker pe-5"
+                                                <input type="text" id="payment_date" name="payment_date"
+                                                    style="width: 150px;" class="form-control datepicker pe-5"
                                                     placeholder="วันที่-เดือน-ปี"
                                                     value="{{ old('payment_date', $blog->payment_date) }}">
                                                 <i
@@ -4392,10 +4446,18 @@
                 </div>
 
 
-                <div class="container text-center mb-3 ">
-                    <input type="submit" value="อัปเดต" class="btn btn-success my-3"
-                        onclick="return confirmUpdate()">
-                    <a href="/blog" class="btn btn-danger">หน้าแรก</a>
+                <div class="container text-center mb-3">
+                    <!-- Loader (ซ่อนตอนแรก) -->
+                    <div id="loadingSpinner" class="hidden mt-3 text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">กำลังอัปเดตข้อมูล...</span>
+                        </div>
+                        <p class="text-sm text-gray-600">โปรดรอสักครู่ ...</p>
+                    </div>
+
+                    <!-- ปุ่มกดอัปเดต -->
+                    <input type="submit" id="updateBtn" class="btn btn-success my-3" value="อัปเดต">
+                    <a href="/blog" id="cancelBtn" class="btn btn-danger">หน้าแรก</a>
                 </div>
 
 
@@ -4413,17 +4475,34 @@
                     });
                 </script>
 
-
                 <script>
-                    function confirmUpdate() {
-                        // แสดงกล่องยืนยัน
+                    document.addEventListener("DOMContentLoaded", function() {
+                        // เปิด modal เมื่อโหลดหน้า
+                        var myModal = new bootstrap.Modal(document.getElementById('successModal'), {
+                            keyboard: false
+                        });
+                        myModal.show(); // แสดง Modal
+                    });
+                </script>
 
-                        if (confirm('คุณต้องการอัปเดตข้อมูลหรือไม่?')) {
-                            return true; // ถ้าผู้ใช้ยืนยัน ให้ส่งฟอร์ม
-                        } else {
-                            return false; // ถ้าผู้ใช้ยกเลิก ไม่ส่งฟอร์ม
+
+                <!-- JavaScript -->
+                <script>
+                    document.getElementById("updateForm").addEventListener("submit", function(event) {
+                        let confirmUpdate = confirm("ยืนยันการอัปเดตหรือไม่?");
+                        if (!confirmUpdate) {
+                            event.preventDefault(); // ยกเลิกการส่งฟอร์ม ถ้าผู้ใช้กด Cancel
+                            return;
                         }
-                    }
+
+                        // ซ่อนปุ่มอัปเดตและปุ่มยกเลิก
+                        document.getElementById("updateBtn").style.display = 'none';
+                        document.getElementById("cancelBtn").style.display = 'none';
+
+                        // แสดง Loader
+                        document.getElementById("loadingSpinner").classList.remove("hidden");
+
+                    });
                 </script>
 
 

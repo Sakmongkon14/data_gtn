@@ -56,7 +56,7 @@
 
     <div class="container input-group mb-3 input-group-sm py-3">
 
-        <form class="row g-3" autocomplete="off" method="POST" action="/insert">
+        <form class="row g-3" autocomplete="off" method="POST" action="/insert" id="saveAdd">
             @csrf
 
 
@@ -157,24 +157,36 @@
                 </div>
             </div>
 
-            
-
-            
 
             <div class="container text-center mb-3 my-3">
-                <input type="submit" value="เพิ่ม" class="btn btn-success my-3" onclick="return confirmUpdate()">
-                <a href="/blog" class="btn btn-danger">หน้าแรก</a>
+                <input type="submit" id="saveBtn" value="เพิ่ม" class="btn btn-success my-3"
+                    onclick="return confirmUpdate()">
+                <a href="/blog" id="cancelBtn" class="btn btn-danger">หน้าแรก</a>
+
+                <div id="loadingSpinner" class="hidden mt-1 text-center" style="display: none; margin-top: 50px;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">กำลังอัปเดตข้อมูล...</span>
+                    </div>
+                    <p class="text-sm text-gray-600">โปรดรอสักครู่ ...</p>
+                </div>
             </div>
 
             <script>
-                function confirmUpdate() {
-                    // แสดงกล่องยืนยัน
-                    if (confirm('คุณต้องการเพิ่มข้อมูลหรือไม่?')) {
-                        return true; // ถ้าผู้ใช้ยืนยัน ให้ส่งฟอร์ม
-                    } else {
-                        return false; // ถ้าผู้ใช้ยกเลิก ไม่ส่งฟอร์ม
-                    }
-                }
+                document.getElementById("saveAdd").addEventListener("submit", function(event) {
+                    let confirmUpdate = confirm("ยืนยันการเพิ่ม Refcode ?");
+                        if (!confirmUpdate) {
+                            event.preventDefault(); // ยกเลิกการส่งฟอร์ม ถ้าผู้ใช้กด Cancel
+                            return;
+                        }
+
+                    // ทำให้ปุ่ม "เพิ่มข้อมูล" และ "ย้อนกลับ" เป็น hidden
+                    document.getElementById("saveBtn").hidden = true;
+                    document.getElementById("cancelBtn").hidden = true;
+
+                    // แสดง Loader
+                    document.getElementById("loadingSpinner").style.display = 'block';
+
+                });
             </script>
 
             <!-- Date -->
@@ -205,6 +217,6 @@
 
         </form>
 
-        
+
     </div>
 @endsection

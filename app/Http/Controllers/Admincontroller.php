@@ -447,35 +447,52 @@ class Admincontroller extends Controller
             // Commit transaction หลังจากอัปเดตสำเร็จ
             DB::commit();
 
-            // สร้างข้อความที่ต้องการส่งไปยัง LINE Notify
+            // ใช้ Font Awesome หรือ Emoji สำหรับไอคอน
+            $userIcon = "&#128100;"; // 👤 Unicode Entity หรือใช้ '<i class="fas fa-user"></i>'
+            $linkIcon = "🔗"; // 🔗 Unicode Entity หรือใช้ '<i class="fas fa-link"></i>'
+            $bulletSite = "🟢"; // ใช้สัญลักษณ์จุดสีเขียว
+            $bulletRef = "🟠"; // ใช้สัญลักษณ์จุดสีส้ม
+
             $name = Auth::user()->name; // ดึงชื่อของผู้ใช้ที่เข้าสู่ระบบ
 
-            $message = $name . " Update " .  "<br><br>" .
-                "SiteCode : " . $request->input('SiteCode') . "<br>" .
-                "RefCode : " . $request->input('RefCode') . "<br>";
+            $link = '<a href="' . url('https://homeofficegtn.com/blog') . '">https://homeofficegtn.com/Tracking</a>';
+            $refcode = '<a href="' . url('https://homeofficegtn.com/refcode/home') . '">https://homeofficegtn.com/Refcode</a>';
+            $itclinic = '<a href="' . url('https://sites.google.com/team-gtn.com/it-clinic/home') . '">https://homeofficegtn.com/Clinic</a>';
 
+            // สีที่ใช้
+            $yellowBullet = "<span style='color:#eaff01;'>●</span>"; // INVOICE
+            $lightBlueBullet = "<span style='color:#D1E9F6;'>●</span>"; //  SAQ
+            $blueBullet = "<span style='color:#29b6f6;'>●</span>"; // CR
+            $lightYellowBullet = "<span style='color:#fff176;'>●</span>"; // TSSR
+            $greenBullet = "<span style='color:#00DFA2;'>●</span>"; // CIVIL WORK
 
-            // ตรวจสอบว่ามีค่าหรือไม่ก่อนจะเพิ่มเข้าไปในข้อความ  INVOICE
+            // ✅ เริ่มสร้างข้อความ
+            $message = $userIcon . " User : " . $name . " Update ( Test localhost )" .  "<br>" .
+                "$bulletRef RefCode : " . $request->input('RefCode') . "<br>" .
+                "$bulletSite SiteCode : " . $request->input('SiteCode') . "<br>" .
+                "SiteName : " . $request->input('SiteNAME_T') . "<br><br>";
+
 
             // ตรวจสอบว่ามีค่าหรือไม่ก่อนจะเพิ่มเข้าไปในข้อความ INVOICE
+
             if ($request->filled('PO_No_IN') && $request->input('PO_No_IN') != $main->PO_No_IN) {
-                $message .= "PO No: " . $request->input('PO_No_IN') . "<br>";
+                $message .= "$yellowBullet PO No : " . $request->input('PO_No_IN') . "<br>";
             }
 
             if ($request->filled('Invoice1_IN') && $request->input('Invoice1_IN') != $main->Invoice1_IN) {
-                $message .= "Invoice 1: " . $request->input('Invoice1_IN') . "<br>";
+                $message .= "$yellowBullet Invoice 1 : " . $request->input('Invoice1_IN') . "<br>";
             }
 
             if ($request->filled('Amount1_IN') && $request->input('Amount1_IN') != $main->Amount1_IN) {
-                $message .= "Amount 1: " . $request->input('Amount1_IN') . "<br>";
+                $message .= "$yellowBullet Amount 1 : " . $request->input('Amount1_IN') . "<br>";
             }
 
             if ($request->filled('Invoice2_IN') && $request->input('Invoice2_IN') != $main->Invoice2_IN) {
-                $message .= "Invoice 2: " . $request->input('Invoice2_IN') . "<br>";
+                $message .= "$yellowBullet Invoice 2 : " . $request->input('Invoice2_IN') . "<br>";
             }
 
             if ($request->filled('Amount2_IN') && $request->input('Amount2_IN') != $main->Amount2_IN) {
-                $message .= "Amount 2: " . $request->input('Amount2_IN') . "<br><br>";
+                $message .= "$yellowBullet Amount 2 : " . $request->input('Amount2_IN') . "<br>";
             }
 
 
@@ -484,54 +501,54 @@ class Admincontroller extends Controller
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 1
             if ($request->filled('Accept_1st_SAQ') && $request->input('Accept_1st_SAQ') != $saq->Accept_1st_SAQ) {
-                $message .= "Accept 1st SAQ: " . $request->input('Accept_1st_SAQ') . "<br>";
+                $message .= "$lightBlueBullet Accept 1st SAQ: " . $request->input('Accept_1st_SAQ') . "<br>";
             }
 
             if ($request->filled('Mail_1st_SAQ') && $request->input('Mail_1st_SAQ') != $saq->Mail_1st_SAQ) {
-                $message .= "Mail 1st SAQ: " . $request->input('Mail_1st_SAQ') . "<br>";
+                $message .= "$lightBlueBullet Mail 1st SAQ: " . $request->input('Mail_1st_SAQ') . "<br>";
             }
 
             if ($request->filled('ERP_1st_SAQ') && $request->input('ERP_1st_SAQ') != $saq->ERP_1st_SAQ) {
-                $message .= "ERP 1st SAQ: " . $request->input('ERP_1st_SAQ') . "<br>";
+                $message .= "$lightBlueBullet ERP 1st SAQ: " . $request->input('ERP_1st_SAQ') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 2
             if ($request->filled('Accept_2nd_SAQ') && $request->input('Accept_2nd_SAQ') != $saq->Accept_2nd_SAQ) {
-                $message .= "Accept 2nd SAQ: " . $request->input('Accept_2nd_SAQ') . "<br>";
+                $message .= "$lightBlueBullet Accept 2nd SAQ: " . $request->input('Accept_2nd_SAQ') . "<br>";
             }
 
             if ($request->filled('Mail_2nd_SAQ') && $request->input('Mail_2nd_SAQ') != $saq->Mail_2nd_SAQ) {
-                $message .= "Mail 2nd SAQ: " . $request->input('Mail_2nd_SAQ') . "<br>";
+                $message .= "$lightBlueBullet Mail 2nd SAQ: " . $request->input('Mail_2nd_SAQ') . "<br>";
             }
 
             if ($request->filled('ERP_2nd_SAQ') && $request->input('ERP_2nd_SAQ') != $saq->ERP_2nd_SAQ) {
-                $message .= "ERP 2nd SAQ: " . $request->input('ERP_2nd_SAQ') . "<br>";
+                $message .= "$lightBlueBullet ERP 2nd SAQ: " . $request->input('ERP_2nd_SAQ') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 3
             if ($request->filled('Accept_3rd_SAQ') && $request->input('Accept_3rd_SAQ') != $saq->Accept_3rd_SAQ) {
-                $message .= "Accept 3rd SAQ: " . $request->input('Accept_3rd_SAQ') . "<br>";
+                $message .= "$lightBlueBullet Accept 3rd SAQ: " . $request->input('Accept_3rd_SAQ') . "<br>";
             }
 
             if ($request->filled('Mail_3rd_SAQ') && $request->input('Mail_3rd_SAQ') != $saq->Mail_3rd_SAQ) {
-                $message .= "Mail 3rd SAQ: " . $request->input('Mail_3rd_SAQ') . "<br>";
+                $message .= "$lightBlueBullet Mail 3rd SAQ: " . $request->input('Mail_3rd_SAQ') . "<br>";
             }
 
             if ($request->filled('ERP_3rd_SAQ') && $request->input('ERP_3rd_SAQ') != $saq->ERP_3rd_SAQ) {
-                $message .= "ERP 3rd SAQ: " . $request->input('ERP_3rd_SAQ') . "<br>";
+                $message .= "$lightBlueBullet ERP 3rd SAQ: " . $request->input('ERP_3rd_SAQ') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 4
             if ($request->filled('Accept_4th_SAQ') && $request->input('Accept_4th_SAQ') != $saq->Accept_4th_SAQ) {
-                $message .= "Accept 4th SAQ: " . $request->input('Accept_4th_SAQ') . "<br>";
+                $message .= "$lightBlueBullet Accept 4th SAQ: " . $request->input('Accept_4th_SAQ') . "<br>";
             }
 
             if ($request->filled('Mail_4th_SAQ') && $request->input('Mail_4th_SAQ') != $saq->Mail_4th_SAQ) {
-                $message .= "Mail 4th SAQ: " . $request->input('Mail_4th_SAQ') . "<br>";
+                $message .= "$lightBlueBullet Mail 4th SAQ: " . $request->input('Mail_4th_SAQ') . "<br>";
             }
 
             if ($request->filled('ERP_4th_SAQ') && $request->input('ERP_4th_SAQ') != $saq->ERP_4th_SAQ) {
-                $message .= "ERP 4th SAQ: " . $request->input('ERP_4th_SAQ') . "<br><br>";
+                $message .= "$lightBlueBullet ERP 4th SAQ: " . $request->input('ERP_4th_SAQ') . "<br>";
             }
 
 
@@ -539,107 +556,107 @@ class Admincontroller extends Controller
             // ตรวจสอบว่ามีค่าหรือไม่ก่อนจะเพิ่มเข้าไปในข้อความ  CR
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 1
             if ($request->filled('Accept_1st_CR') && $request->input('Accept_1st_CR') != $cr->Accept_1st_CR) {
-                $message .= "Accept 1st CR: " . $request->input('Accept_1st_CR') . "<br>";
+                $message .= "$blueBullet Accept 1st CR: " . $request->input('Accept_1st_CR') . "<br>";
             }
 
             if ($request->filled('Mail_1st_CR') && $request->input('Mail_1st_CR') != $cr->Mail_1st_CR) {
-                $message .= "Mail 1st CR: " . $request->input('Mail_1st_CR') . "<br>";
+                $message .= "$blueBullet Mail 1st CR: " . $request->input('Mail_1st_CR') . "<br>";
             }
 
             if ($request->filled('ERP_1st_CR') && $request->input('ERP_1st_CR') != $cr->ERP_1st_CR) {
-                $message .= "ERP 1st CR: " . $request->input('ERP_1st_CR') . "<br>";
+                $message .= "$blueBullet ERP 1st CR: " . $request->input('ERP_1st_CR') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 2
             if ($request->filled('Accept_2nd_CR') && $request->input('Accept_2nd_CR') != $cr->Accept_2nd_CR) {
-                $message .= "Accept 2nd CR: " . $request->input('Accept_2nd_CR') . "<br>";
+                $message .= "$blueBullet Accept 2nd CR: " . $request->input('Accept_2nd_CR') . "<br>";
             }
 
             if ($request->filled('Mail_2nd_CR') && $request->input('Mail_2nd_CR') != $cr->Mail_2nd_CR) {
-                $message .= "Mail 2nd CR: " . $request->input('Mail_2nd_CR') . "<br>";
+                $message .= "$blueBullet Mail 2nd CR: " . $request->input('Mail_2nd_CR') . "<br>";
             }
 
             if ($request->filled('ERP_2nd_CR') && $request->input('ERP_2nd_CR') != $cr->ERP_2nd_CR) {
-                $message .= "ERP 2nd CR: " . $request->input('ERP_2nd_CR') . "<br>";
+                $message .= "$blueBullet ERP 2nd CR: " . $request->input('ERP_2nd_CR') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 3
             if ($request->filled('Accept_3rd_CR') && $request->input('Accept_3rd_CR') != $cr->Accept_3rd_CR) {
-                $message .= "Accept 3rd CR: " . $request->input('Accept_3rd_CR') . "<br>";
+                $message .= "$blueBullet Accept 3rd CR: " . $request->input('Accept_3rd_CR') . "<br>";
             }
 
             if ($request->filled('Mail_3rd_CR') && $request->input('Mail_3rd_CR') != $cr->Mail_3rd_CR) {
-                $message .= "Mail 2nd CR: " . $request->input('Mail_3rd_CR') . "<br>";
+                $message .= "$blueBullet Mail 3rd CR: " . $request->input('Mail_3rd_CR') . "<br>";
             }
 
             if ($request->filled('ERP_3rd_CR') && $request->input('ERP_3rd_CR') != $cr->ERP_3rd_CR) {
-                $message .= "ERP 3rd CR: " . $request->input('ERP_3rd_CR') . "<br>";
+                $message .= "$blueBullet ERP 3rd CR: " . $request->input('ERP_3rd_CR') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 4
             if ($request->filled('Accept_4th_CR') && $request->input('Accept_4th_CR') != $cr->Accept_4th_CR) {
-                $message .= "Accept 4th CR: " . $request->input('Accept_4th_CR') . "<br>";
+                $message .= "$blueBullet Accept 4th CR: " . $request->input('Accept_4th_CR') . "<br>";
             }
 
             if ($request->filled('Mail_4th_CR') && $request->input('Mail_4th_CR') != $cr->Mail_4th_CR) {
-                $message .= "Mail 4th CR: " . $request->input('Mail_4th_CR') . "<br>";
+                $message .= "$blueBullet Mail 4th CR: " . $request->input('Mail_4th_CR') . "<br>";
             }
 
             if ($request->filled('ERP_4th_CR') && $request->input('ERP_4th_CR') != $cr->ERP_4th_CR) {
-                $message .= "ERP 4th CR: " . $request->input('ERP_4th_CR') . "<br><br>";
+                $message .= "$blueBullet ERP 4th CR: " . $request->input('ERP_4th_CR') . "<br>";
             }
 
             // ตรวจสอบว่ามีค่าหรือไม่ก่อนจะเพิ่มเข้าไปในข้อความ  TSRR
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 1
             if ($request->filled('Accept_1st_TSSR') && $request->input('Accept_1st_TSSR') != $tssr->Accept_1st_TSSR) {
-                $message .= "Accept 1st TSSR: " . $request->input('Accept_1st_TSSR') . "<br>";
+                $message .= "$lightYellowBullet Accept 1st TSSR: " . $request->input('Accept_1st_TSSR') . "<br>";
             }
 
             if ($request->filled('Mail_1st_TSSR') && $request->input('Mail_1st_TSSR') != $tssr->Mail_1st_TSSR) {
-                $message .= "Mail 1st TSSR: " . $request->input('Mail_1st_TSSR') . "<br>";
+                $message .= "$lightYellowBullet Mail 1st TSSR: " . $request->input('Mail_1st_TSSR') . "<br>";
             }
 
             if ($request->filled('ERP_1st_TSSR') && $request->input('ERP_1st_TSSR') != $tssr->ERP_1st_TSSR) {
-                $message .= "ERP 1st TSSR: " . $request->input('ERP_1st_TSSR') . "<br>";
+                $message .= "$lightYellowBullet ERP 1st TSSR: " . $request->input('ERP_1st_TSSR') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 2
             if ($request->filled('Accept_2nd_TSSR') && $request->input('Accept_2nd_TSSR') != $tssr->Accept_2nd_TSSR) {
-                $message .= "Accept 2nd TSSR: " . $request->input('Accept_2nd_TSSR') . "<br>";
+                $message .= "$lightYellowBullet Accept 2nd TSSR: " . $request->input('Accept_2nd_TSSR') . "<br>";
             }
 
             if ($request->filled('Mail_2nd_TSSR') && $request->input('Mail_2nd_TSSR') != $tssr->Mail_2nd_TSSR) {
-                $message .= "Mail 2nd TSSR: " . $request->input('Mail_2nd_TSSR') . "<br>";
+                $message .= "$lightYellowBullet Mail 2nd TSSR: " . $request->input('Mail_2nd_TSSR') . "<br>";
             }
 
             if ($request->filled('ERP_2nd_TSSR') && $request->input('ERP_2nd_TSSR') != $tssr->ERP_2nd_TSSR) {
-                $message .= "ERP 2nd TSSR: " . $request->input('ERP_2nd_TSSR') . "<br>";
+                $message .= "$lightYellowBullet ERP 2nd TSSR: " . $request->input('ERP_2nd_TSSR') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 3
             if ($request->filled('Accept_3rd_TSSR') && $request->input('Accept_3rd_TSSR') != $tssr->Accept_3rd_TSSR) {
-                $message .= "Accept 3rd TSSR: " . $request->input('Accept_3rd_TSSR') . "<br>";
+                $message .= "$lightYellowBullet Accept 3rd TSSR: " . $request->input('Accept_3rd_TSSR') . "<br>";
             }
 
             if ($request->filled('Mail_3rd_TSSR') && $request->input('Mail_3rd_TSSR') != $tssr->Mail_3rd_TSSR) {
-                $message .= "Mail 3rd TSSR: " . $request->input('Mail_3rd_TSSR') . "<br>";
+                $message .= "$lightYellowBullet Mail 3rd TSSR: " . $request->input('Mail_3rd_TSSR') . "<br>";
             }
 
             if ($request->filled('ERP_3rd_TSSR') && $request->input('ERP_3rd_TSSR') != $tssr->ERP_3rd_TSSR) {
-                $message .= "ERP 3rd TSSR: " . $request->input('ERP_3rd_TSSR') . "<br>";
+                $message .= "$lightYellowBullet ERP 3rd TSSR: " . $request->input('ERP_3rd_TSSR') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 4
             if ($request->filled('Accept_4th_TSSR') && $request->input('Accept_4th_TSSR') != $tssr->Accept_4th_TSSR) {
-                $message .= "Accept 4th TSSR: " . $request->input('Accept_4th_TSSR') . "<br>";
+                $message .= "$lightYellowBullet Accept 4th TSSR: " . $request->input('Accept_4th_TSSR') . "<br>";
             }
 
             if ($request->filled('Mail_4th_TSSR') && $request->input('Mail_4th_TSSR') != $tssr->Mail_4th_TSSR) {
-                $message .= "Mail 4th TSSR: " . $request->input('Mail_4th_TSSR') . "<br>";
+                $message .= "$lightYellowBullet Mail 4th TSSR: " . $request->input('Mail_4th_TSSR') . "<br>";
             }
 
             if ($request->filled('ERP_4th_TSSR') && $request->input('ERP_4th_TSSR') != $tssr->ERP_4th_TSSR) {
-                $message .= "ERP 4th TSSR: " . $request->input('ERP_4th_TSSR') . "<br><br>";
+                $message .= "$lightYellowBullet ERP 4th TSSR: " . $request->input('ERP_4th_TSSR') . "<br>";
             }
 
 
@@ -647,54 +664,54 @@ class Admincontroller extends Controller
             // ตรวจสอบว่ามีค่าหรือไม่ก่อนจะเพิ่มเข้าไปในข้อความ  CIVILWORK
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 1
             if ($request->filled('Accept_1st_CivilWork') && $request->input('Accept_1st_CivilWork') != $cw->Accept_1st_CivilWork) {
-                $message .= "Accept 1st Civil Work: " . $request->input('Accept_1st_CivilWork') . "<br>";
+                $message .= "$greenBullet Accept 1st Civil Work: " . $request->input('Accept_1st_CivilWork') . "<br>";
             }
 
             if ($request->filled('Mail_1st_CivilWork') && $request->input('Mail_1st_CivilWork') != $cw->Mail_1st_CivilWork) {
-                $message .= "Mail 1st Civil Work: " . $request->input('Mail_1st_CivilWork') . "<br>";
+                $message .= "$greenBullet Mail 1st Civil Work: " . $request->input('Mail_1st_CivilWork') . "<br>";
             }
 
             if ($request->filled('ERP_1st_CivilWork') && $request->input('ERP_1st_CivilWork') != $cw->ERP_1st_CivilWork) {
-                $message .= "ERP 1st Civil Work: " . $request->input('ERP_1st_CivilWork') . "<br>";
+                $message .= "$greenBullet ERP 1st Civil Work: " . $request->input('ERP_1st_CivilWork') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 2 
             if ($request->filled('Accept_2nd_CivilWork') && $request->input('Accept_2nd_CivilWork') != $cw->Accept_2nd_CivilWork) {
-                $message .= "Accept 2nd CivilWork: " . $request->input('Accept_2nd_CivilWork') . "<br>";
+                $message .= "$greenBullet Accept 2nd CivilWork: " . $request->input('Accept_2nd_CivilWork') . "<br>";
             }
 
             if ($request->filled('Mail_2nd_CivilWork') && $request->input('Mail_2nd_CivilWork') != $cw->Mail_2nd_CivilWork) {
-                $message .= "Mail 2nd Civil Work: " . $request->input('Mail_2nd_CivilWork') . "<br>";
+                $message .= "$greenBullet Mail 2nd Civil Work: " . $request->input('Mail_2nd_CivilWork') . "<br>";
             }
 
             if ($request->filled('ERP_2nd_CivilWork') && $request->input('ERP_2nd_CivilWork') != $cw->ERP_2nd_CivilWork) {
-                $message .= "ERP 2nd Civil Work: " . $request->input('ERP_2nd_CivilWork') . "<br>";
+                $message .= "$greenBullet ERP 2nd Civil Work: " . $request->input('ERP_2nd_CivilWork') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 3
             if ($request->filled('Accept_3rd_CivilWork') && $request->input('Accept_3rd_CivilWork') != $cw->Accept_3rd_CivilWork) {
-                $message .= "Accept 3rd CivilWork: " . $request->input('Accept_3rd_CivilWork') . "<br>";
+                $message .= "$greenBullet Accept 3rd CivilWork: " . $request->input('Accept_3rd_CivilWork') . "<br>";
             }
 
             if ($request->filled('Mail_3rd_CivilWork') && $request->input('Mail_3rd_CivilWork') != $cw->Mail_3rd_CivilWork) {
-                $message .= "Mail 3rd Civil Work: " . $request->input('Mail_3rd_CivilWork') . "<br>";
+                $message .= "$greenBullet Mail 3rd Civil Work: " . $request->input('Mail_3rd_CivilWork') . "<br>";
             }
 
             if ($request->filled('ERP_3rd_CivilWork') && $request->input('ERP_3rd_CivilWork') != $cw->ERP_3rd_CivilWork) {
-                $message .= "ERP 3rd Civil Work: " . $request->input('ERP_3rd_CivilWork') . "<br>";
+                $message .= "$greenBullet ERP 3rd Civil Work: " . $request->input('ERP_3rd_CivilWork') . "<br>";
             }
 
             // ตรวจสอบข้อมูลใหม่กับข้อมูลเก่าก่อนแจ้งเตือน  ACCEPT 4
             if ($request->filled('Accept_4th_CivilWork') && $request->input('Accept_4th_CivilWork') != $cw->Accept_4th_CivilWork) {
-                $message .= "Accept 4th CivilWork: " . $request->input('Accept_4th_CivilWork') . "<br>";
+                $message .= "$greenBullet Accept 4th CivilWork: " . $request->input('Accept_4th_CivilWork') . "<br>";
             }
 
             if ($request->filled('Mail_4th_CivilWork') && $request->input('Mail_4th_CivilWork') != $cw->Mail_4th_CivilWork) {
-                $message .= "Mail 4th Civil Work: " . $request->input('Mail_4th_CivilWork') . "<br>";
+                $message .= "$greenBullet Mail 4th Civil Work: " . $request->input('Mail_4th_CivilWork') . "<br>";
             }
 
             if ($request->filled('ERP_4th_CivilWork') && $request->input('ERP_4th_CivilWork') != $cw->ERP_4th_CivilWork) {
-                $message .= "ERP 4th Civil Work: " . $request->input('ERP_4th_CivilWork') . "<br>";
+                $message .= "$greenBullet ERP 4th Civil Work: " . $request->input('ERP_4th_CivilWork') . "<br>";
             }
 
             /* 
@@ -707,21 +724,32 @@ class Admincontroller extends Controller
             
             */
 
+
+            // ✅ เพิ่มลิงก์ต่างๆ
+            $message .= "<br>" . $linkIcon . " Link Tracking : " . $link . "<br><br>" .
+                $linkIcon . " Link Search Refcode : " . $refcode . "<br><br>" .
+                $linkIcon . " Link IT Clinic : " . $itclinic . "<br><br>";
+            // dd($message);
+
+/*
             // ดึงอีเมลจากฐานข้อมูลที่มี status = 4
+            Mail::to('sakmongkhon.OS@gtn.co.th')->send(new SiteUpdateNotification($message));
 
-
-            $emails = DB::table('users')
+*/
+            /* $emails = DB::table('users')
                 ->where('status', 4) // เงื่อนไข status = 4
                 ->pluck('email')     // ดึงแค่คอลัมน์ email
                 ->toArray();         // เปลี่ยนผลลัพธ์เป็น array
 
             //dd($emails);
 
+            dd($message);
+
 
             foreach ($emails as $email) {
                 Mail::to($email)->send(new SiteUpdateNotification($message));
             }
-
+*/
             //dd($emails);
 
             // ส่งข้อความ success กลับไปยังหน้าเดิม
@@ -894,12 +922,32 @@ class Admincontroller extends Controller
 
             //dd($emails);
 
+            $bulletSite = "🟢"; // ใช้สัญลักษณ์จุดสีเขียว
+            $bulletRef = "🟠"; // ใช้สัญลักษณ์จุดสีส้ม
+
             $name = Auth::user()->name; // ดึงชื่อของผู้ใช้ที่เข้าสู่ระบบ
+            $userIcon = "&#128100;"; // 👤 Unicode Entity หรือใช้ '<i class="fas fa-user"></i>'
+            $linkIcon = "🔗"; // 🔗 Unicode Entity หรือใช้ '<i class="fas fa-link"></i>'
 
-            // สร้างข้อความที่ต้องการส่งไปยัง LINE Notify
-            $message = $name .  " เพิ่ม SiteCode " . $request->input('SiteCode');
+            $link = '<a href="' . url('https://homeofficegtn.com/home') . '">https://homeofficegtn.com/home</a>';
+            $refcode = '<a href="' . url('https://homeofficegtn.com/refcode/home') . '">https://homeofficegtn.com/Refcode</a>';
+            $itclinic = '<a href="' . url('https://sites.google.com/team-gtn.com/it-clinic/home') . '">https://homeofficegtn.com/Clinic</a>';
 
-            // ส่งข้อความไปยัง LINE Notify
+            $refcodeIN = $request->RefCode;
+            $siteCodeIN = $request->SiteCode;
+
+
+
+            // สร้างข้อความที่ต้องการส่งไปยัง Mail
+            $message = $userIcon . " User : " . $name . " เพิ่ม Refcode และ SiteCode" . "<br>"
+                . "$bulletRef RefCode : " . $refcodeIN . "<br>"
+                . "$bulletSite SiteCode : " . $siteCodeIN . "<br>"
+                . "<br>" . $linkIcon . " Link Tracking : " . $link . "<br><br>"
+                . $linkIcon . " Link Search Refcode : " . $refcode . "<br><br>"
+                . $linkIcon . " Link IT Clinic : " . $itclinic . "<br><br>";
+
+
+            // ส่งข้อความไปยัง Mail
             foreach ($emails as $email) {
                 Mail::to($email)->send(new SiteUpdateNotification($message));
             }
@@ -1086,23 +1134,44 @@ class Admincontroller extends Controller
 
             // ตรวจสอบค่าของ insertedIds ก่อน
             //dd($insertedIds);
-            // สร้างข้อความที่ต้องการส่งไปยัง LINE Notify
+
+            $userIcon = "&#128100;"; // 👤 Unicode Entity
+            $linkIcon = "🔗"; // 🔗 Unicode Entity
+            $bulletSite = "🟢"; // ใช้สัญลักษณ์จุดสีเขียว
+            $bulletRef = "🟠"; // ใช้สัญลักษณ์จุดสีส้ม
+
             $name = Auth::user()->name; // ดึงชื่อของผู้ใช้ที่เข้าสู่ระบบ
 
-           
+            $link = '<a href="' . url('https://homeofficegtn.com/home') . '">https://homeofficegtn.com/home</a>';
+            $refcode = '<a href="' . url('https://homeofficegtn.com/refcode/home') . '">https://homeofficegtn.com/Refcode</a>';
+            $itclinic = '<a href="' . url('https://sites.google.com/team-gtn.com/it-clinic/home') . '">https://homeofficegtn.com/Clinic</a>';
 
-            $message = $name . " Import SiteCode ดังนี้:\n";
+            // สร้างข้อความเริ่มต้น
+            $message = $userIcon . " User : " . $name . " Import<br>" .
+                $bulletRef . "Refcode " . "  " . $bulletSite . " SiteCode "  . " ดังนี้ :<br><br>";
+
+            // วนลูปเพิ่ม SiteCode ที่ถูก import
             foreach ($insertedIds as $row) {
-                $message .= "- " . $row['SiteCode'] . "\n";
+                $message .= 
+                    '<span style="display:inline-block; width:100px;">' . $bulletRef . " " . $row['RefCode'] . '</span>' . 
+                    '<span style="display:inline-block; width:100px;">' . $bulletSite . " " . $row['SiteCode'] . '</span>' ."<br>";
             }
-           //dd($message);
 
+            // เพิ่ม Link  ต่อท้ายข้อความ
+            $message .= "<br>" .
+                $linkIcon . " Link Tracking : " . $link . "<br><br>" .
+                $linkIcon . " Link Search Refcode : " . $refcode . "<br><br>" .
+                $linkIcon . " Link IT Clinic  : " . $itclinic . "<br><br>";
+
+
+            //dd($message);
+/*
             // ส่งอีเมลไปยังทุกอีเมลที่ดึงมา
             foreach ($emails as $email) {
                 Mail::to($email)->send(new SiteUpdateNotification($message));
             }
-
-                return redirect('blog')->with('success', 'บันทึกข้อมูลสำเร็จ');
+*/
+            return redirect('blog')->with('success', 'บันทึกข้อมูลสำเร็จ');
         } else {
             // ถ้าไม่มีข้อมูลใหม่ให้บันทึก
             DB::rollBack(); // ยกเลิกการทำธุรกรรม

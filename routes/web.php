@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Refcodecontroller;
 use App\Http\Middleware\CheckStatus;
-use App\http\Middleware\CheckInventory;
+use App\Http\Middleware\CheckInventory;
 use App\Http\Controllers\ImportItemController;
 
 Route::get('/', function () {
