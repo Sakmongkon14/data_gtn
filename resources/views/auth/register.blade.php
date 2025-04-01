@@ -83,12 +83,13 @@
                                     <option value="4">4. SUPERUSER</option>
                                     <option value="5">5. INVENTORY USER</option> <!-- ตัวเลือกนี้จะแสดงเป็นช่องว่าง -->
                                     <option value="6">6. INVENTORY ADMIN</option> <!-- ตัวเลือกนี้จะแสดงเป็นช่องว่าง -->
-                                    <option value="">7. อื่น</option>
+                                    <option value="">7. Search Refcode AND IT Clinic</option>
                                 </select>
                                     <p style="margin-top: 10px; color:red "  >
                                  - TRACKING STATUS 1 - 4 <br>
                                  - SUPERUSER 4 <br>
-                                 - ERP 5-6
+                                 - ERP INVENTORY 5-6 <br>
+								 - SEARCH REFCODE , IT CLINIC 7
                                  </p>
                             </div>
                         </div>

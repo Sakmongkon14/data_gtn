@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Screen 3D Cube</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: white;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        // สร้างฉาก
+        const scene = new THREE.Scene();
+
+        // สร้างกล้อง
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 3;
+
+        // สร้าง Renderer และกำหนดขนาดเอง
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        // กำหนดขนาดที่ต้องการเอง (เช่น 800x600 หรือขนาดอื่นที่คุณต้องการ)
+        const width = 200;  // ความกว้าง
+        const height = 200; // ความสูง
+        renderer.setSize(width, height); // กำหนดขนาด Renderer
+        renderer.setClearColor(0xffffff); // กำหนดพื้นหลังสีขาว
+        document.body.appendChild(renderer.domElement);
+
+
+        // โหลด texture จาก URL ของรูปภาพ
+        const texture = new THREE.TextureLoader().load('GTN.JPG'); // ใช้ชื่อไฟล์ภาพที่ถูกต้อง
+
+        // สร้าง Cube และใช้ texture เป็นวัสดุ
+        const geometry = new THREE.BoxGeometry(cubeWidth, cubeHeight, 2); // ปรับขนาด Cube ให้สัมพันธ์กับ renderer
+        const material = new THREE.MeshBasicMaterial({ map: texture }); // ใช้ภาพเป็นวัสดุ
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        // เพิ่มแสง
+        const light = new THREE.PointLight(0xffffff, 1);
+        light.position.set(5, 5, 5);
+        scene.add(light);
+
+        // ปรับขนาด Renderer ตามหน้าจอเมื่อเปลี่ยนขนาด
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+        });
+
+        // ฟังก์ชันแอนิเมชัน
+        function animate() {
+            requestAnimationFrame(animate);
+            cube.rotation.x += 0.00; // หมุนแกน X
+            cube.rotation.y += 0.01; // หมุนแกน Y ให้เร็วขึ้น
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+
+</body>
+
+</html>

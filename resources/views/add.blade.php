@@ -2,6 +2,7 @@
 @section('title', 'Add')
 @section('content')
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <style>
         .form-control {
             border-color: #3399FF;
@@ -52,11 +53,18 @@
         </div>
     @endif
 
-    <h2 class="text text-center py-3 ">ADD</h2>
+    <h2 class="text text-center py-3 " data-aos="fade-down">ADD RefCode</h2>
+
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            AOS.init(); // เริ่มต้น AOS Animation
+        });
+    </script>
 
     <div class="container input-group mb-3 input-group-sm py-3">
 
-        <form class="row g-3" autocomplete="off" method="POST" action="/insert" id="saveAdd">
+        <form class="row g-3" autocomplete="off" method="POST" action="/insert" id="saveAdd" data-aos="fade-up">
             @csrf
 
 
@@ -156,9 +164,9 @@
                     <input type="text" name="Zone" class="form-control">
                 </div>
             </div>
-
-
-            <div class="container text-center mb-3 my-3">
+			
+			
+			<div class="container text-center mb-3 my-3">
                 <input type="submit" id="saveBtn" value="เพิ่ม" class="btn btn-success my-3"
                     onclick="return confirmUpdate()">
                 <a href="/blog" id="cancelBtn" class="btn btn-danger">หน้าแรก</a>
@@ -217,6 +225,6 @@
 
         </form>
 
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     </div>
 @endsection

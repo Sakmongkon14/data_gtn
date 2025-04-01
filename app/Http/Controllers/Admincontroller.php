@@ -18,7 +18,9 @@ class Admincontroller extends Controller
     {
         $this->middleware('auth');
     }
-    //Data total
+
+    // Taking
+
     function index()
     {
         $areas = DB::table('area')->get();
@@ -32,9 +34,52 @@ class Admincontroller extends Controller
             ->get();
 
         return view('blog', compact('areas', 'data'));
-        // OK
-
     }
+
+    // Dashboard
+    /*  NULL → แปลงเป็น 0
+            (ค่าว่าง) → แปลงเป็น 0
+        */
+    public function dashboard()
+        {
+            $totalRefcode = DB::table('main_csv')->count('refcode');
+        
+            // คำนวณผลรวมสำหรับ Banlace_IN
+            $in = DB::table('main_csv')
+                ->select(DB::raw('SUM(COALESCE(CAST(Banlace_IN AS DECIMAL(10,2)), 0)) AS total_in'))
+                ->first();
+        
+            // คำนวณผลรวมสำหรับ Banlace_SAQ
+            $saq = DB::table('saq_csv')
+                ->select(DB::raw('SUM(COALESCE(CAST(Banlace_SAQ AS DECIMAL(10,2)), 0)) AS total_saq'))
+                ->first();
+        
+            // คำนวณผลรวมสำหรับ Banlace_CR
+            $cr = DB::table('cr_csv')
+                ->select(DB::raw('SUM(COALESCE(CAST(Banlace_CR AS DECIMAL(10,2)), 0)) AS total_cr'))
+                ->first();
+        
+            // คำนวณผลรวมสำหรับ Banlace_TSSR
+            $tssr = DB::table('tssr_csv')
+                ->select(DB::raw('SUM(COALESCE(CAST(Banlace_TSSR AS DECIMAL(10,2)), 0)) AS total_tssr'))
+                ->first();
+        
+            // คำนวณผลรวมสำหรับ Banlace_CivilWork
+            $cw = DB::table('civilwork_csv')
+                ->select(DB::raw('SUM(COALESCE(CAST(Banlace_CivilWork AS DECIMAL(10,2)), 0)) AS total_cw'))
+                ->first();
+        
+            // เข้าถึงผลลัพธ์ที่คำนวณในแต่ละฟิลด์ (ตัวอย่าง total_in, total_saq, total_cr, ...)
+            $in = $in->total_in;
+            $saq = $saq->total_saq;
+            $cr = $cr->total_cr;
+            $tssr = $tssr->total_tssr;
+            $cw = $cw->total_cw;
+        
+            // ส่งค่าที่คำนวณไปที่วิว
+            return view('dashboard', compact('totalRefcode', 'in', 'saq', 'cr', 'tssr', 'cw'));
+        }
+        
 
     public function edit($id)
     {
@@ -61,28 +106,7 @@ class Admincontroller extends Controller
         return view("edit", compact("blog", "areas"));
     }
 
-    // LINE NOTIFY
-    private function sendLineNotify($message)
-    {
-        $line_token = 'Rsov88H4frcqLTscPnyPKSBuESSuccoqKFfPO1QcZey'; // ใส่ Line Notify Token ของคุณ
-        $line_api = 'https://notify-api.line.me/api/notify';
-        $queryData = http_build_query(['message' => $message], '', '&');
 
-        $headerOptions = [
-            'http' => [
-                'method'  => 'POST',
-                'header'  => "Content-Type: application/x-www-form-urlencoded\r\n" .
-                    "Authorization: Bearer " . $line_token . "\r\n" .
-                    "Content-Length: " . strlen($queryData) . "\r\n",
-                'content' => $queryData,
-            ],
-        ];
-
-        $context = stream_context_create($headerOptions);
-        $result = file_get_contents($line_api, false, $context);
-
-        return json_decode($result);
-    }
 
     function update(Request $request, $id)
     {
@@ -731,7 +755,7 @@ class Admincontroller extends Controller
                 $linkIcon . " Link IT Clinic : " . $itclinic . "<br><br>";
             // dd($message);
 
-/*
+            /*
             // ดึงอีเมลจากฐานข้อมูลที่มี status = 4
             Mail::to('sakmongkhon.OS@gtn.co.th')->send(new SiteUpdateNotification($message));
 
@@ -1152,9 +1176,9 @@ class Admincontroller extends Controller
 
             // วนลูปเพิ่ม SiteCode ที่ถูก import
             foreach ($insertedIds as $row) {
-                $message .= 
-                    '<span style="display:inline-block; width:100px;">' . $bulletRef . " " . $row['RefCode'] . '</span>' . 
-                    '<span style="display:inline-block; width:100px;">' . $bulletSite . " " . $row['SiteCode'] . '</span>' ."<br>";
+                $message .=
+                    '<span style="display:inline-block; width:100px;">' . $bulletRef . " " . $row['RefCode'] . '</span>' .
+                    '<span style="display:inline-block; width:100px;">' . $bulletSite . " " . $row['SiteCode'] . '</span>' . "<br>";
             }
 
             // เพิ่ม Link  ต่อท้ายข้อความ
@@ -1165,7 +1189,7 @@ class Admincontroller extends Controller
 
 
             //dd($message);
-/*
+            /*
             // ส่งอีเมลไปยังทุกอีเมลที่ดึงมา
             foreach ($emails as $email) {
                 Mail::to($email)->send(new SiteUpdateNotification($message));

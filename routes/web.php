@@ -14,8 +14,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Taking
+Route::get('/3D', function () {
+    return view('3D/index'); // จะไปแสดงไฟล์ cube.blade.php
+});
 
+// Taking
+Route::get('dashboard', [Admincontroller::class,'dashboard']);
 
 //import
 Route::post('/import', [Admincontroller::class, 'importrefcode']); //import sitecode
@@ -25,7 +29,6 @@ Route::get('/import', [Admincontroller::class, 'importrefcode']);  //import site
 Route::get('/saveImport', [Admincontroller::class, 'saveAdd']);  //import Save
 Route::post('/saveImport', [Admincontroller::class, 'saveAdd']); //import Save
 
-
 Route::get('/blog', [Admincontroller::class, 'index'])->name('blog')->middleware(CheckStatus::class);
 Route::get('edit/{id}', [Admincontroller::class, 'edit'])->name('edit');
 Route::post('update/{id}', [Admincontroller::class, 'update'])->name('update');
@@ -34,7 +37,12 @@ Route::get('add', [Admincontroller::class, 'add'])->name('add');
 Route::post('insert', [Admincontroller::class, 'insert'])->name('insert');
 
 Auth::routes();
+
+// Home
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::delete('/user/{id}', [App\Http\Controllers\HomeController::class, 'destroy'])->name('user.delete');
+Route::put('/update-status/{user}', [App\Http\Controllers\HomeController::class, 'updateStatus'])->name('user.updateStatus');
+
 
 Route::post('/register', [RegisterController::class, 'register'])->name('register');             // status = 4
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register'); // status = 4

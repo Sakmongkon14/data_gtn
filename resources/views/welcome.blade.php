@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.Tailwind')
 @section('title','หน้าแรกของเว็บไซต์')
 @section('content')
 <style>
@@ -86,7 +86,10 @@
 </div>
     <div class="content">
         <h2>Welcome To <span>GTN</span></h2>
+
     </div>
 <body>
+
+
 
 @endsection

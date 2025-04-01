@@ -63,7 +63,7 @@
                 <!-- โลโก้ -->
                 <div class="flex items-center">
                     <a href="{{ url('/home') }}">
-                        <img src="{{ asset('/GTN.png') }}" alt="GTN Logo" class="h-10">
+                        <img src="{{ asset('/GTN.jpg') }}" alt="GTN Logo" class="h-10">
                     </a>
                 </div>
 

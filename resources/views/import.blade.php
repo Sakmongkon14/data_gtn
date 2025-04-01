@@ -4,8 +4,7 @@
 
     @if (!empty($dataToSave) && (is_array($dataToSave) || is_object($dataToSave)))
         <!-- Modal -->
-        <div class="modal fade show d-block" id="refcodeModal" tabindex="-1" role="dialog" aria-labelledby="refcodeModalLabel"
-            aria-hidden="true" style="background-color: rgba(0, 0, 0, 0.5);">
+        <div class="modal fade show d-block" id="refcodeModal" tabindex="-1" role="dialog" aria-labelledby="refcodeModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0.5);">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -18,21 +17,21 @@
                                 <thead class="thead-light">
                                     <tr class="text-center">
                                         <th>Refcode</th>
-                                        <!--
-                                            <th>OwnerOldSte</th>
-                                          -->
+                                      <!--  
+                                        <th>OwnerOldSte</th>
+                                      -->
                                         <th>SiteCode</th>
-                                        <!--
-                                            <th>SiteNAME_T</th>
-                                            <th>PlanType</th>
-                                            <th>Region_id</th>
-                                            <th>Province</th>
-                                            <th>SiteType</th>
-                                            <th>TowerNewSite</th>
-                                            <th>Towerheight</th>
-                                            <th>Tower</th>
-                                            <th>Zone</th>
-                                          -->
+                                    <!--
+                                        <th>SiteNAME_T</th>
+                                        <th>PlanType</th>
+                                        <th>Region_id</th>
+                                        <th>Province</th>
+                                        <th>SiteType</th>
+                                        <th>TowerNewSite</th>
+                                        <th>Towerheight</th>
+                                        <th>Tower</th>
+                                        <th>Zone</th>
+                                      -->
                                         <th>Check Refcode</th>
                                     </tr>
                                 </thead>
@@ -40,22 +39,22 @@
                                     @foreach ($dataToSave as $row)
                                         <tr class="text-nowrap">
                                             <td>{{ $row['RefCode'] }}</td>
-                                            <!--
-                                                <td>{{ $row['OwnerOldSte'] }}</td>
-                                            -->
-
+                                        <!--    
+                                            <td>{{ $row['OwnerOldSte'] }}</td>
+                                        -->
+                                        
                                             <td>{{ $row['SiteCode'] }}</td>
-                                            <!--
-                                                <td>{{ $row['SiteNAME_T'] }}</td>
-                                                <td>{{ $row['PlanType'] }}</td>
-                                                <td>{{ $row['Region_id'] }}</td>
-                                                <td>{{ $row['Province'] }}</td>
-                                                <td>{{ $row['SiteType'] }}</td>
-                                                <td>{{ $row['TowerNewSite'] }}</td>
-                                                <td>{{ $row['Towerheight'] }}</td>
-                                                <td>{{ $row['Tower'] }}</td>
-                                                <td>{{ $row['Zone'] }}</td>
-                                            -->
+                                        <!--   
+                                            <td>{{ $row['SiteNAME_T'] }}</td>
+                                            <td>{{ $row['PlanType'] }}</td>
+                                            <td>{{ $row['Region_id'] }}</td>
+                                            <td>{{ $row['Province'] }}</td>
+                                            <td>{{ $row['SiteType'] }}</td>
+                                            <td>{{ $row['TowerNewSite'] }}</td>
+                                            <td>{{ $row['Towerheight'] }}</td>
+                                            <td>{{ $row['Tower'] }}</td>
+                                            <td>{{ $row['Zone'] }}</td>
+                                        -->
                                             <td>
                                                 @if ($row['exists_in_db'])
                                                     <span class="badge bg-danger">ไม่สามารถอัพโหลดได้</span>
@@ -93,7 +92,7 @@
         </div>
     @endif
 
-    <script>
+	<script>
         document.getElementById("saveImport").addEventListener("submit", function(event) {
         
             // ป้องกันการส่งฟอร์มทันที
@@ -112,8 +111,5 @@
             }, 1000); // ปรับเป็นเวลาที่ต้องการ เช่น 1000 ms สำหรับ 1 วินาที
         });
     </script>
-    
 
 @endsection
-
-

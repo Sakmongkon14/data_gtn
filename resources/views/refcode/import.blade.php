@@ -3,8 +3,6 @@
 @section('content')
 
 
-   
-
     @if (!empty($dataToSave) && (is_array($dataToSave) || is_object($dataToSave)))
         <div class="modal fade show d-block" id="refcodeModal" tabindex="-1" role="dialog"
             aria-labelledby="refcodeModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0.5);">
@@ -34,7 +32,7 @@
                                     @foreach ($dataToSave as $row)
                                         <tr class="border-t border-gray-100 hover:bg-red-200">
                                             @foreach ($row as $key => $cell)
-                                                <td class="px-2 py-2">{{ $cell }}</td>
+                                                <td class="px-2 py-2">{{$cell}}</td>
                                             @endforeach
                                             <td class="px-2 py-2">
                                                 @php

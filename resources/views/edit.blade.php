@@ -3,6 +3,7 @@
 @section('content')
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
 
     <style>
         .form-control {
@@ -202,9 +203,27 @@
     @endif
 
 
-    <h2 class="text text-center " style="margin-top: 10px;">New Site</h2>
+    <div data-aos="fade-up" data-aos-anchor-placement="bottom-center">
+        <h2 id="zoomText" class="text-center my-3 text-2xl font-bold"
+            style="transform: scale(0.8); opacity: 0; transition: transform 0.5s ease-out, opacity 0.5s ease-out;">
+            New Site
+        </h2>
+    </div>
 
-    <div class="container input-group mb-3 input-group-sm  py-2 ">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            AOS.init(); // เริ่มต้น AOS Animation
+    
+            // เพิ่ม Zoom-in เมื่อโหลดหน้า
+            setTimeout(() => {
+                let title = document.getElementById("zoomText");
+                title.style.transform = "scale(1)";
+                title.style.opacity = "1";
+            }, 200);
+        });
+    </script>
+
+    <div class="container input-group mb-3 input-group-sm  py-2 " data-aos="fade-up">
 
         <!-- Main -->
         <form id="updateForm" class="row g-3 custom-form" autocomplete="off" method="POST"
@@ -4265,8 +4284,7 @@
                                         <div class="d-flex align-items-center mb-3 ms-2">
                                             <label for="pile_supplier"
                                                 class="me-1
-                                                style="width:
-                                                100px;">Plie Supplier</label>
+                                                style="width:100px;>Plie Supplier</label>
                                             <div class="d-flex flex-column ">
                                                 <input type="text" name="pile_supplier" class="form-control"
                                                     style="width: 160px;" value="{{ $blog->pile_supplier }}">
@@ -4327,13 +4345,13 @@
                                             </div>
                                         </div>
 
-                                        <div class="d-flex align-items-center mb-3 ms-2">
+                                        <div class="d-flex align-items-center mb-3 ms-2" style="gap: 3rem;">
                                             <label for="accept_2" class="me-2 " style="width: 100px;">Accept 2
                                             </label>
 
                                             <div class="flex-grow-1 position-relative">
                                                 <input type="text" id="accept_2" name="accept_2"
-                                                    style="width: 140px;" class="form-control datepicker pe-5"
+                                                    style="width: 160px;" class="form-control datepicker pe-5"
                                                     placeholder="วันที่-เดือน-ปี"
                                                     value="{{ old('accept_2', $blog->accept_2) }}"> <!--DATE -->
                                                 <i
@@ -4341,12 +4359,12 @@
                                             </div>
                                         </div>
 
-                                        <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="accept_3" class="me-2 ms-4" style="width: 100px;">Accept 3
+                                        <div class="d-flex align-items-center mb-3 " style="gap:17px;">
+                                            <label for="accept_3" class="me-2 ms-2" style="width: 120px;">Accept 3
                                             </label>
                                             <div class="flex-grow-1 position-relative">
                                                 <input type="text" id="accept_3" name="accept_3"
-                                                    style="width: 160px;" class="form-control datepicker pe-5"
+                                                    style="width: 150px;" class="form-control datepicker pe-5"
                                                     placeholder="วันที่-เดือน-ปี"
                                                     value="{{ old('accept_3', $blog->accept_3) }}">
                                                 <i
@@ -4381,13 +4399,13 @@
                                         </div>
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="extra_work_accept_date" class="me-2"
-                                                style="width: 150px;">Sub Extra Work Date </label>
+                                            <label for="extra_work_accept_date" class="me-1"
+                                                style="width: 140px;">Sub Extra Work Date </label>
 
 
                                             <div class="flex-grow-1 position-relative">
                                                 <input type="text" id="extra_work_accept_date"
-                                                    name="extra_work_accept_date" style="width: 140px;"
+                                                    name="extra_work_accept_date" style="width: 150px;"
                                                     class="form-control datepicker pe-5" placeholder="วันที่-เดือน-ปี"
                                                     value="{{ old('extra_work_accept_date', $blog->extra_work_accept_date) }}">
                                                 <!--DATE -->
@@ -4412,7 +4430,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="d-flex align-items-center mb-3 ms-2">
+                                        <div class="d-flex align-items-center mb-3 ms-2 " style="gap: 2rem">
                                             <label for="payment_to" class="me-1" style="width: 120px;">Payment
                                                 to</label>
                                             <div class="d-flex flex-column ">
@@ -4422,7 +4440,7 @@
                                         </div>
 
                                         <div class="d-flex align-items-center mb-3 ms-2">
-                                            <label for="payment_date" class="me-2 ms-4" style="width: 140px;">Payment
+                                            <label for="payment_date" class="me-2 ms-1" style="width: 131px;">Payment
                                                 Date</label>
 
                                             <div class="flex-grow-1 position-relative">
@@ -4505,7 +4523,7 @@
                     });
                 </script>
 
-
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
                 <script>
                     document.querySelectorAll('input[placeholder="กรุณากรอกตัวเลข"]').forEach(function(element) {
                         element.addEventListener('blur', function(e) {

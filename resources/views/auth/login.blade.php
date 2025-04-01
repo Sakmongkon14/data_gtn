@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.Tailwind')
 @section('title', 'Login')
 @section('content')
 
@@ -111,7 +111,7 @@
                 @csrf
 
                 <div class="form-group mb-3">
-                    <input id="email" type="email" placeholder="Username" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                    <input id="email" type="email" placeholder="Email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                     @error('email')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -128,11 +128,17 @@
                     @enderror
                 </div>
 
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="remember">Remember me</label>
-                    </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <input type="text" name="status" id="status" class="form-control @error('status') is-invalid @enderror" value="{{ old('status') }}">
+                    
+                    @error('status')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+               
+
              <!--       @if (Route::has('password.request'))
                         <a href="{{ route('password.request') }}">Forgot pass</a>
                     @endif
@@ -153,15 +159,5 @@
 	
 
 
-                                @if (Route::has('password.request'))
-                                    
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                               
 @endsection
