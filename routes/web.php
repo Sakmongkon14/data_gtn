@@ -10,6 +10,7 @@ use App\Http\Middleware\CheckStatus;
 use App\Http\Middleware\CheckInventory;
 use App\Http\Controllers\ImportItemController;
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -73,10 +74,10 @@ Route::post('refcode/saverefcode', [Refcodecontroller::class, 'saveAdd']);
 
 // Inventory
 
-// หน้า import add
-Route::get('/import', [ImportItemController::class, 'index'])->middleware(CheckInventory::class);
-Route::get('/check-refcode', [ImportItemController::class, 'checkRefcode'])->name('check.refcode')->middleware(CheckInventory::class);
-Route::get('/check-import', [ImportItemController::class, 'checkImport_add'])->name('check.import')->middleware(CheckInventory::class);
+    // หน้า import add
+    Route::get('/import', [ImportItemController::class, 'index'])->middleware(CheckInventory::class);
+    Route::get('/check-refcode', [ImportItemController::class, 'checkRefcode'])->name('check.refcode')->middleware(CheckInventory::class);
+    Route::get('/check-import', [ImportItemController::class, 'checkImport_add'])->name('check.import')->middleware(CheckInventory::class);
 
 Route::get('/import', [ImportItemController::class, 'material'])->name('import_get')->middleware(CheckInventory::class);
 
@@ -126,3 +127,6 @@ Route::get('/sum', [ImportItemController::class, 'summary'])->name('sum')->middl
 Route::get('/region', [ImportItemController::class, 'region'])->middleware(CheckInventory::class);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+

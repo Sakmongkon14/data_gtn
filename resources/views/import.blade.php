@@ -50,10 +50,8 @@
                                             <td>{{ $row['Region_id'] }}</td>
                                             <td>{{ $row['Province'] }}</td>
                                             <td>{{ $row['SiteType'] }}</td>
-                                            <td>{{ $row['TowerNewSite'] }}</td>
                                             <td>{{ $row['Towerheight'] }}</td>
-                                            <td>{{ $row['Tower'] }}</td>
-                                            <td>{{ $row['Zone'] }}</td>
+                                            
                                         -->
                                             <td>
                                                 @if ($row['exists_in_db'])

@@ -95,13 +95,8 @@
                 var th8 = row.insertCell();
                 th8.innerText = "Site Type";
                 var th9 = row.insertCell();
-                th9.innerText = "Tower NewSite";
-                var th10 = row.insertCell();
-                th10.innerText = "Tower height";
-                var th11 = row.insertCell();
-                th11.innerText = "Tower";
-                var th12 = row.insertCell();
-                th12.innerText = "Zone";
+                th19.innerText = "Tower height";
+
 
                 // แปลงตารางเป็น sheet และส่งออก
                 var ws = XLSX.utils.table_to_sheet(table);
@@ -430,10 +425,9 @@
                     <th scope="col">Region</th>
                     <th scope="col">Province</th>
                     <th scope="col">Site Type</th>
-                    <th scope="col">Tower New Site</th>
                     <th scope="col">Tower height</th>
-                    <th scope="col">Tower</th>
-                    <th scope="col">Zone</th>
+
+
 
 
                     <!-- INVOICE -->
@@ -442,6 +436,11 @@
 
                     <th scope="col" style="background-color: #eaff01">PO_Amount_IN</th>
                     <th scope="col" style="background-color: #ff0000">Banlace_IN</th>
+
+                    <th scope="col" style="background-color: #eaff01">Invoice1_IN</th>
+                    <th scope="col" style="background-color: #eaff01">Amount1_IN</th>
+                    <th scope="col" style="background-color: #eaff01">Invoice2_IN</th>
+                    <th scope="col" style="background-color: #eaff01">Amount2_IN</th>
 
                     <th scope="col" style="background-color: #eaff01">Invoice1_IN</th>
                     <th scope="col" style="background-color: #eaff01">Amount1_IN</th>
@@ -640,10 +639,7 @@
 
                             <td>{{ $item->Province }}</td>
                             <td>{{ $item->SiteType }}</td>
-                            <td>{{ $item->TowerNewSite }}</td>
                             <td>{{ $item->Towerheight }}</td>
-                            <td>{{ $item->Tower }}</td>
-                            <td>{{ $item->Zone }}</td>
 
 
                             <!-- INVOICE -->
@@ -666,6 +662,7 @@
                                 @endif
                             </td>
 
+                            <!-- CD -->
 
                             <td>{{ $item->Invoice1_IN }}</td>
 
@@ -684,6 +681,27 @@
                                     <span class="indicator no-data" title="No Data"></span>
                                 @endif
                             </td>
+
+                            <!-- CC -->
+
+                            <td>{{ $item->Invoice1_CC }}</td>
+
+                            <td>
+                                {{ $item->Amount1_CC }}
+                                @if (empty($item->Amount1_CC))
+                                    <span class="indicator no-data" title="No Data"></span>
+                                @endif
+                            </td>
+
+                            <td>{{ $item->Invoice2_CC }}</td>
+
+                            <td>
+                                {{ $item->Amount2_CC }}
+                                @if (empty($item->Amount2_CC))
+                                    <span class="indicator no-data" title="No Data"></span>
+                                @endif
+                            </td>
+
 
 
 

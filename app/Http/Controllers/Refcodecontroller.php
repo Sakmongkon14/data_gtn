@@ -99,7 +99,7 @@ class Refcodecontroller extends Controller
 
         if ($request->isMethod('post')) {
             $request->validate([
-                'csv_file_add' => 'required|file|mimes:csv,txt|max:2048',
+                'csv_file_add' => 'required|file|mimes:csv,txt|max:5120',
             ]);
             $file = $request->file('csv_file_add');
             // เปิดไฟล์ CSV
@@ -145,6 +145,10 @@ class Refcodecontroller extends Controller
         return view('refcode.import', compact('refcode', 'dataToSave', 'countDataToSave'));
     }
 
+
+
+
+    
     //SAVE IMPORT Refcode 
     public function saveAdd(Request $request)
     {

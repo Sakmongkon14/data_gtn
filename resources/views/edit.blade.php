@@ -2,8 +2,8 @@
 @section('title', 'UPDATE')
 @section('content')
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
 
     <style>
         .form-control {
@@ -184,7 +184,7 @@
                 <div class="modal-content border-success">
                     <div class="modal-header bg-success text-white">
                         <h5 class="modal-title" id="successModalLabel">สำเร็จ!</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                     </div>
                     <div class="modal-body text-success">
                         <i class="bi bi-check-circle-fill"></i> {{ session('success') }}
@@ -213,7 +213,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             AOS.init(); // เริ่มต้น AOS Animation
-    
+
             // เพิ่ม Zoom-in เมื่อโหลดหน้า
             setTimeout(() => {
                 let title = document.getElementById("zoomText");
@@ -239,12 +239,16 @@
                 </div>
             </div>
 
+            <!--
+
             <div class="col-md-12 d-flex align-items-center  ">
                 <label for="PlanType" class="me-4" style="width: 100px;">PlanType</label>
                 <div class="d-flex flex-column ">
                     <input type="text" name="PlanType" class="form-control" value="{{ $blog->PlanType }}">
                 </div>
             </div>
+            
+            -->
 
             <div class="col-md-12 d-flex align-items-center ">
                 <label for="Region_id" class="me-4" style="width: 40px;">Region</label>
@@ -279,7 +283,7 @@
                 <div class="d-flex flex-column ">
                     <input type="text" name="SiteCode" class="form-control" value="{{ $blog->SiteCode }}">
                     @error('SiteCode')
-                        <span class="text text-danger ">{{ $message }}</span>
+                        <span class="text text-danger ">{{$message}}</span>
                     @enderror
                 </div>
             </div>
@@ -291,20 +295,14 @@
                 </div>
             </div>
 
+            <!--
             <div class="col-md-12 d-flex align-items-center ">
                 <label for="SiteType" class="me-4" style="width: 100px;">SiteType</label>
                 <div class="d-flex flex-column ">
                     <input type="text" name="SiteType" class="form-control" value="{{ $blog->SiteType }}">
                 </div>
             </div>
-
-
-            <div class="col-md-12 d-flex align-items-center ">
-                <label for="TowerNewSite" class="me-4" style="width: 100px;">TowerNewSite</label>
-                <div class="d-flex flex-column ">
-                    <input type="text" name="TowerNewSite" class="form-control" value="{{ $blog->TowerNewSite }}">
-                </div>
-            </div>
+            -->
 
             <div class="col-md-12 d-flex align-items-center ">
                 <label for="Towerheight" class="me-4" style="width: 100px;">Towerheight</label>
@@ -313,19 +311,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12 d-flex align-items-center ">
-                <label for="Tower" class="me-4" style="width: 100px;">Tower</label>
-                <div class="d-flex flex-column ">
-                    <input type="text" name="Tower" class="form-control" value="{{ $blog->Tower }}">
-                </div>
-            </div>
 
-            <div class="col-md-12 d-flex align-items-center ">
-                <label for="Zone" class="me-4" style="width: 100px;">Zone</label>
-                <div class="d-flex flex-column ">
-                    <input type="text" name="Zone" class="form-control" value="{{ $blog->Zone }}">
-                </div>
-            </div>
 
 
             <div class="accordion py-2" id="accordionExample">
@@ -353,6 +339,10 @@
                                         <div class="status-row">
                                             <h4>INVOICE STATUS</h4>
 
+                                            <div class="mb-1">
+                                                <h5 class="fw-bold text-primary ">Civil Design</h5>
+                                            </div>
+
                                             <h5>Amount 1
                                                 @if (!empty($blog->Amount1_IN))
                                                     <span class="indicator has-data" title="Data Present"></span>
@@ -369,8 +359,29 @@
                                                 @endif
                                             </h5>
 
+                                            <div class="mb-1">
+                                                <h5 class="fw-bold text-primary">Civil Construction</h5>
+                                            </div>
+
+                                            <h5>Amount 1
+                                                @if (!empty($blog->Amount1_CC))
+                                                    <span class="indicator has-data" title="Data Present"></span>
+                                                @else
+                                                    <span class="indicator no-data" title="No Data"></span>
+                                                @endif
+                                            </h5>
+
+                                            <h5>Amount 2
+                                                @if (!empty($blog->Amount2_CC))
+                                                    <span class="indicator has-data" title="Data Present"></span>
+                                                @else
+                                                    <span class="indicator no-data" title="No Data"></span>
+                                                @endif
+                                            </h5>
+
                                         </div>
 
+                                        <!-- บรรทัด 1 -->
                                         <div class="col-md-12 d-flex align-items-center ">
                                             <label for="Quotation_IN" class="me-4"
                                                 style="width: 100px;">Quotation</label>
@@ -406,10 +417,13 @@
                                                     // แปลงค่าเป็นตัวเลขก่อนการคำนวณ
                                                     $amount1_IN = floatval($blog->Amount1_IN);
                                                     $amount2_IN = floatval($blog->Amount2_IN);
+                                                    $amount1_CC = floatval($blog->Amount1_CC);
+                                                    $amount2_CC = floatval($blog->Amount2_CC);
+
                                                     $po_Amount = floatval($blog->PO_Amount_IN);
 
                                                     // คำนวณผลรวม
-                                                    $total = $amount1_IN + $amount2_IN;
+                                                    $total = $amount1_IN + $amount2_IN + $amount1_CC + $amount2_CC;
                                                     $banlace = $po_Amount;
                                                     $difference = $banlace - $total; // ไม่ให้ค่า difference ติดลบ
 
@@ -430,30 +444,45 @@
                                             </div>
                                         </div>
 
+
+                                        <!-- บรรทัด 2 -->
                                         <div class="col-md-6 d-flex align-items-center flex-wrap ">
+
+                                            <!-- ย้ายออกมานอก d-flex หรือใช้ w-100 -->
+                                            <div class="w-100 mb-2 fw-bold text-primary">
+                                                Civil Design
+                                            </div>
+
                                             <div class="d-flex align-items-center mb-3 ">
 
                                                 <label for="Invoice1_IN" class="me-4" style="width: 100px;">Invoice 1
                                                 </label>
                                                 <div class="flex-grow-1 position-relative">
                                                     <input type="text" id="Invoice1_IN" name="Invoice1_IN"
-                                                        class="form-control datepicker pe-5" placeholder="วันที่-เดือน-ปี"
-                                                        style="width: 160px;"
+                                                        class="form-control" style="width: 160px;"
                                                         value="{{ old('Invoice1_IN', $blog->Invoice1_IN) }}">
-                                                    <i
-                                                        class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                 </div>
+
                                             </div>
 
                                             <div class="d-flex align-items-center mb-3 ms-3">
                                                 <label for="Amount1_IN" class="me-4" style="width: 100px;">Amount
                                                     1</label>
-                                                <div class="d-flex flex-column  ">
+                                                <div class="d-flex flex-column">
                                                     <input type="number" name="Amount1_IN" class="form-control"
                                                         style="width: 160px;" placeholder="กรุณากรอกตัวเลข"
                                                         value="{{ $blog->Amount1_IN }}">
                                                 </div>
                                             </div>
+
+                                            @if (!empty($blog->Amount1_IN))
+                                                <div style="margin-top: -20px; margin-left: 8px;">
+                                                    <img src="/checkmark.png" width="18" height="18"
+                                                        alt="checkmark">
+                                                </div>
+                                            @else
+                                            @endif
+
                                         </div>
 
                                         <div class="col-md-6 d-flex align-items-center flex-wrap mt-0 ">
@@ -463,11 +492,8 @@
                                                 </label>
                                                 <div class="flex-grow-1 position-relative">
                                                     <input type="text" id="Invoice2_IN" name="Invoice2_IN"
-                                                        class="form-control datepicker pe-5" placeholder="วันที่-เดือน-ปี"
-                                                        style="width: 160px;"
+                                                        class="form-control" style="width: 160px;"
                                                         value="{{ old('Invoice2_IN', $blog->Invoice2_IN) }}">
-                                                    <i
-                                                        class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                 </div>
                                             </div>
 
@@ -478,11 +504,87 @@
                                                     <input type="number" name="Amount2_IN" class="form-control"
                                                         style="width: 160px;" placeholder="กรุณากรอกตัวเลข"
                                                         value="{{ $blog->Amount2_IN }}">
+
                                                 </div>
                                             </div>
+
+                                            @if (!empty($blog->Amount2_IN))
+                                                <div style="margin-top: -20px; margin-left: 8px;">
+                                                    <img src="/checkmark.png" width="18" height="18"
+                                                        alt="checkmark">
+                                                </div>
+                                            @else
+                                            @endif
                                         </div>
 
 
+                                        <!-- บรรทัด 2 -->
+                                        <div class="col-md-6 d-flex align-items-center flex-wrap ">
+
+                                            <!-- ย้ายออกมานอก d-flex หรือใช้ w-100 -->
+                                            <div class="w-100 mb-2 fw-bold text-primary">
+                                                Civil Construction
+                                            </div>
+
+                                            <div class="d-flex align-items-center mb-3 ">
+
+                                                <label for="Invoice1_CC" class="me-4" style="width: 100px;">Invoice 1
+                                                </label>
+                                                <div class="flex-grow-1 position-relative">
+                                                    <input type="text" id="Invoice1_CC" name="Invoice1_CC"
+                                                        class="form-control" style="width: 160px;"
+                                                        value="{{ old('Invoice1_CC', $blog->Invoice1_CC) }}">
+                                                </div>
+
+                                            </div>
+
+                                            <div class="d-flex align-items-center mb-3 ms-3">
+                                                <label for="Amount1_CC" class="me-4" style="width: 100px;">Amount
+                                                    1</label>
+                                                <div class="d-flex flex-column">
+                                                    <input type="number" name="Amount1_CC" class="form-control"
+                                                        style="width: 160px;" placeholder="กรุณากรอกตัวเลข"
+                                                        value="{{ $blog->Amount1_CC }}">
+                                                </div>
+                                            </div>
+                                            @if (!empty($blog->Amount1_CC))
+                                                <div style="margin-top: -20px; margin-left: 8px;">
+                                                    <img src="/checkmark.png" width="18" height="18"
+                                                        alt="checkmark">
+                                                </div>
+                                            @endif
+                                        </div>
+
+                                        <div class="col-md-6 d-flex align-items-center flex-wrap mt-0 ">
+                                            <div class="d-flex align-items-center mb-3 ">
+
+                                                <label for="Invoice2_CC" class="me-4" style="width: 100px;">Invoice 2
+                                                </label>
+                                                <div class="flex-grow-1 position-relative">
+                                                    <input type="text" id="Invoice2_CC" name="Invoice2_CC"
+                                                        class="form-control" style="width: 160px;"
+                                                        value="{{ old('Invoice2_CC', $blog->Invoice2_CC) }}">
+                                                </div>
+                                            </div>
+
+                                            <div class="d-flex align-items-center mb-3 ms-3">
+                                                <label for="Amount2_CC" class="me-4" style="width: 100px;">Amount 2
+                                                </label>
+                                                <div class="d-flex flex-column">
+                                                    <input type="number" name="Amount2_CC" class="form-control"
+                                                        style="width: 160px;" placeholder="กรุณากรอกตัวเลข"
+                                                        value="{{ $blog->Amount2_CC }}">
+                                                </div>
+                                            </div>
+                                            @if (!empty($blog->Amount2_CC))
+                                                <div style="margin-top: -20px; margin-left: 8px;">
+                                                    <img src="/checkmark.png" width="18" height="18"
+                                                        alt="checkmark">
+                                                </div>
+                                            @endif
+
+                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -680,7 +782,7 @@
                                                                 $accept_2nd_saq +
                                                                 $accept_3rd_saq +
                                                                 $accept_4th_saq;
-                                                            $banlace = $blog->WO_Price_SAQ;
+                                                            $banlace = $wo_price_saq;
                                                             $difference = $banlace - $total; // ไม่ให้ค่า difference ติดลบ
                                                         @endphp
 
@@ -738,7 +840,16 @@
                                                         <i
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
+
                                                 </div>
+
+                                                @if (!empty($blog->Accept_1st_SAQ))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
+
                                             </div>
 
                                             <!-- บรรทัด 6 -->
@@ -750,7 +861,6 @@
                                                     <input type="number" name="Accept_2nd_SAQ" class="form-control"
                                                         style="width: 140px;" placeholder="กรุณากรอกตัวเลข"
                                                         value="{{ $blog->Accept_2nd_SAQ }}">
-
 
                                                 </div>
 
@@ -779,6 +889,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_2nd_SAQ))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
+
                                             </div>
 
                                             <!-- บรรทัด 7 -->
@@ -818,6 +936,12 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+                                                @if (!empty($blog->Accept_3rd_SAQ))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
                                             </div>
 
                                             <!-- บรรทัด 8 -->
@@ -856,7 +980,16 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+                                                
+                                                @if (!empty($blog->Accept_4th_SAQ))
+                                                <div style="margin-top: -10px; margin-left: 5px;">
+                                                    <img src="/checkmark.png" width="18" height="18"
+                                                        alt="checkmark">
+                                                </div>    
+                                                @endif
+                                                
                                             </div>
+
                                         </div>
 
 
@@ -1054,7 +1187,7 @@
                                                                 $accept_3rd_cr +
                                                                 $accept_4th_cr;
                                                             $banlace = $blog->WO_Price_CR;
-                                                            $difference = $banlace - $total; // ไม่ให้ค่า difference ติดลบ
+                                                            $difference = $banlace - $total;
                                                         @endphp
 
 
@@ -1112,6 +1245,13 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_1st_CR))
+                                                <div style="margin-top: -10px; margin-left: 5px;">
+                                                    <img src="/checkmark.png" width="18" height="18"
+                                                        alt="checkmark">
+                                                </div>    
+                                                @endif
                                             </div>
 
                                             <!-- บรรทัด 5 -->
@@ -1150,6 +1290,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_2nd_CR))
+                                                <div style="margin-top: -10px; margin-left: 5px;">
+                                                    <img src="/checkmark.png" width="18" height="18"
+                                                        alt="checkmark">
+                                                </div>  
+                                                @endif
+
                                             </div>
 
                                             <!-- บรรทัด 6 -->
@@ -1189,6 +1337,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_3rd_CR))
+                                                <div style="margin-top: -10px; margin-left: 5px;">
+                                                    <img src="/checkmark.png" width="18" height="18"
+                                                        alt="checkmark">
+                                                </div>  
+                                                @endif
+
                                             </div>
 
                                             <!-- บรรทัด 7 -->
@@ -1227,6 +1383,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_4th_CR))
+                                                <div style="margin-top: -10px; margin-left: 5px;">
+                                                    <img src="/checkmark.png" width="18" height="18"
+                                                        alt="checkmark">
+                                                </div>  
+                                                @endif
+                                                
                                             </div>
                                         </div>
 
@@ -1367,8 +1531,9 @@
                                                     <label for="PR_Price_TSSR" class="me-4"
                                                         style="width: 100px;">PR_Price_TSSR</label>
                                                     <div class="d-flex flex-column ">
-                                                        <input type="number" name="PR_Price_TSSR" class="form-control"
-                                                            style="width: 160px;" placeholder="กรุณากรอกตัวเลข"
+                                                        <input type="number" name="PR_Price_TSSR"
+                                                            class="form-control" style="width: 160px;"
+                                                            placeholder="กรุณากรอกตัวเลข"
                                                             value="{{ $blog->PR_Price_TSSR }}">
                                                     </div>
                                                 </div>
@@ -1492,6 +1657,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_1st_TSSR))
+                                                <div style="margin-top: -10px; margin-left: 5px;">
+                                                    <img src="/checkmark.png" width="18" height="18"
+                                                        alt="checkmark">
+                                                </div>    
+                                                @endif
+
                                             </div>
 
                                             <!-- บรรทัด 5 -->
@@ -1530,6 +1703,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+      
+                                                @if (!empty($blog->Accept_2nd_TSSR))
+                                                <div style="margin-top: -10px; margin-left: 5px;">
+                                                    <img src="/checkmark.png" width="18" height="18"
+                                                        alt="checkmark">
+                                                </div>    
+                                                @endif
+
                                             </div>
 
                                             <!-- บรรทัด 6 -->
@@ -1569,6 +1750,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_3rd_TSSR))
+                                                <div style="margin-top: -10px; margin-left: 5px;">
+                                                    <img src="/checkmark.png" width="18" height="18"
+                                                        alt="checkmark">
+                                                </div>    
+                                                @endif
+
                                             </div>
 
                                             <!-- บรรทัด 7 -->
@@ -1607,6 +1796,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_4th_TSSR))
+                                                <div style="margin-top: -10px; margin-left: 5px;">
+                                                    <img src="/checkmark.png" width="18" height="18"
+                                                        alt="checkmark">
+                                                </div>    
+                                                @endif
+
                                             </div>
                                         </div>
 
@@ -2095,6 +2292,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_1st_CivilWork))
+                                                <div style="margin-top: -10px; margin-left: 5px;">
+                                                    <img src="/checkmark.png" width="18" height="18"
+                                                        alt="checkmark">
+                                                </div>  
+                                                @endif
+
                                             </div>
 
                                             <!-- บรรทัด 6 -->
@@ -2136,6 +2341,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_2nd_CivilWork))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                    <img src="/checkmark.png" width="18" height="18"
+                                                        alt="checkmark">
+                                                </div>    
+                                                @endif
+
                                             </div>
 
                                             <!-- บรรทัด 7 -->
@@ -2178,6 +2391,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_3rd_CivilWork))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                    <img src="/checkmark.png" width="18" height="18"
+                                                        alt="checkmark">
+                                                </div>    
+                                                @endif
+
                                             </div>
 
                                             <!-- บรรทัด 8 -->
@@ -2219,6 +2440,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_4th_CivilWork))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                    <img src="/checkmark.png" width="18" height="18"
+                                                        alt="checkmark">
+                                                </div>    
+                                                @endif
+
                                             </div>
 
 
@@ -4082,7 +4311,6 @@
                                                 </div>
                                             </div>
 
-
                                             <!-- บรรทัด 5 -->
 
                                             <div class="col-md-7 d-flex align-items-center mt-4  ms-2">
@@ -4094,7 +4322,6 @@
                                                         placeholder="กรุณากรอกตัวเลข"
                                                         value="{{ $blog->Accept_1st_CivilWork }}">
                                                 </div>
-
 
                                                 <div class="form-group mb-4 ms-2 ">
                                                     <label for="Mail_1st_CivilWork" class="me-4"
@@ -4284,7 +4511,8 @@
                                         <div class="d-flex align-items-center mb-3 ms-2">
                                             <label for="pile_supplier"
                                                 class="me-1
-                                                style="width:100px;>Plie Supplier</label>
+                                                style="width:100px;>Plie
+                                                Supplier</label>
                                             <div class="d-flex flex-column ">
                                                 <input type="text" name="pile_supplier" class="form-control"
                                                     style="width: 160px;" value="{{ $blog->pile_supplier }}">
@@ -4524,6 +4752,7 @@
                 </script>
 
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
                 <script>
                     document.querySelectorAll('input[placeholder="กรุณากรอกตัวเลข"]').forEach(function(element) {
                         element.addEventListener('blur', function(e) {
@@ -4537,6 +4766,27 @@
                     });
                 </script>
 
+                <script>
+                    document.querySelectorAll('input[placeholder="กรุณากรอกตัวเลข"]').forEach(function(element) {
+                        // เพิ่ม step="0.01" และ min="0" ไม่ให้กรอกค่าติดลบ
+                        element.setAttribute('step', '0.01');
+                        element.setAttribute('min', '0');
+
+                        element.addEventListener('blur', function(e) {
+                            let value = e.target.value;
+                            if (value) {
+                                value = parseFloat(value);
+                                if (value < 0) {
+                                    // ถ้าไม่ต้องการให้มีค่าติดลบเลย
+                                    e.target.value = '';
+                                    alert("ห้ามกรอกค่าติดลบ");
+                                } else {
+                                    e.target.value = value.toFixed(2); // ปัดเศษทศนิยม 2 ตำแหน่ง
+                                }
+                            }
+                        });
+                    });
+                </script>
 
         </form>
     </div>

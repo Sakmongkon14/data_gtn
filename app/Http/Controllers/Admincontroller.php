@@ -132,18 +132,19 @@ class Admincontroller extends Controller
             ]
         );
 
-
-
         // แปลงค่าเป็นตัวเลขก่อนการคำนวณ BALACE
 
         $amount1_IN = floatval($request->Amount1_IN);
         $amount2_IN = floatval($request->Amount2_IN);
-        $po_Amount = floatval($request->PO_Amount_IN);
+        $amount1_CC = floatval($request->Amount1_CC);
+        $amount2_CC = floatval($request->Amount2_CC);
 
         // คำนวณผลรวม
-        $total = $amount1_IN + $amount2_IN;
+        $total = $amount1_IN + $amount2_IN + $amount1_CC + $amount2_CC;
         $banlace = $request->PO_Amount_IN;
         $difference = ($banlace - $total);
+
+        //dd($difference);
 
         if (empty($banlace)) {
             $Banlace_IN = null;
@@ -152,7 +153,6 @@ class Admincontroller extends Controller
         } else {
             $Banlace_IN = $difference;
         }
-
 
         $data_MAIN = [ //input form
             //  'GTNJobNo' => $request->GTNJobNo,
@@ -166,28 +166,31 @@ class Admincontroller extends Controller
             'Province' => $request->Province,
 
             'SiteType' => $request->SiteType,
-            //  'CancelSite' => $request->CancelSite,
-            'TowerNewSite' => $request->TowerNewSite,
             'Towerheight' => $request->Towerheight,
-            'Tower' => $request->Tower,
-            'Zone' => $request->Zone,
-            //   'DeadLine' => $request->DeadLine,
-            //   'DeadLine_Y' => $request->DeadLine_Y,
-            //   'Status' => $request->Status,
-
+            
+            
             // INVOICE
             'Quotation_IN' => $request->Quotation_IN,
             'PO_No_IN' => $request->PO_No_IN,
             'PO_Amount_IN' => $request->PO_Amount_IN,
+
+            // Civil Design
             'Invoice1_IN' => $request->Invoice1_IN,
             'Amount1_IN' => $request->Amount1_IN,
             'Invoice2_IN' => $request->Invoice2_IN,
             'Amount2_IN' => $request->Amount2_IN,
 
+            // Civil Construction
+            'Invoice1_CC' => $request->Invoice1_CC,
+            'Amount1_CC' => $request->Amount1_CC,
+            'Invoice2_CC' => $request->Invoice2_CC,
+            'Amount2_CC' => $request->Amount2_CC,
+
             'Banlace_IN' => number_format($Banlace_IN, 2, '.', ''),
 
-
         ];
+
+        //dd($data_MAIN);
 
         // แปลงค่าเป็นตัวเลขก่อนการคำนวณ BALACE
 
@@ -294,8 +297,6 @@ class Admincontroller extends Controller
             'Banlace_CR' => number_format($banlace_cr, 2, '.', ''),
 
         ];
-
-
 
         // แปลงค่าเป็นตัวเลขก่อนการคำนวณ BALACE
 
@@ -445,8 +446,6 @@ class Admincontroller extends Controller
             DB::beginTransaction();
 
             // รับข้อมูลเก่าจากฐานข้อมูลเพื่อตรวจสอบการเปลี่ยนแปลง
-
-
 
             $main = DB::table("main_csv")->where("id", $id)->first();
             $saq = DB::table("saq_csv")->where("id_saq", $id)->first();
@@ -814,29 +813,6 @@ class Admincontroller extends Controller
             [
                 'SiteCode' => 'required',
 
-                // Money decimal (10,2) 
-
-                'WO_Price_CivilWork' => 'nullable|numeric',
-                'Accept_1st_CivilWork' => 'nullable|numeric',
-                'Accept_2nd_CivilWork' => 'nullable|numeric',
-                'Accept_3rd_CivilWork' => 'nullable|numeric',
-                'Accept_4th_CivilWork' => 'nullable|numeric',
-                'Banlace_CivilWork' => 'nullable|numeric',
-
-                // Date d-m-Y
-                'Assigned_CivilWork' => 'nullable|date_format:d-m-Y',
-                'Plan_CivilWork' => 'nullable|date_format:d-m-Y',
-                'Actual_CivilWork' => 'nullable|date_format:d-m-Y',
-                'Accept_PR_Date_CivilWork' => 'nullable|date_format:d-m-Y',
-                'Mail_1st_CivilWork' => 'nullable|date_format:d-m-Y',
-                'ERP_1st_CivilWork' => 'nullable|date_format:d-m-Y',
-                'Mail_2nd_CivilWork' => 'nullable|date_format:d-m-Y',
-                'ERP_2nd_CivilWork' => 'nullable|date_format:d-m-Y',
-                'Mail_3rd_CivilWork' => 'nullable|date_format:d-m-Y',
-                'ERP_3rd_CivilWork' => 'nullable|date_format:d-m-Y',
-                'Mail_4th_CivilWork' => 'nullable|date_format:d-m-Y',
-                'ERP_4th_CivilWork' => 'nullable|date_format:d-m-Y',
-
             ],
             [
                 'SiteCode' => 'กรุณากรอก SiteCode',
@@ -856,10 +832,10 @@ class Admincontroller extends Controller
             'Province' => $request->Province,
             'SiteType' => $request->SiteType,
             // 'CancelSite' => $request->CancelSite,
-            'TowerNewSite' => $request->TowerNewSite,
+            //'TowerNewSite' => $request->TowerNewSite,
             'Towerheight' => $request->Towerheight,
-            'Tower' => $request->Tower,
-            'Zone' => $request->Zone,
+            //'Tower' => $request->Tower,
+            //'Zone' => $request->Zone,
             //    'DeadLine' => $request->DeadLine,
             //    'DeadLine_Y' => $request->DeadLine_Y,
             //    'Status' => $request->Status,
@@ -867,39 +843,7 @@ class Admincontroller extends Controller
         ];
 
 
-        // Form CivilWork
-
-        $civilwork = [
-            'WO_Price_CivilWork' => $request->input('WO_Price_CivilWork'),
-            'Accept_1st_CivilWork' => $request->input('Accept_1st_CivilWork'),
-            'Accept_2nd_CivilWork' => $request->input('Accept_2nd_CivilWork'),
-            'Accept_3rd_CivilWork' => $request->input('Accept_3rd_CivilWork'),
-            'Accept_4th_CivilWork' => $request->input('Accept_4th_CivilWork'),
-            'Banlace_CivilWork' => $request->input('Banlace_CivilWork'),
-            'PR_Price_CivilWork' => $request->input('PR_Price_CivilWork'),
-        ];
-
-        // ตรวจสอบและจัดรูปแบบทศนิยม 2 ตำแหน่ง
-        foreach ($civilwork as $key => $value) {
-            if (!empty($value) && is_numeric($value)) {
-                $civilwork[$key] = number_format((float)$value, 2, '.', '');
-            }
-        }
-
-        // แปลงวันที่ให้เป็นรูปแบบ d-m-Y  Civil
-        $assignedCivilWork = $this->convertToDateFormat($request->input('Assigned_CivilWork'));
-        $planCivilWork = $this->convertToDateFormat($request->input('Plan_CivilWork'));
-        $actualCivilWork = $this->convertToDateFormat($request->input('Actual_CivilWork'));
-        $AcceptPRDateCivilWork = $this->convertToDateFormat($request->input('Accept_PR_Date_CivilWork'));
-        $Mail_1stCivilWork = $this->convertToDateFormat($request->input('Mail_1st_CivilWork'));
-        $ERP_1stCivilWork = $this->convertToDateFormat($request->input('ERP_1st_CivilWork'));
-        $Mail_2ndCivilWork = $this->convertToDateFormat($request->input('Mail_2nd_CivilWork'));
-        $ERP_2ndCivilWork = $this->convertToDateFormat($request->input('ERP_2nd_CivilWork'));
-        $Mail_3rdCivilWork = $this->convertToDateFormat($request->input('Mail_3rd_CivilWork'));
-        $ERP_3rdCivilWork = $this->convertToDateFormat($request->input('ERP_3rd_CivilWork'));
-        $Mail_4thCivilWork = $this->convertToDateFormat($request->input('Mail_4th_CivilWork'));
-        $ERP_4thCivilWork = $this->convertToDateFormat($request->input('ERP_4th_CivilWork'));
-
+        //dd($data_MAIN,$civilwork,$ERP_4thCivilWork);
 
         try {
             // แทรกข้อมูลลงใน main_csv และดึง ID ที่สร้างขึ้น
@@ -1040,10 +984,10 @@ class Admincontroller extends Controller
                             'Region_id' => isset($data[5]) ? trim($data[5]) : '',
                             'Province' => isset($data[6]) ? trim($data[6]) : '',
                             'SiteType' => isset($data[7]) ? trim($data[7]) : '',
-                            'TowerNewSite' => isset($data[8]) ? trim($data[8]) : '',
-                            'Towerheight' => isset($data[9]) ? trim($data[9]) : '',
-                            'Tower' => isset($data[10]) ? trim($data[10]) : '',
-                            'Zone' => isset($data[11]) ? trim($data[11]) : '',
+                        //    'TowerNewSite' => isset($data[8]) ? trim($data[8]) : '',
+                            'Towerheight' => isset($data[8]) ? trim($data[8]) : '',
+                           // 'Tower' => isset($data[10]) ? trim($data[10]) : '',
+                           // 'Zone' => isset($data[11]) ? trim($data[11]) : '',
                             'exists_in_db' => in_array($refcode, $existingRefcodes), // เช็คว่ามีอยู่ในฐานข้อมูลไหม
                         ];
                     }
@@ -1095,17 +1039,24 @@ class Admincontroller extends Controller
                     'Region_id' => $row['Region_id'] ? (int)$row['Region_id'] : null,  // ตรวจสอบ Region_id ก่อน insert
                     'Province' => $row['Province'] ?? null,
                     'SiteType' => $row['SiteType'] ?? null,
-                    'TowerNewSite' => $row['TowerNewSite'] ?? null,
                     'Towerheight' => $row['Towerheight'] ?? null,
-                    'Tower' => $row['Tower'] ?? null,
-                    'Zone' => $row['Zone'] ?? null,
+                //  'TowerNewSite' => $row['TowerNewSite'] ?? null,
+                //  'Tower' => $row['Tower'] ?? null,
+                //  'Zone' => $row['Zone'] ?? null,
                     'Quotation_IN' => $row['Quotation_IN'] ?? null,
                     'PO_No_IN' => $row['PO_No_IN'] ?? null,
                     'PO_Amount_IN' => $row['PO_Amount_IN'] ?? null,
+
                     'Invoice1_IN' => $row['Invoice1_IN'] ?? null,
                     'Amount1_IN' => $row['Amount1_IN'] ?? null,
                     'Invoice2_IN' => $row['Invoice2_IN'] ?? null,
                     'Amount2_IN' => $row['Amount2_IN'] ?? null,
+
+                    'Invoice1_CC' => $row['Invoice1_CC'] ?? null,
+                    'Amount1_CC' => $row['Amount1_CC'] ?? null,
+                    'Invoice2_CC' => $row['Invoice2_CC'] ?? null,
+                    'Amount2_CC' => $row['Amount2_CC'] ?? null,
+
                     'Banlace_IN' => $row['Banlace_IN'] ?? null
                 ];
             }

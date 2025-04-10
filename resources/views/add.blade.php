@@ -137,19 +137,20 @@
 
 
             <div class="col-md-12 d-flex align-items-center ">
-                <label for="TowerNewSite" class="me-4" style="width: 100px;">TowerNewSite</label>
-                <div class="d-flex flex-column ">
-                    <input type="text" name="TowerNewSite" class="form-control">
-                </div>
-            </div>
-
-            <div class="col-md-12 d-flex align-items-center ">
                 <label for="Towerheight" class="me-4" style="width: 100px;">Towerheight</label>
                 <div class="d-flex flex-column ">
                     <input type="text" name="Towerheight" class="form-control">
                 </div>
             </div>
 
+        <!--
+
+        <div class="col-md-12 d-flex align-items-center ">
+                <label for="TowerNewSite" class="me-4" style="width: 100px;">TowerNewSite</label>
+                <div class="d-flex flex-column ">
+                    <input type="text" name="TowerNewSite" class="form-control">
+                </div>
+            </div>
 
             <div class="col-md-12 d-flex align-items-center ">
                 <label for="Tower" class="me-4" style="width: 100px;">Tower</label>
@@ -164,7 +165,8 @@
                     <input type="text" name="Zone" class="form-control">
                 </div>
             </div>
-			
+
+		-->	
 			
 			<div class="container text-center mb-3 my-3">
                 <input type="submit" id="saveBtn" value="เพิ่ม" class="btn btn-success my-3"
@@ -178,6 +180,8 @@
                     <p class="text-sm text-gray-600">โปรดรอสักครู่ ...</p>
                 </div>
             </div>
+
+        
 
             <script>
                 document.getElementById("saveAdd").addEventListener("submit", function(event) {
