@@ -63,50 +63,6 @@
             </div>
         </div>
     @endif
-
-
-    <!-- ตาราง -->
-    <div class="mt-2 overflow-y-auto" style="height: 550px;">
-        <table class="table-auto w-full mt-2 border-collapse">
-            <thead class="sticky top-0 bg-white shadow-md">
-                <tr class="text-xs text-center">
-                    <th class="bg-blue-950 text-neutral-50 px-2 py-1">
-                        <div class="flex flex-col items-center">
-                            <span>Refcode</span>
-                        </div>
-                    </th>
-                    <th class="bg-blue-950 text-neutral-50 px-2 py-1">
-                        <div class="flex flex-col items-center">
-                            <span>SiteCode</span>
-                        </div>
-                    </th>
-                    <th class="bg-blue-950 text-neutral-50 px-2 py-1">
-                        <div class="flex flex-col items-center">
-                            <span>Office</span>
-                        </div>
-                    </th>
-                    <th class="bg-blue-950 text-neutral-50 px-2 py-1">
-                        <div class="flex flex-col items-center">
-                            <span>Project</span>
-                        </div>
-                    </th>
-
-                </tr>
-            </thead>
-
-            <tbody class="text-xs text-center bg-white">
-                @foreach ($refcode as $item)
-                    <tr class="hover:bg-red-100 hover:text-red-600">
-                        <td>{{ $item->refcode }}</td>
-                        <td>{{ $item->sitecode }}</td>
-                        <td>{{ $item->office }}</td>
-                        <td>{{ $item->project }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-
-    
+ 
     
 @endsection

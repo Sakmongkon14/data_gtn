@@ -10,6 +10,8 @@ use App\Http\Middleware\CheckStatus;
 use App\Http\Middleware\CheckInventory;
 use App\Http\Controllers\ImportItemController;
 
+use App\Http\Controllers\Implementcontroller;
+use App\Http\Controllers\TowerDismantleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,6 +20,27 @@ Route::get('/', function () {
 Route::get('/3D', function () {
     return view('3D/index'); // จะไปแสดงไฟล์ cube.blade.php
 });
+
+
+//implement
+
+Route::get('/implement/home', [Implementcontroller::class, 'index'])->name('implement.home');
+Route::post('/implement/save', [Implementcontroller::class, 'addrefcode'])->name('implement.save');
+Route::get('/implement/edit/{id}', [ImplementController::class, 'edit'])->name('implement.edit');
+
+    // search sitecode
+    Route::get('/search-sitecode', [Implementcontroller::class, 'searchSitecode']);
+    Route::get('/search-refcodeimplement', [Implementcontroller::class, 'searchRefcode']);
+
+
+//TowerDismantle
+
+Route::get('/towerDismantle/home',[TowerDismantleController::class,'index']);
+Route::get('/towerDismantle/update/{id}',[TowerDismantleController::class, 'edit'])->name('towerDismantle.update');
+Route::post('/towerDismantle/save',[TowerDismantleController::class,'addrefcode'])->name('towerDismantle.save');
+
+Route::post('/towerDismantle/update/{id}', [TowerDismantleController::class, 'update'])->name('towerDismantle.updateId');
+
 
 // Taking
 Route::get('dashboard', [Admincontroller::class,'dashboard']);
@@ -32,7 +55,7 @@ Route::post('/saveImport', [Admincontroller::class, 'saveAdd']); //import Save
 
 Route::get('/blog', [Admincontroller::class, 'index'])->name('blog')->middleware(CheckStatus::class);
 Route::get('edit/{id}', [Admincontroller::class, 'edit'])->name('edit');
-Route::post('update/{id}', [Admincontroller::class, 'update'])->name('update');
+Route::put('update/{id}', [Admincontroller::class, 'update'])->name('update');
 
 Route::get('add', [Admincontroller::class, 'add'])->name('add');
 Route::post('insert', [Admincontroller::class, 'insert'])->name('insert');

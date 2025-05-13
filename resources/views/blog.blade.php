@@ -87,15 +87,11 @@
                 var th4 = row.insertCell();
                 th4.innerText = "Site NAME_T";
                 var th5 = row.insertCell();
-                th5.innerText = "PlanType";
+                th5.innerText = "Region";
                 var th6 = row.insertCell();
-                th6.innerText = "Region";
+                th6.innerText = "Province";
                 var th7 = row.insertCell();
-                th7.innerText = "Province";
-                var th8 = row.insertCell();
-                th8.innerText = "Site Type";
-                var th9 = row.insertCell();
-                th19.innerText = "Tower height";
+                th7.innerText = "Tower height";
 
 
                 // แปลงตารางเป็น sheet และส่งออก
@@ -421,10 +417,10 @@
                     <th scope="col">Owner Old Ste</th>
                     <th scope="col">Site Code</th>
                     <th scope="col">Site NAME_T</th>
-                    <th scope="col">Plan Type</th>
+                <!--  <th scope="col">Plan Type</th> -->
                     <th scope="col">Region</th>
                     <th scope="col">Province</th>
-                    <th scope="col">Site Type</th>
+                <!-- <th scope="col">Site Type</th> -->
                     <th scope="col">Tower height</th>
 
 
@@ -437,11 +433,13 @@
                     <th scope="col" style="background-color: #eaff01">PO_Amount_IN</th>
                     <th scope="col" style="background-color: #ff0000">Banlace_IN</th>
 
+                    <th scope="col" style="background-color: #eaff01">Design_Amount</th>
                     <th scope="col" style="background-color: #eaff01">Invoice1_IN</th>
                     <th scope="col" style="background-color: #eaff01">Amount1_IN</th>
                     <th scope="col" style="background-color: #eaff01">Invoice2_IN</th>
                     <th scope="col" style="background-color: #eaff01">Amount2_IN</th>
 
+                    <th scope="col" style="background-color: #eaff01">Construction_Amount</th>
                     <th scope="col" style="background-color: #eaff01">Invoice1_IN</th>
                     <th scope="col" style="background-color: #eaff01">Amount1_IN</th>
                     <th scope="col" style="background-color: #eaff01">Invoice2_IN</th>
@@ -627,7 +625,7 @@
                             <td>{{ $item->OwnerOldSte }}</td>
                             <td>{{ $item->SiteCode }}</td>
                             <td>{{ $item->SiteNAME_T }}</td>
-                            <td>{{ $item->PlanType }}</td>
+                        <!--    <td>{{ $item->PlanType }}</td>  -->
 
                             <td>
                                 @foreach ($areas as $region)
@@ -638,7 +636,7 @@
                             </td>
 
                             <td>{{ $item->Province }}</td>
-                            <td>{{ $item->SiteType }}</td>
+                        <!--    <td>{{ $item->SiteType }}</td> -->
                             <td>{{ $item->Towerheight }}</td>
 
 
@@ -663,7 +661,7 @@
                             </td>
 
                             <!-- CD -->
-
+                            <td>{{ $item->Design_Amount }}</td>
                             <td>{{ $item->Invoice1_IN }}</td>
 
                             <td>
@@ -684,6 +682,7 @@
 
                             <!-- CC -->
 
+                            <td>{{ $item->Construction_Amount }}</td>
                             <td>{{ $item->Invoice1_CC }}</td>
 
                             <td>

@@ -302,7 +302,7 @@
                     <input type="text" name="SiteType" class="form-control" value="{{ $blog->SiteType }}">
                 </div>
             </div>
-            -->
+        -->
 
             <div class="col-md-12 d-flex align-items-center ">
                 <label for="Towerheight" class="me-4" style="width: 100px;">Towerheight</label>
@@ -310,8 +310,6 @@
                     <input type="text" name="Towerheight" class="form-control" value="{{ $blog->Towerheight }}">
                 </div>
             </div>
-
-
 
 
             <div class="accordion py-2" id="accordionExample">
@@ -453,6 +451,15 @@
                                                 Civil Design
                                             </div>
 
+                                            <div class="d-flex align-items-center mb-3 w-100">                                                
+                                                <label class="me-4" style="width: 100px;">PO Amount</label>
+                                                <div class="d-flex flex-column">
+                                                    <input type="number" name="Design_Amount" class="form-control"
+                                                        style="width: 160px;" placeholder="กรุณากรอกตัวเลข"
+                                                        value="{{ $blog->Design_Amount }}">
+                                                </div>
+                                            </div>
+
                                             <div class="d-flex align-items-center mb-3 ">
 
                                                 <label for="Invoice1_IN" class="me-4" style="width: 100px;">Invoice 1
@@ -525,6 +532,16 @@
                                             <div class="w-100 mb-2 fw-bold text-primary">
                                                 Civil Construction
                                             </div>
+
+                                            <div class="d-flex align-items-center mb-3 w-100">                                                
+                                                <label class="me-4" style="width: 100px;">PO Amount</label>
+                                                <div class="d-flex flex-column">
+                                                    <input type="number" name="Construction_Amount" class="form-control"
+                                                        style="width: 160px;" placeholder="กรุณากรอกตัวเลข"
+                                                        value="{{ $blog->Construction_Amount }}">
+                                                </div>
+                                            </div>
+                                            
 
                                             <div class="d-flex align-items-center mb-3 ">
 
@@ -2868,6 +2885,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_1st_SAQ))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
+
                                             </div>
 
                                             <!-- บรรทัด 6 -->
@@ -2908,6 +2933,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_2nd_SAQ))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
+
                                             </div>
 
                                             <!-- บรรทัด 7 -->
@@ -2947,6 +2980,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_3rd_SAQ))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
+
                                             </div>
 
                                             <!-- บรรทัด 8 -->
@@ -2985,6 +3026,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_4th_SAQ))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
+
                                             </div>
                                         </div>
 
@@ -3208,7 +3257,7 @@
                                                 </div>
                                             </div>
 
-                                            <!-- บรรทัด 4 -->
+                                            <!-- บรรทัด 5 -->
 
                                             <div class="col-md-7 d-flex align-items-center mt-4 ms-2">
                                                 <label for="Accept_1st_CR" class="me-4"
@@ -3245,9 +3294,17 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_1st_CR))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
+
                                             </div>
 
-                                            <!-- บรรทัด 5 -->
+                                            <!-- บรรทัด 6 -->
 
                                             <div class="col-md-7 d-flex align-items-center ms-2">
                                                 <label for="Accept_2nd_CR" class="me-4"
@@ -3283,9 +3340,18 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_2nd_CR))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
+
+
                                             </div>
 
-                                            <!-- บรรทัด 6 -->
+                                            <!-- บรรทัด 7 -->
 
                                             <div class="col-md-7 d-flex align-items-center  ms-2">
                                                 <label for="Accept_3rd_CR" class="me-4"
@@ -3322,9 +3388,17 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_3rd_CR))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
+
                                             </div>
 
-                                            <!-- บรรทัด 7 -->
+                                            <!-- บรรทัด 8 -->
 
                                             <div class="col-md-7 d-flex align-items-center ms-2">
                                                 <label for="Accept_4th_CR" class="me-4"
@@ -3360,6 +3434,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_4th_CR))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
+
                                             </div>
                                         </div>
 
@@ -3712,7 +3794,7 @@
                                                 </div>
                                             </div>
 
-                                            <!-- บรรทัด 4 -->
+                                            <!-- บรรทัด 5 -->
 
                                             <div class="col-md-7 d-flex align-items-center mt-4  ms-2">
                                                 <label for="Accept_1st_TSSR" class="me-4"
@@ -3749,6 +3831,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_1st_TSSR))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
+                                                
                                             </div>
 
                                             <!-- บรรทัด 5 -->
@@ -3787,6 +3877,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_2nd_TSSR))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
+
                                             </div>
 
                                             <!-- บรรทัด 6 -->
@@ -3826,6 +3924,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_3rd_TSSR))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
+
                                             </div>
 
                                             <!-- บรรทัด 7 -->
@@ -3864,6 +3970,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_4th_TSSR))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
+                                                
                                             </div>
                                         </div>
 
@@ -4350,6 +4464,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_1st_CivilWork))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
+
                                             </div>
 
                                             <!-- บรรทัด 6 -->
@@ -4391,6 +4513,14 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_2nd_CivilWork))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
+                                                
                                             </div>
 
                                             <!-- บรรทัด 7 -->
@@ -4432,7 +4562,16 @@
                                                         <i
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
-                                                </div>
+                                                </div>                  
+
+                                                @if (!empty($blog->Accept_3rd_CivilWork))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
+
+                                                                                             
                                             </div>
 
                                             <!-- บรรทัด 8 -->
@@ -4474,6 +4613,15 @@
                                                             class="bi bi-calendar position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                                                     </div>
                                                 </div>
+
+                                                @if (!empty($blog->Accept_4th_CivilWork))
+                                                    <div style="margin-top: -10px; margin-left: 5px;">
+                                                        <img src="/checkmark.png" width="18" height="18"
+                                                            alt="checkmark">
+                                                    </div>
+                                                @endif
+
+
                                             </div>
 
 

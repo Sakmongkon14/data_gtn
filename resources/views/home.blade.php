@@ -78,18 +78,33 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
 
             <!-- Tracking Section -->
-            <div class="bg-white shadow-lg rounded-lg p-6 grid justify-items-center items-center">
+            <div class="bg-white shadow-lg rounded-lg p-4 grid justify-items-center items-center">
                 <h2 class="text-lg font-semibold text-gray-700 mb-4 text-center flex items-center justify-center">
                     <img src="{{ asset('/task.png') }}" alt="GTN Logo" class="h-10">
                     Tracking
                 </h2>
-                <div class="grid grid-cols-1 md:grid gap-4">
+                <div class="grid grid-cols-3 md:grid gap-4">
                     <a href="/blog"
-                        class="btn-primary bg-blue-500 text-white hover:bg-blue-600 focus:outline-none rounded-lg p-2 px-4 transition duration-300 ease-in-out transform hover:scale-105 
+                        class="btn-primary bg-blue-500 text-white hover:bg-blue-600 focus:outline-none rounded-lg p-2 px-2 transition duration-300 ease-in-out transform hover:scale-105 
                         grid justify-items-center items-center">
                         <img src="{{ asset('/site-map.png') }}" alt="GTN Logo" class="h-10">
                         New Site
                     </a>
+
+                    <a href="/implement/home"
+                        class="btn-primary bg-orange-500 text-white hover:bg-orange-600 focus:outline-none rounded-lg p-2 px-2 transition duration-300 ease-in-out transform hover:scale-105 
+                        grid justify-items-center items-center">
+                        <img src="{{ asset('/site-map.png') }}" alt="GTN Logo" class="h-10">
+                        Implement
+                    </a>
+
+                    <a href="/towerDismantle/home"
+                        class="btn-primary bg-gray-500 text-white hover:bg-gray-600 focus:outline-none rounded-lg p-2 px-2 transition duration-300 ease-in-out transform hover:scale-105 
+                        grid justify-items-center items-center">
+                        <img src="{{ asset('/site-map.png') }}" alt="GTN Logo" class="h-10">
+                        54_NT-BTO 
+                    </a>
+
                 </div>
             </div>
 
@@ -100,13 +115,13 @@
                     <img src="{{ asset('/erp.png') }}" alt="GTN Logo" class="h-10">
                     ERP
                 </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 md:grid gap-4">
                     @if (Auth::check())
                         <a href="refcode/home"
                             class="btn-primary bg-blue-500 text-white hover:bg-blue-600 focus:outline-none rounded-lg p-2 transition duration-300 ease-in-out transform hover:scale-105 
                     grid justify-items-center items-center">
                             <img src="{{ asset('/binary-code.png') }}" alt="GTN Logo" class="h-10">
-                            ค้นหา Refcode
+                            Search Refcode
                         </a>
                         <a href="/import"
                             class="btn-danger bg-yellow-400 text-white hover:bg-yellow-500 focus:outline-none rounded-lg p-2 transition duration-300 ease-in-out transform hover:scale-105
@@ -119,18 +134,34 @@
             </div>
 
             <!-- IT Support Section -->
-            <div class="bg-white shadow-lg rounded-lg p-6 grid justify-items-center items-center">
+            <div class="bg-white shadow-lg rounded-lg p-4 grid justify-items-center items-center">
                 <h2 class="text-lg font-semibold text-gray-700 mb-4 text-center flex items-center justify-center">
                     <img src="{{ asset('/customer-service.png') }}" alt="GTN Logo" class="h-10">
                     IT Support
                 </h2>
-                <div class="grid grid-cols-1 md:grid gap-4">
+                <div class="grid grid-cols-3 md:grid gap-4">
                     <a href="https://sites.google.com/team-gtn.com/it-clinic/home"
-                        class="btn-danger bg-red-500 text-white hover:bg-red-600 focus:outline-none rounded-lg p-2 px-4 transition duration-300 ease-in-out transform hover:scale-105 grid justify-items-center items-center"
+                        class="btn-danger bg-red-500 text-white hover:bg-red-600 focus:outline-none rounded-lg p-1 px-4 transition duration-300 ease-in-out transform hover:scale-105 grid justify-items-center items-center"
                         target="_blank">
                         <img src="{{ asset('/support.png') }}" alt="GTN Logo" class="h-10">
                         IT Clinic
                     </a>
+
+                    <a href="https://drive.google.com/drive/u/0/folders/1EEtlhGBVFtDj0f2nsi-5eOO26dTw6WsS"
+                        class="btn-danger bg-purple-500 text-white hover:bg-purple-600 focus:outline-none rounded-lg p-2 px-4 transition duration-300 ease-in-out transform hover:scale-105 grid justify-items-center items-center"
+                        target="_blank">
+                        <img src="{{ asset('/support.png') }}" alt="GTN Logo" class="h-10">
+                        Report
+                    </a>
+
+
+                    <a href="https://shorturl.asia/zXtLW"
+                        class="btn-danger bg-green-500 text-white hover:bg-green-600 focus:outline-none rounded-lg p-2 px-4 transition duration-300 ease-in-out transform hover:scale-105 grid justify-items-center items-center"
+                        target="_blank">
+                        <img src="{{ asset('/database.png') }}" alt="GTN Logo" class="h-8">
+                        Database
+                    </a>
+
                 </div>
             </div>
 
@@ -143,7 +174,7 @@
                 </h2>
 
                 @if (Auth::user()->status == 4)
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-2 md:grid gap-4">
                         <a href="{{ route('register') }}"
                             class="btn-primary bg-green-500 text-white hover:bg-green-600 focus:outline-none rounded-lg p-2 transition duration-300 ease-in-out transform hover:scale-105
                     grid justify-items-center items-center">
@@ -219,11 +250,11 @@
                                                             4
                                                         </option>
                                                         <!-- <option value="5" {{ $user->status == 5 ? 'selected' : '' }}>
-                                                                5
-                                                            </option>
-                                                            <option value="6" {{ $user->status == 6 ? 'selected' : '' }}>
-                                                                6</option>
-                                                        -->
+                                                                    5
+                                                                </option>
+                                                                <option value="6" {{ $user->status == 6 ? 'selected' : '' }}>
+                                                                    6</option>
+                                                            -->
                                                         <option value=""
                                                             {{ $user->status == '' ? 'selected' : '' }}>
                                                             7</option>
@@ -250,11 +281,11 @@
                         </div>
 
                         <!--
-                                        
-                                            <div class="modal-footer">
-                                            <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
-                                        </div>
-                                        -->
+                                            
+                                                <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+                                            </div>
+                                            -->
 
                     </div>
                 </div>

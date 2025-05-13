@@ -75,12 +75,14 @@
                 </div>
             </div>
 
+            <!--
             <div class="col-md-12 d-flex align-items-center ">
                 <label for="PlanType" class="me-4" style="width: 100px;">PlanType</label>
                 <div class="d-flex flex-column ">
                     <input type="text" name="PlanType" class="form-control">
                 </div>
             </div>
+            -->
 
 
             <div class="col-md-12 d-flex align-items-center ">
@@ -128,12 +130,14 @@
                 </div>
             </div>
 
+            <!--
             <div class="col-md-12 d-flex align-items-center ">
                 <label for="SiteType" class="me-4" style="width: 100px;">SiteType</label>
                 <div class="d-flex flex-column ">
                     <input type="text" name="SiteType" class="form-control">
                 </div>
             </div>
+            -->
 
 
             <div class="col-md-12 d-flex align-items-center ">

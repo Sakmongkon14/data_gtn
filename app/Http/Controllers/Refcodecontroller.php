@@ -18,42 +18,42 @@ class Refcodecontroller extends Controller
         $this->middleware('auth');
     }
 
-    
+
     public function index(Request $request)
-{
-    if ($request->has('export')) {
-        $rows = DB::table('r_import_refcode')->get();
-        $filePath = storage_path('app/refcode.csv');
-        $file = fopen($filePath, 'w');
+    {
+        if ($request->has('export')) {
+            $rows = DB::table('r_import_refcode')->get();
+            $filePath = storage_path('app/refcode.csv');
+            $file = fopen($filePath, 'w');
 
-        // 🔥 ใส่ BOM เพื่อป้องกันภาษาไทยเพี้ยน
-        fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+            // 🔥 ใส่ BOM เพื่อป้องกันภาษาไทยเพี้ยน
+            fprintf($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
-        // เขียนหัวตาราง
-        fputcsv($file, ["Refcode", "Sitecode", "Office", "Project"]);
+            // เขียนหัวตาราง
+            fputcsv($file, ["Refcode", "Sitecode", "Office", "Project"]);
 
-        // เขียนข้อมูลลงไฟล์
-        foreach ($rows as $row) {
-            fputcsv($file, [
-                $row->refcode,
-                $row->sitecode,
-                $row->office,
-                $row->project
-            ]);
+            // เขียนข้อมูลลงไฟล์
+            foreach ($rows as $row) {
+                fputcsv($file, [
+                    $row->refcode,
+                    $row->sitecode,
+                    $row->office,
+                    $row->project
+                ]);
+            }
+
+            fclose($file);
+            return response()->download($filePath);
         }
 
-        fclose($file);
-        return response()->download($filePath);
+        // ดึงข้อมูล 50 รายการแรกจากฐานข้อมูล
+        $refcode = DB::table('r_import_refcode')->limit(50)->get();
+
+        // เช็คจำนวน Refcode
+        $count = DB::table('r_import_refcode')->count('refcode');
+
+        return view('refcode.home', compact('refcode', 'count'));
     }
-
-    // ดึงข้อมูล 50 รายการแรกจากฐานข้อมูล
-    $refcode = DB::table('r_import_refcode')->limit(50)->get();
-
-    // เช็คจำนวน Refcode
-    $count = DB::table('r_import_refcode')->count('refcode');
-
-    return view('refcode.home', compact('refcode', 'count'));
-}
 
 
 
@@ -141,14 +141,20 @@ class Refcodecontroller extends Controller
 
         // dd($countDataToSave);
 
+        // ข้อมูล memory
+        $memoryInfo = [
+            'PHP memory_limit' => ini_get('memory_limit'),
+            'Current memory usage (MB)' => round(memory_get_usage() / 1048576, 2),
+            'Peak memory usage (MB)' => round(memory_get_peak_usage() / 1048576, 2),
+        ];
+
+        dd($memoryInfo);
+
 
         return view('refcode.import', compact('refcode', 'dataToSave', 'countDataToSave'));
     }
 
 
-
-
-    
     //SAVE IMPORT Refcode 
     public function saveAdd(Request $request)
     {

@@ -41,45 +41,45 @@ class Admincontroller extends Controller
             (ค่าว่าง) → แปลงเป็น 0
         */
     public function dashboard()
-        {
-            $totalRefcode = DB::table('main_csv')->count('refcode');
-        
-            // คำนวณผลรวมสำหรับ Banlace_IN
-            $in = DB::table('main_csv')
-                ->select(DB::raw('SUM(COALESCE(CAST(Banlace_IN AS DECIMAL(10,2)), 0)) AS total_in'))
-                ->first();
-        
-            // คำนวณผลรวมสำหรับ Banlace_SAQ
-            $saq = DB::table('saq_csv')
-                ->select(DB::raw('SUM(COALESCE(CAST(Banlace_SAQ AS DECIMAL(10,2)), 0)) AS total_saq'))
-                ->first();
-        
-            // คำนวณผลรวมสำหรับ Banlace_CR
-            $cr = DB::table('cr_csv')
-                ->select(DB::raw('SUM(COALESCE(CAST(Banlace_CR AS DECIMAL(10,2)), 0)) AS total_cr'))
-                ->first();
-        
-            // คำนวณผลรวมสำหรับ Banlace_TSSR
-            $tssr = DB::table('tssr_csv')
-                ->select(DB::raw('SUM(COALESCE(CAST(Banlace_TSSR AS DECIMAL(10,2)), 0)) AS total_tssr'))
-                ->first();
-        
-            // คำนวณผลรวมสำหรับ Banlace_CivilWork
-            $cw = DB::table('civilwork_csv')
-                ->select(DB::raw('SUM(COALESCE(CAST(Banlace_CivilWork AS DECIMAL(10,2)), 0)) AS total_cw'))
-                ->first();
-        
-            // เข้าถึงผลลัพธ์ที่คำนวณในแต่ละฟิลด์ (ตัวอย่าง total_in, total_saq, total_cr, ...)
-            $in = $in->total_in;
-            $saq = $saq->total_saq;
-            $cr = $cr->total_cr;
-            $tssr = $tssr->total_tssr;
-            $cw = $cw->total_cw;
-        
-            // ส่งค่าที่คำนวณไปที่วิว
-            return view('dashboard', compact('totalRefcode', 'in', 'saq', 'cr', 'tssr', 'cw'));
-        }
-        
+    {
+        $totalRefcode = DB::table('main_csv')->count('refcode');
+
+        // คำนวณผลรวมสำหรับ Banlace_IN
+        $in = DB::table('main_csv')
+            ->select(DB::raw('SUM(COALESCE(CAST(Banlace_IN AS DECIMAL(10,2)), 0)) AS total_in'))
+            ->first();
+
+        // คำนวณผลรวมสำหรับ Banlace_SAQ
+        $saq = DB::table('saq_csv')
+            ->select(DB::raw('SUM(COALESCE(CAST(Banlace_SAQ AS DECIMAL(10,2)), 0)) AS total_saq'))
+            ->first();
+
+        // คำนวณผลรวมสำหรับ Banlace_CR
+        $cr = DB::table('cr_csv')
+            ->select(DB::raw('SUM(COALESCE(CAST(Banlace_CR AS DECIMAL(10,2)), 0)) AS total_cr'))
+            ->first();
+
+        // คำนวณผลรวมสำหรับ Banlace_TSSR
+        $tssr = DB::table('tssr_csv')
+            ->select(DB::raw('SUM(COALESCE(CAST(Banlace_TSSR AS DECIMAL(10,2)), 0)) AS total_tssr'))
+            ->first();
+
+        // คำนวณผลรวมสำหรับ Banlace_CivilWork
+        $cw = DB::table('civilwork_csv')
+            ->select(DB::raw('SUM(COALESCE(CAST(Banlace_CivilWork AS DECIMAL(10,2)), 0)) AS total_cw'))
+            ->first();
+
+        // เข้าถึงผลลัพธ์ที่คำนวณในแต่ละฟิลด์ (ตัวอย่าง total_in, total_saq, total_cr, ...)
+        $in = $in->total_in;
+        $saq = $saq->total_saq;
+        $cr = $cr->total_cr;
+        $tssr = $tssr->total_tssr;
+        $cw = $cw->total_cw;
+
+        // ส่งค่าที่คำนวณไปที่วิว
+        return view('dashboard', compact('totalRefcode', 'in', 'saq', 'cr', 'tssr', 'cw'));
+    }
+
 
     public function edit($id)
     {
@@ -161,26 +161,28 @@ class Admincontroller extends Controller
             'SiteCode' => $request->SiteCode,
             'SiteNAME_T' => $request->SiteNAME_T,
 
-            'PlanType' => $request->PlanType,
+            // 'PlanType' => $request->PlanType,
             'Region_id' => $request->Region_id,
             'Province' => $request->Province,
-
-            'SiteType' => $request->SiteType,
             'Towerheight' => $request->Towerheight,
-            
-            
+            // 'SiteType' => $request->SiteType,
+
+
+
             // INVOICE
             'Quotation_IN' => $request->Quotation_IN,
             'PO_No_IN' => $request->PO_No_IN,
             'PO_Amount_IN' => $request->PO_Amount_IN,
 
             // Civil Design
+            'Design_Amount' => $request->Design_Amount,
             'Invoice1_IN' => $request->Invoice1_IN,
             'Amount1_IN' => $request->Amount1_IN,
             'Invoice2_IN' => $request->Invoice2_IN,
             'Amount2_IN' => $request->Amount2_IN,
 
             // Civil Construction
+            'Construction_Amount' => $request->Construction_Amount,
             'Invoice1_CC' => $request->Invoice1_CC,
             'Amount1_CC' => $request->Amount1_CC,
             'Invoice2_CC' => $request->Invoice2_CC,
@@ -495,29 +497,45 @@ class Admincontroller extends Controller
                 "$bulletSite SiteCode : " . $request->input('SiteCode') . "<br>" .
                 "SiteName : " . $request->input('SiteNAME_T') . "<br><br>";
 
-
-            // ตรวจสอบว่ามีค่าหรือไม่ก่อนจะเพิ่มเข้าไปในข้อความ INVOICE
+            // ตรวจสอบว่ามีค่าหรือไม่ก่อนจะเพิ่มเข้าไปในข้อความ INVOICE Civil Design
 
             if ($request->filled('PO_No_IN') && $request->input('PO_No_IN') != $main->PO_No_IN) {
                 $message .= "$yellowBullet PO No : " . $request->input('PO_No_IN') . "<br>";
             }
 
             if ($request->filled('Invoice1_IN') && $request->input('Invoice1_IN') != $main->Invoice1_IN) {
-                $message .= "$yellowBullet Invoice 1 : " . $request->input('Invoice1_IN') . "<br>";
+                $message .= "$yellowBullet Invoice Civil Design 1 : " . $request->input('Invoice1_IN') . "<br>";
             }
 
             if ($request->filled('Amount1_IN') && $request->input('Amount1_IN') != $main->Amount1_IN) {
-                $message .= "$yellowBullet Amount 1 : " . $request->input('Amount1_IN') . "<br>";
+                $message .= "$yellowBullet Amount Civil Design 1 : " . $request->input('Amount1_IN') . "<br>";
             }
 
             if ($request->filled('Invoice2_IN') && $request->input('Invoice2_IN') != $main->Invoice2_IN) {
-                $message .= "$yellowBullet Invoice 2 : " . $request->input('Invoice2_IN') . "<br>";
+                $message .= "$yellowBullet Invoice Civil Design 2 : " . $request->input('Invoice2_IN') . "<br>";
             }
 
             if ($request->filled('Amount2_IN') && $request->input('Amount2_IN') != $main->Amount2_IN) {
-                $message .= "$yellowBullet Amount 2 : " . $request->input('Amount2_IN') . "<br>";
+                $message .= "$yellowBullet Amount Civil Design 2 : " . $request->input('Amount2_IN') . "<br>";
             }
 
+            // ตรวจสอบว่ามีค่าหรือไม่ก่อนจะเพิ่มเข้าไปในข้อความ INVOICE Civil Construction
+
+            if ($request->filled('Invoice1_CC') && $request->input('Invoice1_CC') != $main->Invoice1_CC) {
+                $message .= "$yellowBullet Invoice Civil Construction 1 : " . $request->input('Invoice1_CC') . "<br>";
+            }
+
+            if ($request->filled('Amount1_CC') && $request->input('Amount1_CC') != $main->Amount1_CC) {
+                $message .= "$yellowBullet Amount Civil Construction 1 : " . $request->input('Amount1_CC') . "<br>";
+            }
+
+            if ($request->filled('Invoice2_CC') && $request->input('Invoice2_CC') != $main->Invoice2_CC) {
+                $message .= "$yellowBullet Invoice Civil Construction 2 : " . $request->input('Invoice2_CC') . "<br>";
+            }
+
+            if ($request->filled('Amount2_CC') && $request->input('Amount2_CC') != $main->Amount2_CC) {
+                $message .= "$yellowBullet Amount Civil Construction 2 : " . $request->input('Amount2_CC') . "<br>";
+            }
 
 
             // ตรวจสอบว่ามีค่าหรือไม่ก่อนจะเพิ่มเข้าไปในข้อความ  SAQ
@@ -737,15 +755,16 @@ class Admincontroller extends Controller
                 $message .= "$greenBullet ERP 4th Civil Work: " . $request->input('ERP_4th_CivilWork') . "<br>";
             }
 
-            /* 
-           $emails = ['sakmongkhon.OS@gtn.co.th', 'At.OS@gtn.co.th', 'natthawut@gtn.co.th'];
+                        
+           $emails = ['sakmongkhon.OS@gtn.co.th'];
 
             foreach ($emails as $email) {
                 Mail::to($email)
                     ->send(new SiteUpdateNotification($message));
             }
             
-            */
+
+
 
 
             // ✅ เพิ่มลิงก์ต่างๆ
@@ -827,10 +846,10 @@ class Admincontroller extends Controller
             'OwnerOldSte' => $request->OwnerOldSte,
             'SiteCode' => $request->SiteCode,
             'SiteNAME_T' => $request->SiteNAME_T,
-            'PlanType' => $request->PlanType,
+            // 'PlanType' => $request->PlanType,
             'Region_id' => $request->Region_id,
             'Province' => $request->Province,
-            'SiteType' => $request->SiteType,
+            // 'SiteType' => $request->SiteType,
             // 'CancelSite' => $request->CancelSite,
             //'TowerNewSite' => $request->TowerNewSite,
             'Towerheight' => $request->Towerheight,
@@ -949,7 +968,7 @@ class Admincontroller extends Controller
             ->leftJoin('civilwork_csv as cw', 'm.id', '=', 'cw.id_cw')
             ->get();
 
-        // dd($data);
+        //dd($existingRefcodes);
 
         $dataToSave = [];
 
@@ -977,18 +996,20 @@ class Admincontroller extends Controller
 
                         $dataToSave[] = [
                             'RefCode' => $refcode,
+
                             'OwnerOldSte' => isset($data[1]) ? trim($data[1]) : '',
                             'SiteCode' => isset($data[2]) ? trim($data[2]) : '',
                             'SiteNAME_T' => isset($data[3]) ? trim($data[3]) : '',
-                            'PlanType' => isset($data[4]) ? trim($data[4]) : '',
-                            'Region_id' => isset($data[5]) ? trim($data[5]) : '',
-                            'Province' => isset($data[6]) ? trim($data[6]) : '',
-                            'SiteType' => isset($data[7]) ? trim($data[7]) : '',
-                        //    'TowerNewSite' => isset($data[8]) ? trim($data[8]) : '',
-                            'Towerheight' => isset($data[8]) ? trim($data[8]) : '',
-                           // 'Tower' => isset($data[10]) ? trim($data[10]) : '',
-                           // 'Zone' => isset($data[11]) ? trim($data[11]) : '',
+
+                            'Region_id' => isset($data[4]) ? trim($data[4]) : '',
+                            'Province' => isset($data[5]) ? trim($data[5]) : '',
+                            'Towerheight' => isset($data[6]) ? trim($data[6]) : '',
+
                             'exists_in_db' => in_array($refcode, $existingRefcodes), // เช็คว่ามีอยู่ในฐานข้อมูลไหม
+                            // 'SiteNAME_T' => isset($data[7]) ? trim($data[7]) : '',
+                            // 'TowerNewSite' => isset($data[8]) ? trim($data[8]) : '',
+                            // 'Tower' => isset($data[10]) ? trim($data[10]) : '',
+                            // 'Zone' => isset($data[11]) ? trim($data[11]) : '',  
                         ];
                     }
 
@@ -1040,9 +1061,9 @@ class Admincontroller extends Controller
                     'Province' => $row['Province'] ?? null,
                     'SiteType' => $row['SiteType'] ?? null,
                     'Towerheight' => $row['Towerheight'] ?? null,
-                //  'TowerNewSite' => $row['TowerNewSite'] ?? null,
-                //  'Tower' => $row['Tower'] ?? null,
-                //  'Zone' => $row['Zone'] ?? null,
+                    //  'TowerNewSite' => $row['TowerNewSite'] ?? null,
+                    //  'Tower' => $row['Tower'] ?? null,
+                    //  'Zone' => $row['Zone'] ?? null,
                     'Quotation_IN' => $row['Quotation_IN'] ?? null,
                     'PO_No_IN' => $row['PO_No_IN'] ?? null,
                     'PO_Amount_IN' => $row['PO_Amount_IN'] ?? null,
